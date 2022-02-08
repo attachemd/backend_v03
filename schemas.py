@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List
+from typing import Literal
 
 from pydantic import BaseModel
 
@@ -12,14 +12,16 @@ class UserBase(BaseModel):
 
 
 class Role(str, Enum):
-    admin = "admin"
-    manager = "manager"
+    STANDARD = "standard"
+    ADMIN = "admin"
 
 
 class UserDisplay(BaseModel):
     username: str
     email: str
-    role: Role
+    role: Role = None
+    # role: Literal["admin", "manager"]
+    # role: Literal[Role.admin, Role.manager]
 
     class Config:
         orm_mode = True

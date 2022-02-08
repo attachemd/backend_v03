@@ -6,8 +6,8 @@ from db.database import Base
 
 
 class Role(enum.Enum):
-    admin = 'admin'
-    manager = 'manager'
+    STANDARD = "standard"
+    ADMIN = "admin"
 
 
 class DbUser(Base):
