@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+passlib
+bcrypt
+Faker
+starlette==0.18.0
+black
+pylint

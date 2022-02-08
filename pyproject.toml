@@ -1,0 +1,3 @@
+[tool.black]
+line-length = 69
+extend-exclude = '\fenv'
