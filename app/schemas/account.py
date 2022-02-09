@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Literal
+from typing import Literal, Union, Optional
 
 from pydantic import BaseModel
 
@@ -19,7 +19,10 @@ class Role(str, Enum):
 class UserDisplay(BaseModel):
     username: str
     email: str
-    role: Role = None
+    # role: str
+    role: Role
+    # role: Role = None
+    # role: Union[Role, Optional[str]]
     # role: Literal["admin", "manager"]
     # role: Literal[Role.admin, Role.manager]
 
