@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from app import models
 from app.api import deps
 from app.api.api_v1.api import api_router
 
@@ -15,4 +16,4 @@ async def index():
     return {"message": "Hello world!"}
 
 
-deps.Base.metadata.create_all(deps.engine)
+models.Base.metadata.create_all(deps.engine)
