@@ -1,11 +1,13 @@
-from fastapi import Depends
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import Depends, HTTPException, Security
+from fastapi.security import OAuth2PasswordBearer, SecurityScopes
 from jose import jwt, JWTError
+from pydantic import ValidationError
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
-from app import exceptions
+from app import exceptions, crud, schemas, models
+from app.constants.role import Role
 from app.core.config import settings
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./fastapi-test.db"
@@ -27,18 +29,71 @@ def get_db():
         db.close()
 
 
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
+oauth2_bearer = OAuth2PasswordBearer(
+    tokenUrl="auth/token",
+    scopes={
+        Role.GUEST["name"]: Role.GUEST["description"],
+        Role.ACCOUNT_ADMIN["name"]: Role.ACCOUNT_ADMIN[
+            "description"
+        ],
+        Role.ACCOUNT_MANAGER["name"]: Role.ACCOUNT_MANAGER[
+            "description"
+        ],
+        Role.ADMIN["name"]: Role.ADMIN["description"],
+        Role.SUPER_ADMIN["name"]: Role.SUPER_ADMIN["description"],
+    },
+)
 
 
-async def get_current_user(token: str = Depends(oauth2_bearer)):
+# TODO
+async def get_current_user(
+    security_scopes: SecurityScopes,
+    token: str = Depends(oauth2_bearer),
+    db: Session = Depends(get_db),
+) -> models.User:
+    if security_scopes.scopes:
+        authenticate_value = (
+            f'Bearer scope="{security_scopes.scope_str}"'
+        )
+    else:
+        authenticate_value = "Bearer"
+    credentials_exception = HTTPException(
+        status_code=401,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": authenticate_value},
+    )
     try:
         payload = jwt.decode(
-            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+            token,
+            settings.SECRET_KEY,
+            algorithms=[settings.ALGORITHM],
         )
-        email: str = payload.get("sub")
-        user_id: int = payload.get("id")
-        if email is None or user_id is None:
-            raise exceptions.get_user_exception()
-        return {"email": email, "id": user_id}
-    except JWTError:
+        # email: str = payload.get("sub")
+        # user_id: int = payload.get("id")
+        if payload.get("id") is None:
+            raise credentials_exception
+        # return {"email": email, "id": user_id}
+        token_data = schemas.TokenPayload(**payload)
+    except (JWTError, ValidationError):
         raise exceptions.get_user_exception()
+    user = crud.user.get(db, id=token_data.id)
+    if not user:
+        raise credentials_exception
+    if security_scopes.scopes and not token_data.role:
+        raise HTTPException(
+            status_code=401,
+            detail="Not enough permissions",
+            headers={"WWW-Authenticate": authenticate_value},
+        )
+    return user
+
+
+def get_current_active_user(
+    current_user: models.User = Security(
+        get_current_user,
+        scopes=[],
+    ),
+) -> models.User:
+    if not crud.user.is_active(current_user):
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return current_user

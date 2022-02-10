@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from sqlalchemy.orm import Session
 
@@ -17,8 +17,13 @@ class CRUDUser:
         """
         self.model = model
 
+    def get(self, db: Session, id: str):
+        return (
+            db.query(self.model).filter(self.model.id == id).first()
+        )
+
     def get_by_email(
-        self, db: Session, *, email: str
+            self, db: Session, *, email: str
     ) -> Optional[User]:
         return db.query(User).filter(User.email == email).first()
 
@@ -35,13 +40,21 @@ class CRUDUser:
         db.refresh(db_obj)
         return db_obj
 
+    def is_active(self, user: User) -> bool:
+        return user.is_active
+
+    def get_multi(
+            self, db: Session
+    ) -> List[User]:
+        return db.query(self.model).all()
+
     def authenticate(
-        self, username: str, password: str, db: Session
+            self, username: str, password: str, db: Session
     ) -> Optional[User]:
         user = (
             db.query(self.model)
-            .filter(self.model.email == username)
-            .first()
+                .filter(self.model.email == username)
+                .first()
         )
 
         if not user:
