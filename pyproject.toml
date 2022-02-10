@@ -1,3 +1,9 @@
 [tool.black]
 line-length = 69
-extend-exclude = '\fenv'
+# https://github.com/psf/black/issues/1473
+# https://stackoverflow.com/questions/60381208/ignoring-django-migrations-in-pyproject-toml-file-for-black-formatter
+extend-exclude = '''
+/(
+  | env
+)/
+'''

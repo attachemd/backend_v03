@@ -8,3 +8,5 @@ Faker
 starlette==0.17.1
 black
 pylint
+python-multipart
+python-jose[cryptography]

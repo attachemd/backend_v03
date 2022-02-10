@@ -3,7 +3,7 @@ from typing import Any
 from fastapi import Depends, APIRouter, HTTPException
 from sqlalchemy.orm import Session
 
-from app import schemas, crud
+from app import schemas, crud, exceptions
 
 # from app.db import db_user
 # from app.db.database import get_db
@@ -13,7 +13,9 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 
 @router.get("/")
-async def index():
+async def index(user: dict = Depends(deps.get_current_user)):
+    if user is None:
+        raise exceptions.get_user_exception()
     return {"message": "Hello world!"}
 
 

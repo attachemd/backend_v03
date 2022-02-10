@@ -2,7 +2,7 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 
-from app.core.security import get_password_hash
+from app.core.security import get_password_hash, verify_password
 from app.models.user import User
 from app.schemas import UserCreate
 
@@ -18,7 +18,7 @@ class CRUDUser:
         self.model = model
 
     def get_by_email(
-            self, db: Session, *, email: str
+        self, db: Session, *, email: str
     ) -> Optional[User]:
         return db.query(User).filter(User.email == email).first()
 
@@ -34,6 +34,21 @@ class CRUDUser:
         db.commit()
         db.refresh(db_obj)
         return db_obj
+
+    def authenticate(
+        self, username: str, password: str, db: Session
+    ) -> Optional[User]:
+        user = (
+            db.query(self.model)
+            .filter(self.model.email == username)
+            .first()
+        )
+
+        if not user:
+            return None
+        if not verify_password(password, user.hashed_password):
+            return None
+        return user
 
 
 # TODO injecting user
