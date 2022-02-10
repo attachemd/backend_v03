@@ -36,4 +36,5 @@ class CRUDUser:
         return db_obj
 
 
+# TODO injecting user
 user = CRUDUser(User)
