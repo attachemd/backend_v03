@@ -1,7 +1,8 @@
-from .meta import Base
 from .user import User
-from .user_role import UserRole
-from .role import Role
+# from .meta import Base
+# from .user import User
+# from .user_role import UserRole
+# from .role import Role
 
 # from sqlalchemy.ext.declarative import declarative_base
 # from sqlalchemy.orm import scoped_session, sessionmaker

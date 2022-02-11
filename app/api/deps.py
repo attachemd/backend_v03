@@ -1,27 +1,19 @@
+from typing import Generator
+
 from fastapi import Depends, HTTPException, Security
 from fastapi.security import OAuth2PasswordBearer, SecurityScopes
 from jose import jwt, JWTError
 from pydantic import ValidationError
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import Session
 
 from app import exceptions, crud, schemas, models
 from app.constants.role import Role
 from app.core.config import settings
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./fastapi-test.db"
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},
-)
-SessionLocal = sessionmaker(
-    autocommit=False, autoflush=False, bind=engine
-)
-Base = declarative_base()
+from app.db.session import SessionLocal
 
 
-def get_db():
+def get_db() -> Generator:
     db = SessionLocal()
     try:
         yield db
@@ -30,7 +22,7 @@ def get_db():
 
 
 oauth2_bearer = OAuth2PasswordBearer(
-    tokenUrl="auth/token",
+    tokenUrl="auth/access_token",
     scopes={
         Role.GUEST["name"]: Role.GUEST["description"],
         Role.ACCOUNT_ADMIN["name"]: Role.ACCOUNT_ADMIN[
@@ -80,6 +72,15 @@ async def get_current_user(
     if not user:
         raise credentials_exception
     if security_scopes.scopes and not token_data.role:
+        raise HTTPException(
+            status_code=401,
+            detail="Not enough permissions",
+            headers={"WWW-Authenticate": authenticate_value},
+        )
+    if (
+        security_scopes.scopes
+        and token_data.role not in security_scopes.scopes
+    ):
         raise HTTPException(
             status_code=401,
             detail="Not enough permissions",

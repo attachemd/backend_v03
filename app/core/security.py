@@ -1,5 +1,5 @@
 from datetime import timedelta, datetime
-from typing import Optional
+from typing import Optional, Union, Any
 
 from passlib.context import CryptContext
 from jose import jwt
@@ -20,16 +20,16 @@ def verify_password(
 
 
 def create_access_token(
-    email: str,
-    user_id: int,
+    subject: Union[str, Any],
     expires_delta: Optional[timedelta] = None,
 ):
-    encode = {"sub": email, "id": user_id}
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
-    encode.update({"exp": expire})
+        expire = datetime.utcnow() + timedelta(
+            minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
+        )
+    to_encode = {"exp": expire, **subject}
     return jwt.encode(
-        encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM
+        to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM
     )

@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 
-from app import models
-from app.api import deps
+from app import models, db
 from app.api.api_v1.api import api_router
 
 # from app.api import user
+from app.db import session, base
 
 app = FastAPI()
 
@@ -16,4 +16,4 @@ async def index():
     return {"message": "Hello world!"}
 
 
-models.Base.metadata.create_all(deps.engine)
+base.Base.metadata.create_all(session.engine)

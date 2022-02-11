@@ -26,8 +26,7 @@ async def read_users(
     """
     Retrieve all users.
     """
-    users = crud.user.get_multi(db)
-    return users
+    return crud.user.get_multi(db)
 
 
 # Create user
@@ -47,6 +46,7 @@ def create_user(
     """
     Create new user.
     """
+    # TODO UNIQUE constraint failed: users.phone_number
     user = crud.user.get_by_email(db, email=user_in.email)
     if user:
         raise HTTPException(

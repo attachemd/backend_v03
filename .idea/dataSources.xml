@@ -13,17 +13,5 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="fastapi-test [2]" uuid="140c89d6-65b3-4ef7-b859-9819a9d85078">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\Me\Documents\Me\fullstack\backend_v03\fastapi-test.db</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-      <libraries>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.34.0/sqlite-jdbc-3.34.0.jar</url>
-        </library>
-      </libraries>
-    </data-source>
   </component>
 </project>

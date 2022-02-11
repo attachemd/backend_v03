@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Text
 
 # from app.api import deps
 # from app.models import Base
-from app.models.meta import Base
+from app.db.base_class import Base
 
 
 class Role(Base):

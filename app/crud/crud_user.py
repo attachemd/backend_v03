@@ -23,7 +23,7 @@ class CRUDUser:
         )
 
     def get_by_email(
-            self, db: Session, *, email: str
+        self, db: Session, *, email: str
     ) -> Optional[User]:
         return db.query(User).filter(User.email == email).first()
 
@@ -43,18 +43,16 @@ class CRUDUser:
     def is_active(self, user: User) -> bool:
         return user.is_active
 
-    def get_multi(
-            self, db: Session
-    ) -> List[User]:
+    def get_multi(self, db: Session) -> List[User]:
         return db.query(self.model).all()
 
     def authenticate(
-            self, username: str, password: str, db: Session
+        self, username: str, password: str, db: Session
     ) -> Optional[User]:
         user = (
             db.query(self.model)
-                .filter(self.model.email == username)
-                .first()
+            .filter(User.email == username)
+            .first()
         )
 
         if not user:
