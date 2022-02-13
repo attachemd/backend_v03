@@ -16,16 +16,16 @@ router = APIRouter(prefix="/users", tags=["users"])
 @router.get("/", response_model=List[schemas.User])
 async def read_users(
     db: Session = Depends(deps.get_db),
-    user: models.User = Security(
+    current_user: models.User = Security(
         deps.get_current_active_user,
         scopes=[Role.ADMIN["name"], Role.SUPER_ADMIN["name"]],
     ),
-) -> any:
-    if user is None:
-        raise exceptions.get_user_exception()
+) -> Any:
     """
     Retrieve all users.
     """
+    if current_user is None:
+        raise exceptions.get_user_exception()
     return crud.user.get_multi(db)
 
 

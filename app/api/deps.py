@@ -55,7 +55,7 @@ async def get_current_user(
         headers={"WWW-Authenticate": authenticate_value},
     )
     try:
-        payload = jwt.decode(
+        payload= jwt.decode(
             token,
             settings.SECRET_KEY,
             algorithms=[settings.ALGORITHM],
@@ -68,7 +68,7 @@ async def get_current_user(
         token_data = schemas.TokenPayload(**payload)
     except (JWTError, ValidationError):
         raise exceptions.get_user_exception()
-    user = crud.user.get(db, id=token_data.id)
+    user = crud.user.get(db, obj_id=token_data.id)
     if not user:
         raise credentials_exception
     if security_scopes.scopes and not token_data.role:

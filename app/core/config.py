@@ -5,6 +5,11 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
+
+    FIRST_SUPER_ADMIN_EMAIL: str
+    FIRST_SUPER_ADMIN_PASSWORD: str
+    FIRST_SUPER_ADMIN_ACCOUNT_NAME: str
+
     SQLALCHEMY_DATABASE_URI: str
 
     class Config:

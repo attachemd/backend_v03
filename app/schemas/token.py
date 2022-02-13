@@ -10,3 +10,4 @@ class Token(BaseModel):
 class TokenPayload(BaseModel):
     id: str
     role: str = None
+    account_id: str = None

@@ -37,7 +37,8 @@ async def login_for_access_token(
     print(user.user_role)
     token_payload = {
         "id": str(user.id),
-        "role": role
+        "role": role,
+        "account_id": str(user.account_id)
     }
     token_dict = {
         "access_token": security.create_access_token(

@@ -33,10 +33,11 @@ class User(Base):
         onupdate=datetime.datetime.utcnow,
     )
 
-    # account_id = Column(
-    #     Integer, ForeignKey("accounts.id"), nullable=True
-    # )
+    account_id = Column(
+        Integer, ForeignKey("accounts.id"), nullable=True
+    )
 
     user_role = relationship(
         "UserRole", back_populates="user", uselist=False
     )
+    account = relationship("Account", back_populates="users")

@@ -1,30 +1,41 @@
-from enum import Enum
-from typing import Literal, Union, Optional
+from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 
 
-class UserBase(BaseModel):
-    username: str
-    email: str
-    role: str
-    password: str
+# Shared properties
+class AccountBase(BaseModel):
+    name: Optional[str]
+    description: Optional[str]
+    current_subscription_ends: Optional[datetime]
+    plan_id: Optional[str]
+    is_active: Optional[bool] = True
 
 
-class Role(str, Enum):
-    STANDARD = "standard"
-    ADMIN = "admin"
+# Properties to receive via API on creation
+class AccountCreate(AccountBase):
+    pass
 
 
-class UserDisplay(BaseModel):
-    username: str
-    email: str
-    # role: str
-    role: Role
-    # role: Role = None
-    # role: Union[Role, Optional[str]]
-    # role: Literal["admin", "manager"]
-    # role: Literal[Role.admin, Role.manager]
+# Properties to receive via API on update
+class AccountUpdate(AccountBase):
+    pass
+
+
+class AccountInDBBase(AccountBase):
+    id: str
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         orm_mode = True
+
+
+# Additional properties to return via API
+class Account(AccountInDBBase):
+    pass
+
+
+class AccountInDB(AccountInDBBase):
+    pass

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CodeReadingNote">
+    <topics>
+      <topic>
+        <name>custom types</name>
+        <note />
+        <updatedAt>2022-02-12 12:34:37</updatedAt>
+        <topicLines>
+          <topicLine>
+            <line>8</line>
+            <inProject>true</inProject>
+            <url>file://$PROJECT_DIR$/app/crud/crud_base.py</url>
+            <note />
+            <relativePath>app/crud/crud_base.py</relativePath>
+          </topicLine>
+        </topicLines>
+      </topic>
+    </topics>
+    <state lastExportDir="" lastImportDir="" />
+  </component>
+</project>
