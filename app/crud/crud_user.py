@@ -48,6 +48,18 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             return None
         return user
 
+    def get_by_account_id(
+        self,
+        db: Session,
+        *,
+        account_id: str
+    ) -> List[User]:
+        return (
+            db.query(self.model)
+            .filter(User.account_id == account_id)
+            .all()
+        )
+
 
 # TODO injecting user
 user = CRUDUser(User)

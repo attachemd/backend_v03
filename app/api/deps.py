@@ -2,7 +2,8 @@ from typing import Generator
 
 from fastapi import Depends, HTTPException, Security
 from fastapi.security import OAuth2PasswordBearer, SecurityScopes
-from jose import jwt, JWTError
+from jose import jwt, JWTError, ExpiredSignatureError
+from jose.exceptions import JWTClaimsError
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
@@ -66,15 +67,19 @@ async def get_current_user(
             raise credentials_exception
         # return {"email": email, "id": user_id}
         token_data = schemas.TokenPayload(**payload)
-    except (JWTError, ValidationError):
-        raise exceptions.get_user_exception()
+    except (ValidationError, ExpiredSignatureError) as e:
+        raise exceptions.get_user_exception(str(e))
+    except JWTClaimsError as e:
+        raise exceptions.get_user_exception(str(e))
+    except JWTError as e:
+        raise exceptions.get_user_exception(str(e))
     user = crud.user.get(db, obj_id=token_data.id)
     if not user:
         raise credentials_exception
     if security_scopes.scopes and not token_data.role:
         raise HTTPException(
             status_code=401,
-            detail="Not enough permissions",
+            detail="Not enough permissions with invalid token",
             headers={"WWW-Authenticate": authenticate_value},
         )
     if (

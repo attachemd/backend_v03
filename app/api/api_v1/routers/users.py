@@ -55,3 +55,33 @@ def create_user(
         )
     user = crud.user.create(db, obj_in=user_in)
     return user
+
+
+@router.get("/me/", response_model=schemas.User)
+# @router.get("/me/")
+def get_user_me(
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(
+        deps.get_current_active_user
+    ),
+) -> Any:
+    """
+    Get current user.
+    """
+    if current_user is None:
+        raise exceptions.get_user_exception()
+    # role = (
+    #     None
+    #     if not current_user.user_role
+    #     else current_user.user_role.role.name
+    # )
+    # return schemas.User(
+    #     id=current_user.id,
+    #     email=current_user.email,
+    #     is_active=current_user.is_active,
+    #     full_name=current_user.full_name,
+    #     created_at=current_user.created_at,
+    #     updated_at=current_user.updated_at,
+    #     role=role,
+    # )
+    return current_user

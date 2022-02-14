@@ -98,14 +98,14 @@ def init_db(db: Session) -> None:
     #         description=Role.SUPER_ADMIN["description"],
     #     )
     #     crud.role.create(db, obj_in=super_admin_role_in)
-    #
-    # # Assign super_admin role to user
-    # user_role = crud.user_role.get_by_user_id(db, user_id=user.id)
-    # if not user_role:
-    #     role = crud.role.get_by_name(
-    #         db, name=Role.SUPER_ADMIN["name"]
-    #     )
-    #     user_role_in = schemas.UserRoleCreate(
-    #         user_id=user.id, role_id=role.id
-    #     )
-    #     crud.user_role.create(db, obj_in=user_role_in)
+
+    # Assign super_admin role to user
+    user_role = crud.user_role.get_by_user_id(db, user_id=user.id)
+    if not user_role:
+        role = crud.role.get_by_name(
+            db, name=Role.SUPER_ADMIN["name"]
+        )
+        user_role_in = schemas.UserRoleCreate(
+            user_id=user.id, role_id=role.id
+        )
+        crud.user_role.create(db, obj_in=user_role_in)

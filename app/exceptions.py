@@ -9,9 +9,9 @@ def token_exception():
     )
 
 
-def get_user_exception():
+def get_user_exception(scope: str = "general"):
     return HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
+        detail=f"Could not validate credentials - {scope}",
         headers={"WWW-Authenticate": "Bearer"},
     )
