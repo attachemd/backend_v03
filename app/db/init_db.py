@@ -41,8 +41,6 @@ def init_db(db: Session) -> None:
         if not callable(getattr(Role, attr))
         and not attr.startswith("__")
     ]
-    print(members)
-    print(getattr(Role, "GUEST")["name"])
     for role_name in members:
         print(role_name)
         role = crud.role.get_by_name(db, name=getattr(Role, role_name)["name"])

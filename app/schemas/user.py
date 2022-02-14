@@ -28,9 +28,14 @@ class UserInDBBase(UserBase):
     user_role: Optional[UserRole]
     created_at: datetime
     updated_at: datetime
+    role: Optional[str]
 
     class Config:
         orm_mode = True
+
+
+class UserWithRole(UserInDBBase):
+    role: Optional[str]
 
 
 # Additional properties to return via API

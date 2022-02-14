@@ -189,7 +189,7 @@ def retrieve_users_with_own_account(
     ),
 ) -> Any:
     """
-    Retrieve users for own account.
+    Retrieve users for my own account.
     """
     if current_user is None:
         raise exceptions.get_user_exception("user not found")
