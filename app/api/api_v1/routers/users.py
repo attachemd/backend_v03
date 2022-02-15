@@ -11,12 +11,14 @@ from app import schemas, crud, exceptions, models
 from app.api import deps
 from app.constants.role import Role
 from app.core.config import settings
+from app.models.account import Account
+from app.models.user_role import UserRole
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 
 @router.get("/", response_model=List[schemas.User])
-async def read_users(
+async def get_users(
     db: Session = Depends(deps.get_db),
     current_user: models.User = Security(
         deps.get_current_active_user,
@@ -76,6 +78,7 @@ def get_user_me(
         if not current_user.user_role
         else current_user.user_role.role.name
     )
+    # TODO Update schema
     return schemas.UserWithRole(
         id=current_user.id,
         email=current_user.email,
@@ -160,3 +163,55 @@ def update_user(
             detail="The user with this username does not exist in the system",
         )
     return crud.user.update(db, db_obj=user, obj_in=user_in)
+
+
+@router.get("/right")
+def right(
+    *,
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Security(
+        deps.get_current_active_user,
+        scopes=[Role.ADMIN["name"], Role.SUPER_ADMIN["name"]],
+    ),
+) -> Any:
+    """
+    test.
+    """
+    # if current_user is None:
+    #     raise exceptions.get_user_exception()
+    # return db.query(
+    #      Account, models.User, UserRole,
+    # ).filter(
+    #      Account.id == models.User.account_id,
+    # ).filter(
+    #      models.User.id == UserRole.user_id,
+    # ).all()
+
+    return db.query(
+        Account
+    ).join(
+        models.User
+    ).join(
+        UserRole
+    ).filter(
+        models.User.email == 'superadmin@email.com'
+    ).all()
+
+    # return (
+    #     db.query(
+    #         models.User,
+    #     )
+    #     .filter(
+    #         models.User.email == 'superadmin@email.com'
+    #     )
+    #     .all()
+    # )
+
+    # return (
+    #     db.query(models.User)
+    #     .filter(models.User.email == "superadmin@email.com")
+    #     .first()
+    # )
+
+    # return crud.user.get_multi(db)
+    # return "attache"

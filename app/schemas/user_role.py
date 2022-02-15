@@ -15,6 +15,11 @@ class UserRoleCreate(UserRoleBase):
     pass
 
 
+# Properties to receive via API on update
+class UserRoleUpdate(BaseModel):
+    role_id: str
+
+
 class UserRoleInDBBase(UserRoleBase):
     role: Role
 
