@@ -8,8 +8,8 @@ from app.db.base_class import Base
 
 
 class ConfigLicense(Base):
-    __tablename__ = "config_licenses"
+    __tablename__ = "forms"
     id = Column(Integer, primary_key=True, index=True)
-    form_id = Column(
-        Integer, ForeignKey("forms.id"), nullable=True
+    name = Column(
+        String, unique=True, index=True, nullable=False
     )

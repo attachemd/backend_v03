@@ -13,3 +13,6 @@ class ConfigLicense(Base):
     form_id = Column(
         Integer, ForeignKey("forms.id"), nullable=True
     )
+    form_element_type_id = Column(
+        Integer, ForeignKey("form_element_types.id"), nullable=True
+    )

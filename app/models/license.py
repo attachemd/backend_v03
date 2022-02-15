@@ -21,3 +21,6 @@ class License(Base):
     simple_license = relationship(
         "SimpleLicense", back_populates="license", uselist=False
     )
+    config_license = relationship(
+        "ConfigLicense", back_populates="license", uselist=False
+    )
