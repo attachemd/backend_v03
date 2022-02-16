@@ -1,11 +1,11 @@
 from datetime import datetime
 from enum import Enum
-from typing import Optional
+from typing import Optional, Literal
 
 import pydantic
 from pydantic import BaseModel
 
-# from .custom_license import CustomLicense
+from .custom_license import CustomLicense
 
 
 class LicenseType(str, Enum):
@@ -19,6 +19,7 @@ class LicenseBase(BaseModel):
     key: Optional[str]
     description: Optional[str]
     type: LicenseType = None
+    # type: # Literal["SIMPLE1", "CUSTOM2"]
 
     # @pydantic.validator('type', pre=True)
     # def validate_enum_field(cls, type: str):
@@ -39,7 +40,7 @@ class LicenseInDBBase(LicenseBase):
     id: str
     created_at: datetime
     updated_at: datetime
-    # custom_license: CustomLicense
+    custom_license: CustomLicense
 
     class Config:
         orm_mode = True

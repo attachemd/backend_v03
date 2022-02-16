@@ -4,6 +4,8 @@ from sqlalchemy import (
     String,
     ForeignKey,
 )
+from sqlalchemy.orm import relationship
+
 from app.db.base_class import Base
 
 
@@ -15,4 +17,7 @@ class CustomLicense(Base):
     )
     form_id = Column(
         Integer, ForeignKey("forms.id"), nullable=True
+    )
+    license = relationship(
+        "License", back_populates="custom_license", uselist=False
     )

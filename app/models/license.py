@@ -7,9 +7,9 @@ from sqlalchemy.orm import relationship
 from app.db.base_class import Base
 
 
-class LicenseType(enum.Enum):
-    SIMPLE = "SIMPLE"
-    CUSTOM = "CUSTOM"
+# class LicenseType(enum.Enum):
+#     SIMPLE = "SIMPLE"
+#     CUSTOM = "CUSTOM"
 
 
 class License(Base):
@@ -17,7 +17,8 @@ class License(Base):
     id = Column(Integer, primary_key=True, index=True)
     key = Column(String(255), index=True)
     name = Column(String(100), index=True)
-    type = Column(Enum(LicenseType))
+    # type = Column(Enum(LicenseType))
+    type = Column(String(255))
     description = Column(Text)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     updated_at = Column(
@@ -29,5 +30,5 @@ class License(Base):
         "SimpleLicense"
     )
     custom_license = relationship(
-        "CustomLicense"
+        "CustomLicense", back_populates="license", uselist=False
     )
