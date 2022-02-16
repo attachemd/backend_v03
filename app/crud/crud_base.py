@@ -1,10 +1,19 @@
-from typing import Generic, TypeVar, Type, Optional, List, Union, Dict, Any
+from typing import (
+    Generic,
+    TypeVar,
+    Type,
+    Optional,
+    List,
+    Union,
+    Dict,
+    Any,
+)
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from app.db.base_class import Base
+from app.db.base import Base
 
 # Define custom types for SQLAlchemy model, and Pydantic schemas
 ModelType = TypeVar("ModelType", bound=Base)
@@ -33,6 +42,9 @@ class CRUDBase(
 
     def get_multi(self, db: Session) -> List[ModelType]:
         return db.query(self.model).all()
+
+    def get_multi2(self, db: Session) -> List[ModelType]:
+        return db.query(self.model).first()
 
     def create(
         self, db: Session, *, obj_in: CreateSchemaType

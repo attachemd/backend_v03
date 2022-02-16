@@ -7,7 +7,7 @@ from sqlalchemy import (
 from app.db.base_class import Base
 
 
-class ConfigLicense(Base):
+class Form(Base):
     __tablename__ = "forms"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(

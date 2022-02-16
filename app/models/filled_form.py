@@ -7,9 +7,12 @@ from sqlalchemy import (
 from app.db.base_class import Base
 
 
-class ConfigLicense(Base):
-    __tablename__ = "config_licenses"
+class FilledForm(Base):
+    __tablename__ = "filled_forms"
     id = Column(Integer, primary_key=True, index=True)
-    license_id = Column(
-        Integer, ForeignKey("licenses.id"), nullable=True
+    form_element_id = Column(
+        Integer, ForeignKey("form_elements.id"), nullable=True
+    )
+    value = Column(
+        String, unique=True, index=True, nullable=False
     )

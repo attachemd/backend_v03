@@ -7,9 +7,9 @@ from sqlalchemy import (
 from app.db.base_class import Base
 
 
-class ConfigLicense(Base):
-    __tablename__ = "config_licenses"
+class FormElementType(Base):
+    __tablename__ = "form_element_types"
     id = Column(Integer, primary_key=True, index=True)
-    license_id = Column(
-        Integer, ForeignKey("licenses.id"), nullable=True
+    name = Column(
+        String, unique=True, index=True, nullable=False
     )
