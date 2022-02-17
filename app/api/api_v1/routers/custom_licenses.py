@@ -11,7 +11,7 @@ router = APIRouter(prefix="/custom_licenses", tags=["custom_licenses"])
 
 
 @router.post("/", response_model=schemas.CustomLicense)
-def assign_custom_license(
+def create_assign_custom_license(
     *,
     db: Session = Depends(deps.get_db),
     custom_license_in: schemas.CustomLicenseCreate,
@@ -21,7 +21,7 @@ def assign_custom_license(
     ),
 ) -> Any:
     """
-    Assign a customization to a license.
+    Create and assign a customization to a license.
     """
     if current_user is None:
         raise exceptions.get_user_exception()

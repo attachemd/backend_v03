@@ -8,5 +8,6 @@ from app.models.form_element import FormElement # noqa
 from app.models.form_element_list_value import FormElementListValue # noqa
 from app.models.form_element_type import FormElementType # noqa
 from app.models.filled_form import FilledForm # noqa
+from app.models.selected_fe_list_value import SelectedFormElementListValue # noqa
 from app.models.user import User  # noqa
 from app.models.user_role import UserRole  # noqa

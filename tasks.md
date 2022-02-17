@@ -1,0 +1,7 @@
+- Following best practices for project files structure
+- Implementing a role-based access control (RBAC)
+- Using OAuth2 scopes to have more control over permissions system
+- Managing tokens with JWT from jose package 
+- Using sqlalchemy as an object relation mapper (ORM)
+- The credentials, secrets, and configurations are separated from the code
+- Set pylint as linter & black as formatter for the project

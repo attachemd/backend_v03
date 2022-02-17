@@ -38,9 +38,7 @@ def create_license(
     return crud.license.create(db, obj_in=license_in)
 
 
-# @router.get("/", response_model=List[schemas.License])
-@router.get("/", response_model=schemas.License)
-# @router.get("/")
+@router.get("/", response_model=List[schemas.License])
 async def get_licenses(
     db: Session = Depends(deps.get_db),
     current_user: models.User = Security(
@@ -53,16 +51,4 @@ async def get_licenses(
     """
     if current_user is None:
         raise exceptions.get_user_exception()
-    current_license = crud.license.get_multi2(db)
-    # return schemas.License(
-    #     id=current_license.id,
-    #     name=current_license.name,
-    #     key=current_license.key,
-    #     description=current_license.description,
-    #     type=current_license.type,
-    #     created_at=current_license.created_at,
-    #     updated_at=current_license.updated_at,
-    #     custom_license=current_license.custom_license,
-    # )
-    return current_license
-    # return crud.license.get_multi(db)
+    return crud.license.get_multi(db)

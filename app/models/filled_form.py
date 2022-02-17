@@ -16,3 +16,4 @@ class FilledForm(Base):
     value = Column(
         String, unique=True, index=True, nullable=False
     )
+    # TODO relationship

@@ -43,9 +43,6 @@ class CRUDBase(
     def get_multi(self, db: Session) -> List[ModelType]:
         return db.query(self.model).all()
 
-    def get_multi2(self, db: Session) -> List[ModelType]:
-        return db.query(self.model).first()
-
     def create(
         self, db: Session, *, obj_in: CreateSchemaType
     ) -> ModelType:
