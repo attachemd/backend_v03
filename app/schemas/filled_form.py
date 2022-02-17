@@ -2,26 +2,26 @@ from pydantic import BaseModel
 
 
 # Shared properties
-class FormBase(BaseModel):
+class FilledFormBase(BaseModel):
     pass
 
 
 # Properties to receive via API on creation
-class FormCreate(FormBase):
+class FilledFormCreate(FilledFormBase):
     pass
 
 
 # Properties to receive via API on update
-class FormUpdate(BaseModel):
+class FilledFormUpdate(BaseModel):
     pass
 
 
-class FormInDBBase(FormBase):
+class FilledFormInDBBase(FilledFormBase):
 
     class Config:
         orm_mode = True
 
 
 # Additional properties to return via API
-class Form(FormInDBBase):
+class FilledForm(FilledFormInDBBase):
     pass

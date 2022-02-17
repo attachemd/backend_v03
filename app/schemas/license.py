@@ -1,8 +1,6 @@
 from datetime import datetime
 from enum import Enum
 from typing import Optional, Literal
-
-import pydantic
 from pydantic import BaseModel
 
 from .custom_license import CustomLicense
