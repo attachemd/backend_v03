@@ -43,59 +43,15 @@ def init_db(db: Session) -> None:
     ]
     for role_name in members:
         print(role_name)
-        role = crud.role.get_by_name(db, name=getattr(Role, role_name)["name"])
+        role = crud.role.get_by_name(
+            db, name=getattr(Role, role_name)["name"]
+        )
         if not role:
             role_in = schemas.RoleCreate(
                 name=getattr(Role, role_name)["name"],
                 description=getattr(Role, role_name)["description"],
             )
             crud.role.create(db, obj_in=role_in)
-
-    # guest_role = crud.role.get_by_name(db, name=Role.GUEST["name"])
-    # if not guest_role:
-    #     guest_role_in = schemas.RoleCreate(
-    #         name=Role.GUEST["name"],
-    #         description=Role.GUEST["description"],
-    #     )
-    #     crud.role.create(db, obj_in=guest_role_in)
-    #
-    # account_admin_role = crud.role.get_by_name(
-    #     db, name=Role.ACCOUNT_ADMIN["name"]
-    # )
-    # if not account_admin_role:
-    #     account_admin_role_in = schemas.RoleCreate(
-    #         name=Role.ACCOUNT_ADMIN["name"],
-    #         description=Role.ACCOUNT_ADMIN["description"],
-    #     )
-    #     crud.role.create(db, obj_in=account_admin_role_in)
-    #
-    # account_manager_role = crud.role.get_by_name(
-    #     db, name=Role.ACCOUNT_MANAGER["name"]
-    # )
-    # if not account_manager_role:
-    #     account_manager_role_in = schemas.RoleCreate(
-    #         name=Role.ACCOUNT_MANAGER["name"],
-    #         description=Role.ACCOUNT_MANAGER["description"],
-    #     )
-    #     crud.role.create(db, obj_in=account_manager_role_in)
-    #
-    # admin_role = crud.role.get_by_name(db, name=Role.ADMIN["name"])
-    # if not admin_role:
-    #     admin_role_in = schemas.RoleCreate(
-    #         name=Role.ADMIN["name"],
-    #         description=Role.ADMIN["description"],
-    #     )
-    #     crud.role.create(db, obj_in=admin_role_in)
-    #
-    # super_admin_role = crud.role.get_by_name(
-    #     db, name=Role.SUPER_ADMIN["name"]
-    # )
-    # if not super_admin_role:
-    #     super_admin_role_in = schemas.RoleCreate(
-    #         name=Role.SUPER_ADMIN["name"],
-    #         description=Role.SUPER_ADMIN["description"],
-    #     )
-    #     crud.role.create(db, obj_in=super_admin_role_in)
 
     # Assign super_admin role to user
     user_role = crud.user_role.get_by_user_id(db, user_id=user.id)
