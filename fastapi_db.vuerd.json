@@ -3,8 +3,8 @@
     "version": "2.2.11",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -1,
-    "scrollLeft": 0,
+    "scrollTop": -95,
+    "scrollLeft": -47,
     "zoomLevel": 1,
     "show": {
       "tableComment": true,
@@ -17,7 +17,7 @@
       "columnNotNull": true,
       "relationship": true
     },
-    "database": "MySQL",
+    "database": "SQLite",
     "databaseName": "fastapi",
     "canvasType": "ERD",
     "language": "GraphQL",
@@ -71,10 +71,10 @@
           }
         ],
         "ui": {
-          "active": true,
+          "active": false,
           "left": 173,
           "top": 180,
-          "zIndex": 54,
+          "zIndex": 2,
           "widthName": 60,
           "widthComment": 60
         },
@@ -89,7 +89,7 @@
           "active": false,
           "left": 207,
           "top": 440,
-          "zIndex": 31,
+          "zIndex": 1,
           "widthName": 60,
           "widthComment": 60
         },

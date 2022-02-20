@@ -9,6 +9,8 @@ app = FastAPI()
 app.include_router(api_router)
 
 
+# ANCHOR[id=index]
+# LINK todo#Formatting
 @app.get("/hello")
 async def index():
     return {"message": "Hello world!"}

@@ -38,7 +38,8 @@ def get_account_for_user(
     """
     Retrieve account for a logged in user.
     """
-    # TODO redundant check
+    # TODO[epic=exemple] redundant check
+    # LINK app\main.py#index
     if current_user is None:
         raise exceptions.get_user_exception("user not found")
     return crud.account.get(db, obj_id=current_user.account_id)
