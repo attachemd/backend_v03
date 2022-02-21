@@ -4,6 +4,7 @@ from pydantic import BaseModel
 # Shared properties
 class SimpleLicenseBase(BaseModel):
     device_name: str
+    license_id: str
 
 
 # Properties to receive via API on creation
@@ -17,7 +18,6 @@ class SimpleLicenseUpdate(BaseModel):
 
 
 class SimpleLicenseInDBBase(SimpleLicenseBase):
-
     class Config:
         orm_mode = True
 

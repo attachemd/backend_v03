@@ -66,7 +66,7 @@ def fake_data(db: Session) -> None:
 
     # Assign license to product
     for _ in range(10):
-        i=_+1
+        i = _ + 1
         user_role_in = schemas.PlanCreate(
             license_id=str(i), product_id=str(i)
         )
@@ -74,13 +74,16 @@ def fake_data(db: Session) -> None:
 
     # Create simple license
     all_license = crud.license.get_multi(db)
-    obj_data = jsonable_encoder(all_license)
-    for field in obj_data:
-        print(field)
-    for _ in range(10):
-        print(fakegen.word())
-        # simple_license_in = schemas.SimpleLicenseCreate(
-        #     device_name=fakegen.word()
-        # )
-        
-        # crud.simple_license.create(db, obj_in=simple_license_in)
+    for field in all_license:
+        if field.type == "SIMPLE":
+            simple_license_in = schemas.SimpleLicenseCreate(
+                device_name=fakegen.first_name()+"-PC", license_id=field.id
+            )
+            crud.simple_license.create(db, obj_in=simple_license_in)
+    # Create custom license    
+    for field in all_license:
+        if field.type == "CUSTOM":
+            custom_license_in = schemas.CustomLicenseCreate(
+                license_id=field.id
+            )
+            crud.custom_license.create(db, obj_in=custom_license_in)
