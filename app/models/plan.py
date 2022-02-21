@@ -8,13 +8,14 @@ from sqlalchemy.orm import relationship
 from app.db.base_class import Base
 
 
-class SimpleLicense(Base):
-    __tablename__ = "simple_licenses"
+class Plan(Base):
+    __tablename__ = "plans"
     id = Column(Integer, primary_key=True, index=True)
-    device_name = Column(String(255), index=True)
     license_id = Column(
         Integer, ForeignKey("licenses.id"), nullable=True
     )
-    license = relationship(
-        "License", back_populates="simple_license", uselist=False
+    product_id = Column(
+        Integer, ForeignKey("products.id"), nullable=True
     )
+    product = relationship("Product", back_populates="plans")
+    license = relationship("License", back_populates="plans")

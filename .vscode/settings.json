@@ -1,3 +1,4 @@
 {
-    "favorites.sortDirection": "ASC"
+    "favorites.sortDirection": "ASC",
+    "python.formatting.provider": "black"
 }

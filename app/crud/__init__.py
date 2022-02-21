@@ -1,4 +1,7 @@
+from .crud_product import product
+from .crud_plan import plan
 from .crud_license import license
+from .crud_simple_license import simple_license
 from .crud_custom_license import custom_license
 from .crud_account import account
 from .crud_user import user

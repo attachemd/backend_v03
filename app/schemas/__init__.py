@@ -41,6 +41,8 @@ from .account import (
     AccountUpdate,
     AccountInDB,
 )
+from .product import Product, ProductCreate, ProductUpdate
+from .plan import Plan, PlanCreate, PlanUpdate
 from .user import User, UserCreate, UserUpdate, UserWithRole
 from .token import Token, TokenPayload
 from .user_role import UserRole, UserRoleCreate, UserRoleUpdate

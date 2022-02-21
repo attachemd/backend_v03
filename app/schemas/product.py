@@ -2,26 +2,26 @@ from pydantic import BaseModel
 
 
 # Shared properties
-class SimpleLicenseBase(BaseModel):
-    device_name: str
+class ProductBase(BaseModel):
+    name: str
 
 
 # Properties to receive via API on creation
-class SimpleLicenseCreate(SimpleLicenseBase):
+class ProductCreate(ProductBase):
     pass
 
 
 # Properties to receive via API on update
-class SimpleLicenseUpdate(BaseModel):
+class ProductUpdate(BaseModel):
     pass
 
 
-class SimpleLicenseInDBBase(SimpleLicenseBase):
+class ProductInDBBase(ProductBase):
 
     class Config:
         orm_mode = True
 
 
 # Additional properties to return via API
-class SimpleLicense(SimpleLicenseInDBBase):
+class Product(ProductInDBBase):
     pass

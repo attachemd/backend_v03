@@ -16,7 +16,7 @@ class License(Base):
     __tablename__ = "licenses"
     id = Column(Integer, primary_key=True, index=True)
     key = Column(String(255), index=True)
-    name = Column(String(100), index=True)
+    # name = Column(String(100), index=True)
     # type = Column(Enum(LicenseType))
     type = Column(String(255))
     description = Column(Text)
@@ -27,8 +27,9 @@ class License(Base):
         onupdate=datetime.datetime.utcnow,
     )
     simple_license = relationship(
-        "SimpleLicense"
+        "SimpleLicense", back_populates="license", uselist=False
     )
     custom_license = relationship(
         "CustomLicense", back_populates="license", uselist=False
     )
+    plans = relationship("Plan", back_populates="license")

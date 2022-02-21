@@ -1,27 +1,29 @@
+from typing import Optional
 from pydantic import BaseModel
 
 
 # Shared properties
-class SimpleLicenseBase(BaseModel):
-    device_name: str
+class PlanBase(BaseModel):
+    product_id: Optional[str]
+    license_id: Optional[str]
 
 
 # Properties to receive via API on creation
-class SimpleLicenseCreate(SimpleLicenseBase):
+class PlanCreate(PlanBase):
     pass
 
 
 # Properties to receive via API on update
-class SimpleLicenseUpdate(BaseModel):
+class PlanUpdate(BaseModel):
     pass
 
 
-class SimpleLicenseInDBBase(SimpleLicenseBase):
+class PlanInDBBase(PlanBase):
 
     class Config:
         orm_mode = True
 
 
 # Additional properties to return via API
-class SimpleLicense(SimpleLicenseInDBBase):
+class Plan(PlanInDBBase):
     pass

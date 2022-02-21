@@ -16,11 +16,10 @@ class Account(Base):
     name = Column(String(255), index=True, nullable=False)
     description = Column(String(255))
     is_active = Column(Boolean(), default=True)
-    plan_id = Column(Integer, index=True)
-    license_id = Column(
-        Integer, ForeignKey("licenses.id"), nullable=True
+    plan_id = Column(
+        Integer, ForeignKey("plans.id"), nullable=True
     )
-    current_subscription_ends = Column(DateTime)
+
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     updated_at = Column(
         DateTime,

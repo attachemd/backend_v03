@@ -10,7 +10,6 @@ from app.schemas import LicenseCreate, LicenseUpdate
 class CRUDLicense(CRUDBase[License, LicenseCreate, LicenseUpdate]):
     def create(self, db: Session, *, obj_in: LicenseCreate) -> License:
         db_obj = License(
-            name=obj_in.name,
             key=obj_in.key,
             description=obj_in.description,
             type=obj_in.type,

@@ -1,4 +1,9 @@
+# Import all the models with this file
 from app.db.base_class import Base # noqa
+from app.models.account import Account # noqa
+from app.models.plan import Plan # noqa
+from app.models.product import Product # noqa
+from app.models.plan import Plan # noqa
 from app.models.role import Role # noqa
 from app.models.license import License # noqa
 from app.models.custom_license import CustomLicense # noqa

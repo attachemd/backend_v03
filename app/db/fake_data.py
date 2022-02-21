@@ -1,4 +1,7 @@
+import random
+import uuid
 from faker import Faker
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from app import crud, schemas
 
@@ -8,7 +11,7 @@ fakegen = Faker()
 
 
 def fake_data(db: Session) -> None:
-
+    # Create user for each role except super admin
     members = [
         attr
         for attr in dir(Role)
@@ -16,7 +19,6 @@ def fake_data(db: Session) -> None:
         and not attr.startswith("__")
     ]
     for role_name in members:
-        print(role_name)
         if role_name != Role.SUPER_ADMIN["name"]:
             # Create user
             name = fakegen.name()
@@ -45,3 +47,40 @@ def fake_data(db: Session) -> None:
                     user_id=user.id, role_id=role.id
                 )
                 crud.user_role.create(db, obj_in=user_role_in)
+
+    # Create licenses
+    for _ in range(10):
+        license_in = schemas.LicenseCreate(
+            key=uuid.uuid4().hex,
+            description=fakegen.sentence(),
+            type=random.choice(["SIMPLE", "CUSTOM"]),
+        )
+        crud.license.create(db, obj_in=license_in)
+
+    # Create products
+    for _ in range(10):
+        product_in = schemas.ProductCreate(
+            name=fakegen.company(),
+        )
+        crud.product.create(db, obj_in=product_in)
+
+    # Assign license to product
+    for _ in range(10):
+        i=_+1
+        user_role_in = schemas.PlanCreate(
+            license_id=str(i), product_id=str(i)
+        )
+        crud.plan.create(db, obj_in=user_role_in)
+
+    # Create simple license
+    all_license = crud.license.get_multi(db)
+    obj_data = jsonable_encoder(all_license)
+    for field in obj_data:
+        print(field)
+    for _ in range(10):
+        print(fakegen.word())
+        # simple_license_in = schemas.SimpleLicenseCreate(
+        #     device_name=fakegen.word()
+        # )
+        
+        # crud.simple_license.create(db, obj_in=simple_license_in)

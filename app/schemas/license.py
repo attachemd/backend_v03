@@ -13,7 +13,7 @@ class LicenseType(str, Enum):
 
 # Shared properties
 class LicenseBase(BaseModel):
-    name: Optional[str]
+    # name: Optional[str]
     key: Optional[str]
     description: Optional[str]
     type: LicenseType = None
