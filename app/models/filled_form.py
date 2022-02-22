@@ -21,7 +21,7 @@ class FilledForm(Base):
     form_element = relationship(
         "FormElement", back_populates="filled_forms"
     )   
-    selected_form_element_list_values = relationship(
-        "SelectedFormElementListValue",
+    form_element_list_values = relationship(
+        "FormElementListValue",
         back_populates="filled_form",
     )
