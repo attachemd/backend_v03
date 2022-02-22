@@ -1,5 +1,6 @@
 import random
 import uuid
+import faker.providers
 from faker import Faker
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
@@ -7,7 +8,42 @@ from app import crud, schemas
 
 from app.constants.role import Role
 
+
 fakegen = Faker()
+FORM_ELEMENT_NAMES = [
+    "Full name",
+    "First name",
+    "Last name",
+    "Middle name",
+    "Gender",
+    "Phone",
+    "Date of birth",
+    "Email",
+    "City",
+    "Address",
+    "Country",
+    "Zip code",
+]
+FORM_ELEMENT_TYPES = [
+    "button",
+    "checkbox",
+    "date",
+    "email",
+    "select",
+    "radio",
+    "tel",
+    "text",
+    "text_area",
+    "url",
+]
+
+
+class Provider(faker.providers.BaseProvider):
+    def exercise(self):
+        return self.random_element(FORM_ELEMENT_NAMES)
+
+
+fakegen.add_provider(Provider)
 
 
 def fake_data(db: Session) -> None:
@@ -77,13 +113,24 @@ def fake_data(db: Session) -> None:
     for field in all_license:
         if field.type == "SIMPLE":
             simple_license_in = schemas.SimpleLicenseCreate(
-                device_name=fakegen.first_name()+"-PC", license_id=field.id
+                device_name=fakegen.first_name() + "-PC",
+                license_id=field.id,
             )
             crud.simple_license.create(db, obj_in=simple_license_in)
-    # Create custom license    
+    # Create custom license
     for field in all_license:
         if field.type == "CUSTOM":
             custom_license_in = schemas.CustomLicenseCreate(
                 license_id=field.id
             )
             crud.custom_license.create(db, obj_in=custom_license_in)
+    # Create form
+    for _ in range(10):
+        form_in = schemas.FormCreate(name=fakegen.word())
+        crud.form.create(db, obj_in=form_in)
+    # Create form element
+    for _ in range(10):
+        form_element_in = schemas.FormElementCreate(
+            name=fakegen.word()
+        )
+        crud.form_element.create(db, obj_in=form_element_in)

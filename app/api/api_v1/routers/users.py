@@ -179,23 +179,23 @@ def right(
     """
     # if current_user is None:
     #     raise exceptions.get_user_exception()
-    # return db.query(
-    #      Account, models.User, UserRole,
-    # ).filter(
-    #      Account.id == models.User.account_id,
-    # ).filter(
-    #      models.User.id == UserRole.user_id,
-    # ).all()
-
     return db.query(
-        Account
-    ).join(
-        models.User
-    ).join(
-        UserRole
+         Account, models.User, UserRole,
     ).filter(
-        models.User.email == 'superadmin@email.com'
+         Account.id == models.User.account_id,
+    ).filter(
+         models.User.id == UserRole.user_id,
     ).all()
+
+    # return db.query(
+    #     Account
+    # ).join(
+    #     models.User
+    # ).join(
+    #     UserRole
+    # ).filter(
+    #     models.User.email == 'superadmin@email.com'
+    # ).all()
 
     # return (
     #     db.query(

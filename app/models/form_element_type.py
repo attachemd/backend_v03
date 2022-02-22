@@ -4,6 +4,7 @@ from sqlalchemy import (
     String,
     ForeignKey,
 )
+from sqlalchemy.orm import relationship
 from app.db.base_class import Base
 
 
@@ -17,3 +18,6 @@ class FormElementType(Base):
         Integer, ForeignKey("form_elements.id"), nullable=True
     )
     # TODO relationship
+    form_element = relationship(
+        "FormElement", back_populates="form_element_types"
+    )

@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 # Shared properties
 class FormElementBase(BaseModel):
-    pass
+    name: str
 
 
 # Properties to receive via API on creation

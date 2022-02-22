@@ -4,6 +4,7 @@ from sqlalchemy import (
     String,
     ForeignKey,
 )
+from sqlalchemy.orm import relationship
 from app.db.base_class import Base
 
 
@@ -17,3 +18,10 @@ class FilledForm(Base):
         String, unique=True, index=True, nullable=False
     )
     # TODO relationship
+    form_element = relationship(
+        "FormElement", back_populates="filled_forms"
+    )   
+    selected_form_element_list_values = relationship(
+        "SelectedFormElementListValue",
+        back_populates="filled_form",
+    )

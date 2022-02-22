@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 # Shared properties
 class FormBase(BaseModel):
-    pass
+    name: str
 
 
 # Properties to receive via API on creation
@@ -17,7 +17,6 @@ class FormUpdate(BaseModel):
 
 
 class FormInDBBase(FormBase):
-
     class Config:
         orm_mode = True
 
