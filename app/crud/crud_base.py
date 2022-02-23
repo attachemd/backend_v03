@@ -40,6 +40,15 @@ class CRUDBase(
             .first()
         )
 
+    def get_by_name(
+        self, db: Session, *, name: str
+    ) -> Optional[ModelType]:
+        return (
+            db.query(self.model)
+            .filter(self.model.name == name)
+            .first()
+        )
+
     def get_multi(self, db: Session) -> List[ModelType]:
         return db.query(self.model).all()
 

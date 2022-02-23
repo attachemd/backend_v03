@@ -8,12 +8,13 @@ from app.schemas import AccountCreate, AccountUpdate
 
 
 class CRUDAccount(CRUDBase[Account, AccountCreate, AccountUpdate]):
-    def get_by_name(
-        self, db: Session, *, name: str
-    ) -> Optional[Account]:
-        return (
-            db.query(self.model).filter(Account.name == name).first()
-        )
+    pass
+    # def get_by_name(
+    #     self, db: Session, *, name: str
+    # ) -> Optional[Account]:
+    #     return (
+    #         db.query(self.model).filter(Account.name == name).first()
+    #     )
 
 
 account = CRUDAccount(Account)

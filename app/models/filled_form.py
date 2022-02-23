@@ -21,9 +21,6 @@ class FilledForm(Base):
     form_element = relationship(
         "FormElement"
     )   
-    form_element_list_values = relationship(
-        "FormElementListValue"
-    )
     list_value_filled_form_mtms = relationship(
         "ListValueFilledFormMTM"
     )

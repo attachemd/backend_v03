@@ -6,7 +6,6 @@ from pydantic import BaseModel
 class FormElementListValueBase(BaseModel):
     value: str
     form_element_id: str
-    filled_form_id: Optional[str]
 
 
 # Properties to receive via API on creation

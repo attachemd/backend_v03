@@ -10,12 +10,13 @@ class CRUDFormElementType(
         FormElementType, FormElementTypeCreate, FormElementTypeUpdate
     ]
 ):
-    def get_by_name(
-        self, db: Session, *, name: str
-    ) -> Optional[FormElementType]:
-        return (
-            db.query(self.model).filter(FormElementType.name == name).first()
-        )
+    pass
+    # def get_by_name(
+    #     self, db: Session, *, name: str
+    # ) -> Optional[FormElementType]:
+    #     return (
+    #         db.query(self.model).filter(FormElementType.name == name).first()
+    #     )
 
 
 form_element_type = CRUDFormElementType(FormElementType)

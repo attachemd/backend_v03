@@ -289,6 +289,8 @@ FORM_ELEMENT_NAMES = [
     {"name": "Zip code", "type": "text"},
 ]
 
+GENDERS = ["male", "female"]
+
 
 class Provider(faker.providers.BaseProvider):
     def form_element_name(self):
@@ -391,9 +393,34 @@ def fake_data(db: Session) -> None:
         )
     # Create form elements with type
     for field in FORM_ELEMENT_NAMES:
-        form_element_type = crud.form_element_type.get_by_name(db, name=field["type"])
+        form_element_type = crud.form_element_type.get_by_name(
+            db, name=field["type"]
+        )
         form_element_in = schemas.FormElementCreate(
-            name=field["name"], form_element_type_id=form_element_type.id
+            name=field["name"],
+            form_element_type_id=form_element_type.id,
         )
         crud.form_element.create(db, obj_in=form_element_in)
     # Create form element list values
+    form_element = crud.form_element.get_by_name(db, name="Country")
+    for field in COUNTRIES:
+        form_element_list_value_in = (
+            schemas.FormElementListValueCreate(
+                value=field["name"], form_element_id=form_element.id
+            )
+        )
+        crud.form_element_list_value.create(
+            db, obj_in=form_element_list_value_in
+        )
+
+    form_element = crud.form_element.get_by_name(db, name="Gender")
+    for field in GENDERS:
+        form_element_list_value_in = (
+            schemas.FormElementListValueCreate(
+                value=field, form_element_id=form_element.id
+            )
+        )
+        crud.form_element_list_value.create(
+            db, obj_in=form_element_list_value_in
+        )
+
