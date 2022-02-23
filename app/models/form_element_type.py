@@ -14,10 +14,6 @@ class FormElementType(Base):
     name = Column(
         String, unique=True, index=True, nullable=False
     )
-    form_element_id = Column(
-        Integer, ForeignKey("form_elements.id"), nullable=True
-    )
+
     # TODO relationship
-    form_element = relationship(
-        "FormElement", back_populates="form_element_types"
-    )
+    

@@ -3,27 +3,26 @@ from pydantic import BaseModel
 
 
 # Shared properties
-class FormElementBase(BaseModel):
-    name: str
-    form_element_type_id: Optional[str]
+class ElementFormMTMBase(BaseModel):
+    form_element_id: Optional[str]
+    form_id: Optional[str]
 
 
 # Properties to receive via API on creation
-class FormElementCreate(FormElementBase):
+class ElementFormMTMCreate(ElementFormMTMBase):
     pass
 
 
 # Properties to receive via API on update
-class FormElementUpdate(BaseModel):
+class ElementFormMTMUpdate(BaseModel):
     pass
 
 
-class FormElementInDBBase(FormElementBase):
-
+class ElementFormMTMInDBBase(ElementFormMTMBase):
     class Config:
         orm_mode = True
 
 
 # Additional properties to return via API
-class FormElement(FormElementInDBBase):
+class ElementFormMTM(ElementFormMTMInDBBase):
     pass

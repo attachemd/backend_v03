@@ -1,9 +1,12 @@
+from typing import Optional
 from pydantic import BaseModel
 
 
 # Shared properties
 class FormElementListValueBase(BaseModel):
-    pass
+    value: str
+    form_element_id: str
+    filled_form_id: Optional[str]
 
 
 # Properties to receive via API on creation

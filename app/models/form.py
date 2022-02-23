@@ -15,6 +15,6 @@ class Form(Base):
         String, index=True, nullable=False
     )
     # TODO relationship
-    form_elements = relationship(
-        "FormElement", back_populates="form"
+    element_form_mtms = relationship(
+        "ElementFormMTM"
     )
