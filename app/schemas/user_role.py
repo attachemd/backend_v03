@@ -1,7 +1,7 @@
 from typing import Optional
 
 from pydantic import BaseModel
-from app.schemas.role import Role
+from .role import Role
 
 
 # Shared properties

@@ -10,8 +10,12 @@ from app.constants.role import Role
 
 
 fakegen = Faker()
+
+
 def fake_phone_number(fake: Faker) -> str:
-    return f'+212 {fake.msisdn()[6:]}'
+    return f"+212 {fake.msisdn()[4:]}"
+
+
 COUNTRIES = [
     {"name": "Afghanistan", "code": "AF"},
     {"name": "land Islands", "code": "AX"},
@@ -326,7 +330,7 @@ def fake_data(db: Session) -> None:
                 email=email,
                 password=password,
                 full_name=first_name + " " + last_name,
-                phone_number=phone_number
+                phone_number=phone_number,
             )
             user = crud.user.create(db, obj_in=user_in)
             # Assign super_admin role to user
@@ -404,9 +408,7 @@ def fake_data(db: Session) -> None:
             name=field["name"],
             form_element_type_id=form_element_type.id,
         )
-        crud.form_element.create(
-            db, obj_in=form_element_in
-        )
+        crud.form_element.create(db, obj_in=form_element_in)
 
     # Create form element list values
     form_element = crud.form_element.get_by_name(db, name="Country")
@@ -441,19 +443,21 @@ def fake_data(db: Session) -> None:
             db, name=field["name"]
         )
         # Assign a form to form element
-        element_form_mtm_in = schemas.ElementFormMTMCreate(
+        form_template_in = schemas.FormTemplateCreate(
             form_element_id=form_element.id,
             form_id=1,
         )
-        crud.element_form_mtm.create(db, obj_in=element_form_mtm_in)
-        
+        crud.form_template.create(db, obj_in=form_template_in)
+
         # Assign a form to a custom license
         custom_license_in = schemas.CustomLicenseCreate(
             license_id=3, form_id=1
         )
         custom_license = crud.custom_license.get(db, obj_id=3)
-        crud.custom_license.update(db, db_obj=custom_license, obj_in=custom_license_in)
-        
+        crud.custom_license.update(
+            db, db_obj=custom_license, obj_in=custom_license_in
+        )
+
         form_element_type = crud.form_element_type.get(
             db, obj_id=form_element.form_element_type_id
         )

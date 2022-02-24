@@ -10,10 +10,10 @@ from .simple_license import (
     SimpleLicenseUpdate,
 )
 from .form import Form, FormCreate, FormUpdate
-from .element_form_mtm import (
-    ElementFormMTM,
-    ElementFormMTMCreate,
-    ElementFormMTMUpdate,
+from .form_template import (
+    FormTemplate,
+    FormTemplateCreate,
+    FormTemplateUpdate,
 )
 from .form_element import (
     FormElement,

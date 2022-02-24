@@ -1,6 +1,8 @@
 from typing import Optional
 from pydantic import BaseModel
 
+from .form_element_list_value import FormElementListValue
+
 
 # Shared properties
 class SelectedListValueBase(BaseModel):
@@ -19,6 +21,7 @@ class SelectedListValueUpdate(BaseModel):
 
 
 class SelectedListValueInDBBase(SelectedListValueBase):
+    form_element_list_value: FormElementListValue
     class Config:
         orm_mode = True
 

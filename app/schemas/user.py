@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel, EmailStr, UUID4
-from app.schemas.user_role import UserRole
+from .user_role import UserRole
 
 
 # Shared properties

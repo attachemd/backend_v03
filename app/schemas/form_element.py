@@ -1,5 +1,9 @@
-from typing import Optional
+from typing import List, Optional
 from pydantic import BaseModel
+
+from .form_element_list_value import FormElementListValue
+
+from .form_element_type import FormElementType
 
 
 # Shared properties
@@ -19,7 +23,8 @@ class FormElementUpdate(BaseModel):
 
 
 class FormElementInDBBase(FormElementBase):
-
+    form_element_type: FormElementType
+    form_element_list_values: List[FormElementListValue]
     class Config:
         orm_mode = True
 

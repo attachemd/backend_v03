@@ -8,7 +8,7 @@ from .crud_user import user
 from .crud_user_role import user_role
 from .crud_role import role
 from .crud_form import form
-from .crud_element_form_mtm import element_form_mtm
+from .crud_form_template import form_template
 from .crud_form_element import form_element
 from .crud_form_element_type import form_element_type
 from .crud_form_element_list_value import form_element_list_value

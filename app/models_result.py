@@ -11,7 +11,7 @@ collected_data = {
 form_template = {
     "id": "2",
     "name": "test",
-    "element_form_mtms": [
+    "form_templates": [
         {
             "id": "101",
             "form_element_id": "7",
