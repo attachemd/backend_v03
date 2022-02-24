@@ -3,13 +3,13 @@ from sqlalchemy.orm import relationship
 from app.db.base_class import Base
 
 
-class ListValueFilledFormMTM(Base):
-    __tablename__ = "list_value_filled_form_mtms"
+class SelectedListValue(Base):
+    __tablename__ = "selected_list_values"
     id = Column(Integer, primary_key=True, index=True)
     filled_form_id = Column(
         Integer, ForeignKey("filled_forms.id"), nullable=False
     )
-    form_element_list_values_id = Column(
+    form_element_list_value_id = Column(
         Integer,
         ForeignKey("form_element_list_values.id"),
         nullable=False,

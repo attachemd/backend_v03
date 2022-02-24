@@ -12,15 +12,15 @@ class FilledForm(Base):
     __tablename__ = "filled_forms"
     id = Column(Integer, primary_key=True, index=True)
     form_element_id = Column(
-        Integer, ForeignKey("form_elements.id"), nullable=True
+        Integer, ForeignKey("form_elements.id"), nullable=False
     )
     value = Column(
-        String, unique=True, index=True, nullable=False
+        String, index=True, nullable=True
     )
     # TODO relationship
     form_element = relationship(
         "FormElement"
     )   
-    list_value_filled_form_mtms = relationship(
-        "ListValueFilledFormMTM"
+    selected_list_values = relationship(
+        "SelectedListValue"
     )

@@ -4,6 +4,7 @@ collected_data = {
     "form_elements": [
         {"name": "Full name", "value": "john doe"},
         {"name": "Gender", "value": "male"},
+        {"name": "Country", "value": "morocco"},
     ],
 }
 
@@ -63,7 +64,7 @@ filled_form_for_update = [
         "id": "87",
         "form_element_id": "7",
         "value": "null",
-        "list_value_filled_form_mtms": [
+        "selected_list_values": [
             {
                 "id": "300",
                 "form_element_list_values_id": "12",
@@ -103,7 +104,7 @@ filled_form_for_update = [
         "id": "82",
         "form_element_id": "8",
         "value": "jone doe",
-        "list_value_filled_form_mtms": [],
+        "selected_list_values": [],
         "form_element": {
             "id": "8",
             "name": "Full name",
