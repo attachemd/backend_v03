@@ -9,11 +9,29 @@ from app.constants.role import Role
 router = APIRouter(prefix="/filled_forms", tags=["filled_forms"])
 
 
-# Create a form element value or choose one from a list
+# Assign a form element to filled form
+@router.post("", response_model=schemas.FilledForm)
+def create_filled_form(
+    *,
+    db: Session = Depends(deps.get_db),
+    filled_form_in: schemas.FilledFormCreate,
+    current_user: models.User = Security(
+        deps.get_current_active_user,
+        scopes=[Role.ADMIN["name"], Role.SUPER_ADMIN["name"]],
+    ),
+) -> Any:
+    """
+    Assign a form element to filled form.
+    """
+    # TODO redundant check
+    if current_user is None:
+        raise exceptions.get_user_exception("user not found")
 
+    return crud.filled_form.create(
+        db, obj_in=filled_form_in
+    )
+    
 # Get all filled forms.
-
-
 @router.get("", response_model=List[schemas.FilledForm])
 def get_all_Filled_forms(
     current_user: models.User = Security(

@@ -9,7 +9,7 @@ from app.api import deps
 router = APIRouter(prefix="/accounts", tags=["accounts"])
 
 
-@router.get("/", response_model=List[schemas.Account])
+@router.get("", response_model=List[schemas.Account])
 def get_accounts(
     *,
     db: Session = Depends(deps.get_db),
@@ -27,7 +27,7 @@ def get_accounts(
     return crud.account.get_multi(db)
 
 
-@router.get("/me/", response_model=schemas.Account)
+@router.get("/me", response_model=schemas.Account)
 def get_account_for_user(
     *,
     db: Session = Depends(deps.get_db),
@@ -45,7 +45,7 @@ def get_account_for_user(
     return crud.account.get(db, obj_id=current_user.account_id)
 
 
-@router.post("/", response_model=schemas.Account)
+@router.post("", response_model=schemas.Account)
 def create_account(
     *,
     db: Session = Depends(deps.get_db),
@@ -69,7 +69,7 @@ def create_account(
     return crud.account.create(db, obj_in=account_in)
 
 
-@router.put("/{account_id}/", response_model=schemas.Account)
+@router.put("/{account_id}", response_model=schemas.Account)
 def update_account(
     *,
     db: Session = Depends(deps.get_db),
@@ -111,7 +111,7 @@ def update_account(
     return crud.account.update(db, db_obj=account, obj_in=account_in)
 
 
-@router.post("/{account_id}/users/", response_model=schemas.User)
+@router.post("/{account_id}/users", response_model=schemas.User)
 def add_user_to_account(
     *,
     db: Session = Depends(deps.get_db),
@@ -151,7 +151,7 @@ def add_user_to_account(
 
 
 @router.get(
-    "/{account_id}/users/", response_model=List[schemas.User]
+    "/{account_id}/users", response_model=List[schemas.User]
 )
 def retrieve_users_for_account(
     *,
@@ -176,7 +176,7 @@ def retrieve_users_for_account(
     return crud.user.get_by_account_id(db, account_id=account_id)
 
 
-@router.get("/users/me/", response_model=List[schemas.Account])
+@router.get("/users/me", response_model=List[schemas.Account])
 def retrieve_users_with_own_account(
     *,
     db: Session = Depends(deps.get_db),

@@ -5,27 +5,27 @@ from .form_element import FormElement
 
 
 # Shared properties
-class FormTemplateBase(BaseModel):
+class FormElementTemplateBase(BaseModel):
     form_element_id: Optional[str]
     form_id: Optional[str]
 
 
 # Properties to receive via API on creation
-class FormTemplateCreate(FormTemplateBase):
+class FormElementTemplateCreate(FormElementTemplateBase):
     pass
 
 
 # Properties to receive via API on update
-class FormTemplateUpdate(BaseModel):
+class FormElementTemplateUpdate(BaseModel):
     pass
 
 
-class FormTemplateInDBBase(FormTemplateBase):
+class FormElementTemplateInDBBase(FormElementTemplateBase):
     form_element: FormElement
     class Config:
         orm_mode = True
 
 
 # Additional properties to return via API
-class FormTemplate(FormTemplateInDBBase):
+class FormElementTemplate(FormElementTemplateInDBBase):
     pass

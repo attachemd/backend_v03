@@ -443,11 +443,11 @@ def fake_data(db: Session) -> None:
             db, name=field["name"]
         )
         # Assign a form to form element
-        form_template_in = schemas.FormTemplateCreate(
+        form_element_template_in = schemas.FormElementTemplateCreate(
             form_element_id=form_element.id,
             form_id=1,
         )
-        crud.form_template.create(db, obj_in=form_template_in)
+        crud.form_element_template.create(db, obj_in=form_element_template_in)
 
         # Assign a form to a custom license
         custom_license_in = schemas.CustomLicenseCreate(

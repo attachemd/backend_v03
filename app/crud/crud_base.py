@@ -8,6 +8,7 @@ from typing import (
     Dict,
     Any,
 )
+from fastapi import HTTPException
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
@@ -82,3 +83,11 @@ class CRUDBase(
         db.commit()
         db.refresh(db_obj)
         return db_obj
+    
+    def delete(self, db: Session, *, obj_id: int):
+        row = db.query(self.model).filter(self.model.id == obj_id).first()
+        if not row:
+            raise HTTPException(status_code=404, detail="Row not found")
+        db.delete(row)
+        db.commit()
+        return "Ok"

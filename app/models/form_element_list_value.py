@@ -13,10 +13,11 @@ class FormElementListValue(Base):
     id = Column(Integer, primary_key=True, index=True)
     value = Column(String, unique=True, index=True, nullable=False)
     form_element_id = Column(
-        Integer, ForeignKey("form_elements.id"), nullable=True
+        Integer, ForeignKey("form_elements.id"), nullable=False
     ) 
     # TODO relationship
     form_element = relationship(
         "FormElement",
         back_populates="form_element_list_values",
     ) 
+    

@@ -8,10 +8,10 @@ collected_data = {
     ],
 }
 
-form_template = {
+form_element_template = {
     "id": "2",
     "name": "test",
-    "form_templates": [
+    "form_element_templates": [
         {
             "id": "101",
             "form_element_id": "7",

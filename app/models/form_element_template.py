@@ -3,8 +3,8 @@ from sqlalchemy.orm import relationship
 from app.db.base_class import Base
 
 
-class FormTemplate(Base):
-    __tablename__ = "form_templates"
+class FormElementTemplate(Base):
+    __tablename__ = "form_element_templates"
     id = Column(Integer, primary_key=True, index=True)
     form_id = Column(Integer, ForeignKey("forms.id"), nullable=True)
     form_element_id = Column(

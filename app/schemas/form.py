@@ -1,7 +1,7 @@
 from typing import List
 from pydantic import BaseModel
 
-from .form_template import FormTemplate
+from .form_element_template import FormElementTemplate
 
 
 # Shared properties
@@ -20,7 +20,7 @@ class FormUpdate(BaseModel):
 
 
 class FormInDBBase(FormBase):
-    form_templates: List[FormTemplate]
+    form_element_templates: List[FormElementTemplate]
     class Config:
         orm_mode = True
 

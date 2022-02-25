@@ -12,6 +12,7 @@ class SelectedListValue(Base):
     form_element_list_value_id = Column(
         Integer,
         ForeignKey("form_element_list_values.id"),
+        unique=True,
         nullable=False,
     )
 
