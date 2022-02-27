@@ -5,3 +5,9 @@
 - Using sqlalchemy as an object relation mapper (ORM)
 - The credentials, secrets, and configurations are separated from the code
 - Set pylint as linter & black as formatter for the project
+- --------------------------------------------------------------
+- Add user referral id to the user model
+- Add referral link to manager manager page
+- Add table to each model
+- Add type [SIMPLE, CUSTOM] for license field
+- Add edit link to license field
