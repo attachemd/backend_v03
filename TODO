@@ -28,4 +28,20 @@ Questions:
   ☐ Each product has one license or many
   ☐ Each license has one product or many
   ☐ license has expiration time
-  license 
+  ☐ license has activation limit
+Taiga:
+  Setup the frontend project:
+    ☐ Managing files structure (components, modules, routing, services, guards)
+    ☐ Adding proxy configuration, linter, code formatter 
+  Authentication view:
+    ☐ Create signup
+    ☐ Create login
+  Dashboard for managing licenses:
+    ☐ Adding ui table for each model (e.g. license model get ui table)
+    ☐ Adding crud views for each model
+  Form builder:
+    ☐ create form builder view to generate forms for custom license  
+  Implementing RBAC views:
+    ☐ Adding user hierarchy 
+    ☐ Adding user management
+  ☐ Managing token expiration time in the front
