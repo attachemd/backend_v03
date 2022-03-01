@@ -18,7 +18,7 @@ from app.api.api_v1.routers import (
     filled_forms,
 )
 
-api_router = APIRouter()
+api_router = APIRouter(prefix="/api", tags=["api"])
 
 api_router.include_router(auth.router)
 api_router.include_router(licenses.router)

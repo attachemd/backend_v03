@@ -50,6 +50,6 @@ from .account import (
 from .product import Product, ProductCreate, ProductUpdate
 from .plan import Plan, PlanCreate, PlanUpdate
 from .user import User, UserCreate, UserUpdate, UserWithRole
-from .token import Token, TokenPayload
+from .token import Token, TokenPayload, AuthJwtSettings
 from .user_role import UserRole, UserRoleCreate, UserRoleUpdate
 from .role import Role, RoleCreate, RoleUpdate

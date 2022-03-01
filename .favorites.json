@@ -906,5 +906,67 @@
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "GJ4VfxT7yIPKhoBv"
+    },
+    {
+        "type": "Directory",
+        "name": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\core",
+        "parent_id": "zNTI3xM8EhZlAP7R",
+        "fsPath": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\core",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "CDV719MyFQxpG42L"
+    },
+    {
+        "type": "Group",
+        "name": "Auth",
+        "parent_id": null,
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "EyvwG0657rOauseZ"
+    },
+    {
+        "type": "File",
+        "name": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\schemas\\token.py",
+        "parent_id": "EyvwG0657rOauseZ",
+        "fsPath": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\schemas\\token.py",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "LSliWJBXnO5mxtUK"
+    },
+    {
+        "type": "File",
+        "name": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\core\\security.py",
+        "parent_id": "EyvwG0657rOauseZ",
+        "fsPath": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\core\\security.py",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "wA6WVkXI4mUqZSyL"
+    },
+    {
+        "type": "File",
+        "name": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\api\\api_v1\\routers\\auth.py",
+        "parent_id": "EyvwG0657rOauseZ",
+        "fsPath": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\api\\api_v1\\routers\\auth.py",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "VSvnTsjoyMrYpWF2"
+    },
+    {
+        "type": "File",
+        "name": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\main.py",
+        "parent_id": "EyvwG0657rOauseZ",
+        "fsPath": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\main.py",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "A8kaUEoyIqzSDrlR"
+    },
+    {
+        "type": "File",
+        "name": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\api\\deps.py",
+        "parent_id": "EyvwG0657rOauseZ",
+        "fsPath": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\api\\deps.py",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "vHOtSFen7BPqdClj"
     }
 ]

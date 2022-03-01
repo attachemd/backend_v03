@@ -1,7 +1,9 @@
 from datetime import timedelta
 
-from fastapi import Depends, APIRouter
+from fastapi import Depends, APIRouter, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi_jwt_auth import AuthJWT
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app import exceptions, crud, schemas
@@ -38,7 +40,7 @@ async def login_for_access_token(
     token_payload = {
         "id": str(user.id),
         "role": role,
-        "account_id": str(user.account_id)
+        "account_id": str(user.account_id),
     }
     token_dict = {
         "access_token": security.create_access_token(
@@ -47,3 +49,32 @@ async def login_for_access_token(
         "token_type": "bearer",
     }
     return schemas.Token(**token_dict)
+
+
+class User(BaseModel):
+    username: str
+    password: str
+
+
+@router.post("/login")
+def login(user: User, Authorize: AuthJWT = Depends()):
+    if user.username != "test" or user.password != "test":
+        raise HTTPException(
+            status_code=401, detail="Bad username or password"
+        )
+    another_claims = {"foo": ["fiz","baz"]}
+    token_payload = {
+        "id": str(user.username),
+        "role": user.username,
+        "account_id": str(user.username),
+    }
+    access_token = Authorize.create_access_token(
+        subject=user.username, user_claims=token_payload
+    )
+    refresh_token = Authorize.create_refresh_token(
+        subject=user.username
+    )
+    return {
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+    }
