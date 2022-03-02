@@ -9,7 +9,7 @@ class AccountBase(BaseModel):
     name: Optional[str]
     description: Optional[str]
     # current_subscription_ends: Optional[datetime]
-    plan_id: Optional[str]
+    # plan_id: Optional[str]
     is_active: Optional[bool] = True
 
 

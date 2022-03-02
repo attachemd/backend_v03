@@ -5,7 +5,7 @@ from pydantic import BaseModel
 # Shared properties
 class PlanBase(BaseModel):
     product_id: Optional[str]
-    license_id: Optional[str]
+    account_id: Optional[str]
 
 
 # Properties to receive via API on creation

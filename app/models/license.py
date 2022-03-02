@@ -32,4 +32,3 @@ class License(Base):
     custom_license = relationship(
         "CustomLicense", back_populates="license", uselist=False
     )
-    plans = relationship("Plan", back_populates="license")
