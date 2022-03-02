@@ -2,7 +2,8 @@ from pydantic import BaseModel
 from app.core.config import settings
 
 class Token(BaseModel):
-    access_token: str
+    access: str
+    # refresh: str
     token_type: str
 
 

@@ -891,27 +891,27 @@
     },
     {
         "type": "File",
-        "name": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\tasks.md",
+        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\tasks.md",
         "parent_id": "zNTI3xM8EhZlAP7R",
-        "fsPath": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\tasks.md",
+        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\tasks.md",
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "IRDas6NGhdWvViz8"
     },
     {
         "type": "File",
-        "name": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\TODO",
+        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\TODO",
         "parent_id": "zNTI3xM8EhZlAP7R",
-        "fsPath": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\TODO",
+        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\TODO",
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "GJ4VfxT7yIPKhoBv"
     },
     {
         "type": "Directory",
-        "name": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\core",
+        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\core",
         "parent_id": "zNTI3xM8EhZlAP7R",
-        "fsPath": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\core",
+        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\core",
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "CDV719MyFQxpG42L"
@@ -926,47 +926,65 @@
     },
     {
         "type": "File",
-        "name": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\schemas\\token.py",
+        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\schemas\\token.py",
         "parent_id": "EyvwG0657rOauseZ",
-        "fsPath": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\schemas\\token.py",
+        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\schemas\\token.py",
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "LSliWJBXnO5mxtUK"
     },
     {
         "type": "File",
-        "name": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\core\\security.py",
+        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\core\\security.py",
         "parent_id": "EyvwG0657rOauseZ",
-        "fsPath": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\core\\security.py",
+        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\core\\security.py",
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "wA6WVkXI4mUqZSyL"
     },
     {
         "type": "File",
-        "name": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\api\\api_v1\\routers\\auth.py",
+        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\api\\api_v1\\routers\\auth.py",
         "parent_id": "EyvwG0657rOauseZ",
-        "fsPath": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\api\\api_v1\\routers\\auth.py",
+        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\api\\api_v1\\routers\\auth.py",
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "VSvnTsjoyMrYpWF2"
     },
     {
         "type": "File",
-        "name": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\main.py",
+        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\main.py",
         "parent_id": "EyvwG0657rOauseZ",
-        "fsPath": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\main.py",
+        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\main.py",
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "A8kaUEoyIqzSDrlR"
     },
     {
         "type": "File",
-        "name": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\api\\deps.py",
+        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\api\\deps.py",
         "parent_id": "EyvwG0657rOauseZ",
-        "fsPath": "c:\\Users\\Me\\Documents\\Me\\fullstack\\backend_v03\\app\\api\\deps.py",
+        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\api\\deps.py",
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "vHOtSFen7BPqdClj"
+    },
+    {
+        "type": "File",
+        "name": "c:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\requirements.txt",
+        "parent_id": "zNTI3xM8EhZlAP7R",
+        "fsPath": "c:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\requirements.txt",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "DjP03uH6a8bnOeht"
+    },
+    {
+        "type": "File",
+        "name": "c:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\.env.sample",
+        "parent_id": "EyvwG0657rOauseZ",
+        "fsPath": "c:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\.env.sample",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "t0OwonUg2iFNSYlC"
     }
 ]

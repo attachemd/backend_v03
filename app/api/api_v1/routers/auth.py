@@ -25,9 +25,9 @@ async def login_for_access_token(
     user = crud.user.authenticate(
         form_data.username, form_data.password, db
     )
+    # return "User validated"
     if not user:
         raise exceptions.token_exception()
-    # return "User validated"
     # return settings.SECRET_KEY
     access_token_expires = timedelta(
         minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
@@ -35,15 +35,13 @@ async def login_for_access_token(
     role = (
         "GUEST" if not user.user_role else user.user_role.role.name
     )
-    print(user.email)
-    print(user.user_role)
     token_payload = {
         "id": str(user.id),
         "role": role,
         "account_id": str(user.account_id),
     }
     token_dict = {
-        "access_token": security.create_access_token(
+        "access": security.create_access_token(
             token_payload, expires_delta=access_token_expires
         ),
         "token_type": "bearer",
@@ -51,30 +49,66 @@ async def login_for_access_token(
     return schemas.Token(**token_dict)
 
 
-class User(BaseModel):
-    username: str
-    password: str
+# @router.post("/access_token")
+# def login_for_access_token(
+#     form_data: OAuth2PasswordRequestForm = Depends(),
+#     db: Session = Depends(deps.get_db),
+#     Authorize: AuthJWT = Depends(),
+# ):
+#     """
+#     Get an access token for future requests
+#     """
+#     user = crud.user.authenticate(
+#         form_data.username, form_data.password, db
+#     )
 
+#     if not user:
+#         raise exceptions.token_exception()
 
-@router.post("/login")
-def login(user: User, Authorize: AuthJWT = Depends()):
-    if user.username != "test" or user.password != "test":
-        raise HTTPException(
-            status_code=401, detail="Bad username or password"
-        )
-    another_claims = {"foo": ["fiz","baz"]}
-    token_payload = {
-        "id": str(user.username),
-        "role": user.username,
-        "account_id": str(user.username),
-    }
-    access_token = Authorize.create_access_token(
-        subject=user.username, user_claims=token_payload
-    )
-    refresh_token = Authorize.create_refresh_token(
-        subject=user.username
-    )
-    return {
-        "access_token": access_token,
-        "refresh_token": refresh_token,
-    }
+#     access_token_expires = timedelta(
+#         minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
+#     )
+
+#     role = (
+#         "GUEST" if not user.user_role else user.user_role.role.name
+#     )
+#     user_claims = {
+#         "id": str(user.id),
+#         "role": role,
+#         "account_id": str(user.account_id),
+#     }
+#     access_token = Authorize.create_access_token(
+#         subject=str(user.id),
+#         user_claims=user_claims,
+#         expires_time=access_token_expires,
+#     )
+#     refresh_token = Authorize.create_refresh_token(
+#         subject=str(user.id)
+#     )
+#     token_dict = {
+#         "access": access_token,
+#         "refresh": refresh_token,
+#     }
+#     return schemas.Token(**token_dict)
+
+# @router.post('/refresh')
+# def refresh(Authorize: AuthJWT = Depends()):
+#     """
+#     Refresh the access token for future requests
+#     """
+#     Authorize.jwt_refresh_token_required()
+
+#     current_user = Authorize.get_jwt_subject()
+#     new_access_token = Authorize.create_access_token(subject=current_user)
+#     return {"access": new_access_token}
+
+@router.post('/refresh')
+def refresh(Authorize: AuthJWT = Depends()):
+    """
+    Refresh the access token for future requests
+    """
+    Authorize.jwt_refresh_token_required()
+
+    current_user = Authorize.get_jwt_subject()
+    new_access_token = Authorize.create_access_token(subject=current_user)
+    return {"access": new_access_token}

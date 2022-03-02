@@ -23,7 +23,7 @@ def get_db() -> Generator:
 
 
 oauth2_bearer = OAuth2PasswordBearer(
-    tokenUrl="auth/access_token",
+    tokenUrl="api/auth/access_token2",
     scopes={
         Role.GUEST["name"]: Role.GUEST["description"],
         Role.ACCOUNT_ADMIN["name"]: Role.ACCOUNT_ADMIN[
