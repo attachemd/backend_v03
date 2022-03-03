@@ -27,22 +27,22 @@ def get_accounts(
     return crud.account.get_multi(db)
 
 
-@router.get("/me", response_model=schemas.Account)
-def get_account_for_user(
-    *,
-    db: Session = Depends(deps.get_db),
-    current_user: models.User = Depends(
-        deps.get_current_active_user
-    ),
-) -> Any:
-    """
-    Retrieve account for a logged in user.
-    """
-    # TODO[epic=exemple] redundant check
-    # LINK app\main.py#index
-    if current_user is None:
-        raise exceptions.get_user_exception("user not found")
-    return crud.account.get(db, obj_id=current_user.account_id)
+# @router.get("/me", response_model=schemas.Account)
+# def get_account_for_user(
+#     *,
+#     db: Session = Depends(deps.get_db),
+#     current_user: models.User = Depends(
+#         deps.get_current_active_user
+#     ),
+# ) -> Any:
+#     """
+#     Retrieve account for a logged in user.
+#     """
+#     # TODO[epic=exemple] redundant check
+#     # LINK app\main.py#index
+#     if current_user is None:
+#         raise exceptions.get_user_exception("user not found")
+#     return crud.account.get(db, obj_id=current_user.account_id)
 
 
 @router.post("", response_model=schemas.Account)
@@ -111,93 +111,93 @@ def update_account(
     return crud.account.update(db, db_obj=account, obj_in=account_in)
 
 
-@router.post("/{account_id}/users", response_model=schemas.User)
-def add_user_to_account(
-    *,
-    db: Session = Depends(deps.get_db),
-    account_id: str,
-    user_id: str = Body(..., embed=True),
-    current_user: models.User = Security(
-        deps.get_current_active_user,
-        scopes=[
-            Role.ADMIN["name"],
-            Role.SUPER_ADMIN["name"],
-            Role.ACCOUNT_ADMIN["name"],
-        ],
-    ),
-) -> Any:
-    """
-    Add a user to an account.
-    """
-    if current_user is None:
-        raise exceptions.get_user_exception("user not found")
-    account = crud.account.get(db, obj_id=account_id)
-    if not account:
-        raise HTTPException(
-            status_code=404,
-            detail="Account does not exist",
-        )
-    user = crud.user.get(db, obj_id=user_id)
-    if not user:
-        raise HTTPException(
-            status_code=404,
-            detail="User does not exist",
-        )
-    user_in = schemas.UserUpdate(account_id=account_id)
-    return crud.user.update(db, db_obj=user, obj_in=user_in)
+# @router.post("/{account_id}/users", response_model=schemas.User)
+# def add_user_to_account(
+#     *,
+#     db: Session = Depends(deps.get_db),
+#     account_id: str,
+#     user_id: str = Body(..., embed=True),
+#     current_user: models.User = Security(
+#         deps.get_current_active_user,
+#         scopes=[
+#             Role.ADMIN["name"],
+#             Role.SUPER_ADMIN["name"],
+#             Role.ACCOUNT_ADMIN["name"],
+#         ],
+#     ),
+# ) -> Any:
+#     """
+#     Add a user to an account.
+#     """
+#     if current_user is None:
+#         raise exceptions.get_user_exception("user not found")
+#     account = crud.account.get(db, obj_id=account_id)
+#     if not account:
+#         raise HTTPException(
+#             status_code=404,
+#             detail="Account does not exist",
+#         )
+#     user = crud.user.get(db, obj_id=user_id)
+#     if not user:
+#         raise HTTPException(
+#             status_code=404,
+#             detail="User does not exist",
+#         )
+#     user_in = schemas.UserUpdate(account_id=account_id)
+#     return crud.user.update(db, db_obj=user, obj_in=user_in)
 
 
 # TODO: remove account from user
 
 
-@router.get(
-    "/{account_id}/users", response_model=List[schemas.User]
-)
-def retrieve_users_for_account(
-    *,
-    db: Session = Depends(deps.get_db),
-    account_id: str,
-    current_user: models.User = Security(
-        deps.get_current_active_user,
-        scopes=[Role.ADMIN["name"], Role.SUPER_ADMIN["name"]],
-    ),
-) -> Any:
-    """
-    Retrieve users for an account.
-    """
-    if current_user is None:
-        raise exceptions.get_user_exception("user not found")
-    account = crud.account.get(db, obj_id=account_id)
-    if not account:
-        raise HTTPException(
-            status_code=404,
-            detail="Account does not exist",
-        )
-    return crud.user.get_by_account_id(db, account_id=account_id)
+# @router.get(
+#     "/{account_id}/users", response_model=List[schemas.User]
+# )
+# def retrieve_users_for_account(
+#     *,
+#     db: Session = Depends(deps.get_db),
+#     account_id: str,
+#     current_user: models.User = Security(
+#         deps.get_current_active_user,
+#         scopes=[Role.ADMIN["name"], Role.SUPER_ADMIN["name"]],
+#     ),
+# ) -> Any:
+#     """
+#     Retrieve users for an account.
+#     """
+#     if current_user is None:
+#         raise exceptions.get_user_exception("user not found")
+#     account = crud.account.get(db, obj_id=account_id)
+#     if not account:
+#         raise HTTPException(
+#             status_code=404,
+#             detail="Account does not exist",
+#         )
+#     return crud.user.get_by_account_id(db, account_id=account_id)
 
 
-@router.get("/users/me", response_model=List[schemas.Account])
-def retrieve_users_with_own_account(
-    *,
-    db: Session = Depends(deps.get_db),
-    current_user: models.User = Security(
-        deps.get_current_active_user,
-        scopes=[
-            Role.ADMIN["name"],
-            Role.SUPER_ADMIN["name"],
-            Role.ACCOUNT_ADMIN["name"],
-        ],
-    ),
-) -> Any:
-    """
-    Retrieve users for my own account.
-    """
-    if current_user is None:
-        raise exceptions.get_user_exception("user not found")
-    account = crud.account.get(db, obj_id=current_user.account_id)
-    if not account:
-        raise HTTPException(
-            status_code=404,
-            detail="Account does not exist",
-        )
-    return crud.user.get_by_account_id(db, account_id=account.id)
+# @router.get("/users/me", response_model=List[schemas.Account])
+# def retrieve_users_with_own_account(
+#     *,
+#     db: Session = Depends(deps.get_db),
+#     current_user: models.User = Security(
+#         deps.get_current_active_user,
+#         scopes=[
+#             Role.ADMIN["name"],
+#             Role.SUPER_ADMIN["name"],
+#             Role.ACCOUNT_ADMIN["name"],
+#         ],
+#     ),
+# ) -> Any:
+#     """
+#     Retrieve users for my own account.
+#     """
+#     if current_user is None:
+#         raise exceptions.get_user_exception("user not found")
+#     account = crud.account.get(db, obj_id=current_user.account_id)
+#     if not account:
+#         raise HTTPException(
+#             status_code=404,
+#             detail="Account does not exist",
+#         )
+#     return crud.user.get_by_account_id(db, account_id=account.id)

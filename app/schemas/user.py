@@ -11,7 +11,6 @@ class UserBase(BaseModel):
     is_active: Optional[bool] = True
     full_name: Optional[str] = None
     phone_number: Optional[str] = None
-    account_id: Optional[str] = None
 
 
 # Properties to receive via API on creation

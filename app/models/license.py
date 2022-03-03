@@ -1,7 +1,7 @@
 import datetime
 import enum
 
-from sqlalchemy import Column, Integer, String, Text, DateTime, Enum
+from sqlalchemy import Column, ForeignKey, Integer, String, Text, DateTime, Enum
 from sqlalchemy.orm import relationship
 
 from app.db.base_class import Base
@@ -25,6 +25,9 @@ class License(Base):
         DateTime,
         default=datetime.datetime.utcnow,
         onupdate=datetime.datetime.utcnow,
+    )
+    product_id = Column(
+        Integer, ForeignKey("products.id"), nullable=True
     )
     simple_license = relationship(
         "SimpleLicense", back_populates="license", uselist=False

@@ -5,31 +5,31 @@ from app.core.config import settings
 
 
 def init_db(db: Session) -> None:
-    # Create Super Admin Account
-    account = crud.account.get_by_name(
-        db, name=settings.FIRST_SUPER_ADMIN_ACCOUNT_NAME
-    )
-    if not account:
-        account_in = schemas.AccountCreate(
-            # name=settings.FIRST_SUPER_ADMIN_ACCOUNT_NAME,
-            name="superaccount",
-            description="superadmin account",
-        )
-        crud.account.create(db, obj_in=account_in)
+    # # Create Super Admin Account
+    # account = crud.account.get_by_name(
+    #     db, name=settings.FIRST_SUPER_ADMIN_ACCOUNT_NAME
+    # )
+    # if not account:
+    #     account_in = schemas.AccountCreate(
+    #         # name=settings.FIRST_SUPER_ADMIN_ACCOUNT_NAME,
+    #         name="superaccount",
+    #         description="superadmin account",
+    #     )
+    #     crud.account.create(db, obj_in=account_in)
 
     # Create 1st Superuser
     user = crud.user.get_by_email(
         db, email=settings.FIRST_SUPER_ADMIN_EMAIL
     )
     if not user:
-        account = crud.account.get_by_name(
-            db, name=settings.FIRST_SUPER_ADMIN_ACCOUNT_NAME
-        )
+        # account = crud.account.get_by_name(
+        #     db, name=settings.FIRST_SUPER_ADMIN_ACCOUNT_NAME
+        # )
         user_in = schemas.UserCreate(
             email=settings.FIRST_SUPER_ADMIN_EMAIL,
             password=settings.FIRST_SUPER_ADMIN_PASSWORD,
             full_name=settings.FIRST_SUPER_ADMIN_EMAIL,
-            account_id=account.id,
+            # account_id=account.id,
         )
         user = crud.user.create(db, obj_in=user_in)
 

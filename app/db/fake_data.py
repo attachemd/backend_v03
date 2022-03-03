@@ -463,12 +463,12 @@ def fake_data(db: Session) -> None:
         )
         if form_element_type.name in ["radio", "checkbox", "select"]:
             filled_form_in = schemas.FilledFormCreate(
-                value=None, form_element_id=form_element.id
+                value=None, form_element_id=form_element.id, account_id="1"
             )
             filled_form = crud.filled_form.create(
                 db, obj_in=filled_form_in
             )
-            # Assign filled form to for element list value
+            # Assign filled form to form element list value
             form_element_list_value = crud.form_element_list_value.get_by_name_and_form_element_id(
                 db,
                 form_element_id=form_element.id,
@@ -483,7 +483,7 @@ def fake_data(db: Session) -> None:
             )
         else:
             filled_form_in = schemas.FilledFormCreate(
-                value=field["value"], form_element_id=form_element.id
+                value=field["value"], form_element_id=form_element.id, account_id="1"
             )
             filled_form = crud.filled_form.create(
                 db, obj_in=filled_form_in

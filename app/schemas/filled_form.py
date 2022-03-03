@@ -10,6 +10,7 @@ from .selected_list_value import SelectedListValue
 # Shared properties
 class FilledFormBase(BaseModel):
     form_element_id: str
+    account_id: str
     value: Optional[str]
 
 

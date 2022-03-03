@@ -14,7 +14,5 @@ class Product(Base):
     name = Column(
         String, unique=True, index=True, nullable=False
     )
-    license_id = Column(
-        Integer, ForeignKey("licenses.id"), nullable=True
-    )
+
     plans = relationship("Plan", back_populates="product")

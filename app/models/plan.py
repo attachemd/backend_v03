@@ -18,4 +18,4 @@ class Plan(Base):
         Integer, ForeignKey("products.id"), nullable=True
     )
     product = relationship("Product", back_populates="plans")
-    account = relationship("Account", back_populates="plans")
+    accounts = relationship("Account", back_populates="plan")

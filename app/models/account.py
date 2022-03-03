@@ -23,6 +23,9 @@ class Account(Base):
         default=datetime.datetime.utcnow,
         onupdate=datetime.datetime.utcnow,
     )
+    user_id = Column(
+        Integer, ForeignKey("users.id"), nullable=True
+    )
 
-    users = relationship("User", back_populates="account")
-    plans = relationship("Plan", back_populates="account")
+    user = relationship("User", back_populates="accounts")
+    plan = relationship("Plan", back_populates="accounts")
