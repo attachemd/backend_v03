@@ -30,7 +30,7 @@ async def login_for_access_token(
         raise exceptions.token_exception()
     # return settings.SECRET_KEY
     access_token_expires = timedelta(
-        minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
+        days=settings.ACCESS_TOKEN_EXPIRE_DAYS
     )
     role = (
         "GUEST" if not user.user_role else user.user_role.role.name
@@ -38,13 +38,11 @@ async def login_for_access_token(
     token_payload = {
         "id": str(user.id),
         "role": role,
-        "account_id": str(user.account_id),
     }
     token_dict = {
         "access": security.create_access_token(
             token_payload, expires_delta=access_token_expires
         ),
-        "token_type": "bearer",
     }
     return schemas.Token(**token_dict)
 
@@ -102,13 +100,13 @@ async def login_for_access_token(
 #     new_access_token = Authorize.create_access_token(subject=current_user)
 #     return {"access": new_access_token}
 
-@router.post('/refresh')
-def refresh(Authorize: AuthJWT = Depends()):
-    """
-    Refresh the access token for future requests
-    """
-    Authorize.jwt_refresh_token_required()
+# @router.post('/refresh')
+# def refresh(Authorize: AuthJWT = Depends()):
+#     """
+#     Refresh the access token for future requests
+#     """
+#     Authorize.jwt_refresh_token_required()
 
-    current_user = Authorize.get_jwt_subject()
-    new_access_token = Authorize.create_access_token(subject=current_user)
-    return {"access": new_access_token}
+#     current_user = Authorize.get_jwt_subject()
+#     new_access_token = Authorize.create_access_token(subject=current_user)
+#     return {"access": new_access_token}
