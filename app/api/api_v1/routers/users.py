@@ -12,7 +12,7 @@ from app.api import deps
 from app.constants.role import Role
 from app.core.config import settings
 from app.models.account import Account
-from app.models.user_role import UserRole
+
 
 router = APIRouter(prefix="/users", tags=["users"])
 

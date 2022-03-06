@@ -14,7 +14,7 @@ class UserRole(Base):
 
     role = relationship("Role")
     user = relationship(
-        "User", back_populates="user_role", uselist=False
+        "User", back_populates="user_roles"
     )
 
     # __table_args__ = (

@@ -1,6 +1,7 @@
-from typing import Any
-
+from typing import Any, List
+from fastapi.encoders import jsonable_encoder
 from fastapi import APIRouter, Depends, HTTPException, Security
+from pydantic import parse_obj_as
 from sqlalchemy.orm import Session
 
 from app import schemas, exceptions, models, crud
@@ -10,23 +11,31 @@ from app.constants.role import Role
 router = APIRouter(prefix="/user-roles", tags=["user-roles"])
 
 
-# @router.get("/role/{user_id}", response_model=List[schemas.UserRole])
-# async def read_user_roles(
-#     # TODO star
-#     *,
-#     user_id: str,
-#     db: Session = Depends(deps.get_db),
-#     user: models.User = Security(
-#         deps.get_current_active_user,
-#         scopes=[Role.ADMIN["name"], Role.SUPER_ADMIN["name"]],
-#     ),
-# ) -> any:
-#     if user is None:
-#         raise exceptions.get_user_exception()
-#     """
-#     Retrieve all user_roles.
-#     """
-#     return crud.user_role.get_by_user_id(db, user_id=user_id)
+@router.get("/{user_id}", response_model=List[schemas.UserGroup])
+async def read_user_roles_by_user_id(
+    # TODO star
+    *,
+    user_id: str,
+    db: Session = Depends(deps.get_db),
+    user: models.User = Depends(
+        deps.get_current_active_user
+    ),
+) -> any:
+    if user is None:
+        raise exceptions.get_user_exception()
+    """
+    Retrieve all user_roles by user.
+    """
+    user_roles = crud.user_role.get_by_user_id(db, user_id=user_id)
+    parsed_user_roles = parse_obj_as(
+        List[schemas.UserRole], user_roles
+    )
+
+    user_roles_name_dict = parse_obj_as(
+        List[schemas.UserRoleNameDict], jsonable_encoder(parsed_user_roles)
+    )
+    
+    return user_roles_name_dict
 
 
 @router.post("/", response_model=schemas.UserRole)

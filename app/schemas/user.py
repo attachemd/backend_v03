@@ -1,8 +1,10 @@
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, EmailStr, UUID4
 from .user_role import UserRole
+from .role import Role
+
 
 
 # Shared properties
@@ -24,17 +26,16 @@ class UserUpdate(UserBase):
 
 
 class UserInDBBase(UserBase):
-    user_role: Optional[UserRole]
+    user_roles: List[UserRole]
     created_at: datetime
     updated_at: datetime
-    role: Optional[str]
 
     class Config:
         orm_mode = True
 
 
 class UserWithRole(UserInDBBase):
-    role: Optional[str]
+    roles: List[Role]
 
 
 # Additional properties to return via API

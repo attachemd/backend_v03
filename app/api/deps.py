@@ -56,7 +56,7 @@ async def get_current_user(
         headers={"WWW-Authenticate": authenticate_value},
     )
     try:
-        payload= jwt.decode(
+        payload = jwt.decode(
             token,
             settings.SECRET_KEY,
             algorithms=[settings.ALGORITHM],
@@ -76,16 +76,22 @@ async def get_current_user(
     user = crud.user.get(db, obj_id=token_data.id)
     if not user:
         raise credentials_exception
-    if security_scopes.scopes and not token_data.role:
+
+    if security_scopes.scopes and not token_data.roles:
         raise HTTPException(
             status_code=401,
             detail="Not enough permissions with invalid token",
             headers={"WWW-Authenticate": authenticate_value},
         )
-    if (
-        security_scopes.scopes
-        and token_data.role not in security_scopes.scopes
-    ):
+
+
+    if security_scopes.scopes and not [
+        role_name
+        for role_name in security_scopes.scopes
+        # for role_dict in token_data.roles
+        for role_dict in payload["roles"]
+        if role_name == role_dict["name"]
+    ]:
         raise HTTPException(
             status_code=401,
             detail="Not enough permissions",

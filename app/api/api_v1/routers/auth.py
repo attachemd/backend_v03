@@ -1,9 +1,10 @@
 from datetime import timedelta
-
+from typing import List
+from fastapi.encoders import jsonable_encoder
 from fastapi import Depends, APIRouter, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_jwt_auth import AuthJWT
-from pydantic import BaseModel
+from pydantic import BaseModel, parse_obj_as
 from sqlalchemy.orm import Session
 
 from app import exceptions, crud, schemas
@@ -28,16 +29,31 @@ async def login_for_access_token(
     # return "User validated"
     if not user:
         raise exceptions.token_exception()
-    # return settings.SECRET_KEY
     access_token_expires = timedelta(
         days=settings.ACCESS_TOKEN_EXPIRE_DAYS
     )
-    role = (
-        "GUEST" if not user.user_role else user.user_role.role.name
+
+    
+    # print(Order.parse_obj(d))  # p_id=1 pre_name='test'
+    # class UserRoleForTokenList(BaseModel):
+    #     __root__: List[schemas.UserRoleForToken]
+    # user_roles = crud.user_role.get_by_user_id(db, user_id=user.id)
+    parsed_user_roles = parse_obj_as(
+        List[schemas.UserRole], user.user_roles
     )
+
+    user_roles = parse_obj_as(
+        List[schemas.UserRoleNameDict], jsonable_encoder(parsed_user_roles)
+    )
+    # user_roles = parse_obj_as(List[schemas.UserRole], user.user_roles)
+    # new_user_role = schemas.UserRoleForToken.parse_obj(user_roles)
+    # new_user_role = UserRoleForTokenList.parse_obj(user_roles)
+
+    # print(jsonable_encoder(new_user_role))
+    roles = [{"name": "GUEST"}] if not user_roles else jsonable_encoder(user_roles)
     token_payload = {
         "id": str(user.id),
-        "role": role,
+        "roles": roles,
     }
     token_dict = {
         "access": security.create_access_token(

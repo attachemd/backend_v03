@@ -33,7 +33,7 @@ class User(Base):
         onupdate=datetime.datetime.utcnow,
     )
 
-    user_role = relationship(
-        "UserRole", back_populates="user", uselist=False
+    user_roles = relationship(
+        "UserRole", back_populates="user"
     )
     accounts = relationship("Account", back_populates="user")

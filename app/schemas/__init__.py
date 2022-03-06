@@ -51,5 +51,11 @@ from .product import Product, ProductCreate, ProductUpdate
 from .plan import Plan, PlanCreate, PlanUpdate
 from .user import User, UserCreate, UserUpdate, UserWithRole
 from .token import Token, TokenPayload, AuthJwtSettings
-from .user_role import UserRole, UserRoleCreate, UserRoleUpdate
+from .user_role import (
+    UserRole,
+    UserRoleCreate,
+    UserRoleUpdate,
+    UserRoleNameDict,
+    UserGroup
+)
 from .role import Role, RoleCreate, RoleUpdate

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from sqlalchemy.orm import Session
 
 from app.crud.crud_base import CRUDBase
@@ -9,8 +9,8 @@ from app.schemas import UserRoleCreate, UserRoleUpdate
 class CRUDUserRole(CRUDBase[UserRole, UserRoleCreate, UserRoleUpdate]):
     def get_by_user_id(
         self, db: Session, *, user_id: str
-    ) -> Optional[UserRole]:
-        return db.query(UserRole).filter(UserRole.user_id == user_id).first()
+    ) -> List[UserRole]:
+        return db.query(UserRole).filter(UserRole.user_id == user_id).all()
 
 
 user_role = CRUDUserRole(UserRole)
