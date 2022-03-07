@@ -80,7 +80,7 @@ async def get_current_user(
     if security_scopes.scopes and not token_data.roles:
         raise HTTPException(
             status_code=401,
-            detail="Not enough permissions with invalid token",
+            detail="Invalid token",
             headers={"WWW-Authenticate": authenticate_value},
         )
 

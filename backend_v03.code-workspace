@@ -5,6 +5,8 @@
 		}
 	],
 	"settings": {
-		"favorites.sortDirection": "ASC"
+		"favorites.sortDirection": "ASC",
+		"python.formatting.provider": "black",
+		"editor.defaultFormatter": "ms-python.python"
 	}
 }
