@@ -1,3 +1,4 @@
+from datetime import datetime
 import random
 import uuid
 import faker.providers
@@ -17,6 +18,13 @@ def fake_phone_number(fake: Faker) -> str:
 
 
 COUNTRIES = [
+    {"name": "Afghanistan", "code": "AF"},
+    {"name": "land Islands", "code": "AX"},
+    {"name": "Albania", "code": "AL"},
+    {"name": "Algeria", "code": "DZ"},
+]
+
+COUNTRIES_TEMP = [
     {"name": "Afghanistan", "code": "AF"},
     {"name": "land Islands", "code": "AX"},
     {"name": "Albania", "code": "AL"},
@@ -352,7 +360,19 @@ def fake_data(db: Session) -> None:
             key=uuid.uuid4().hex,
             description=fakegen.sentence(),
             type=random.choice(["SIMPLE", "CUSTOM"]),
+            # expiry=datetime.strptime('1990-09-06', '%Y-%m-%d')
+            # expiry=datetime.strptime("12/11/2018 09:15:32", "%d/%m/%Y %H:%M:%S")
+            expiry=datetime.strptime(
+                fakegen.date_time_between(
+                    start_date="+1y", end_date="+6y"
+                ).strftime("%d-%m-%Y %H:%M:%S"),
+                "%d-%m-%Y %H:%M:%S",
+            )
+            # expiry=fakegen.date_time().strftime("%d-%m-%Y %H:%M:%S")
+            # expiry='test'
         )
+        # print("datetime.strptime('1990-09-06', '%Y-%m-%d')");
+        # print(datetime.strptime('1990-09-06', '%Y-%m-%d'))
         crud.license.create(db, obj_in=license_in)
 
     # Create products
@@ -447,7 +467,9 @@ def fake_data(db: Session) -> None:
             form_element_id=form_element.id,
             form_id=1,
         )
-        crud.form_element_template.create(db, obj_in=form_element_template_in)
+        crud.form_element_template.create(
+            db, obj_in=form_element_template_in
+        )
 
         # Assign a form to a custom license
         custom_license_in = schemas.CustomLicenseCreate(
@@ -463,7 +485,9 @@ def fake_data(db: Session) -> None:
         )
         if form_element_type.name in ["radio", "checkbox", "select"]:
             filled_form_in = schemas.FilledFormCreate(
-                value=None, form_element_id=form_element.id, account_id="1"
+                value=None,
+                form_element_id=form_element.id,
+                account_id="1",
             )
             filled_form = crud.filled_form.create(
                 db, obj_in=filled_form_in
@@ -483,7 +507,9 @@ def fake_data(db: Session) -> None:
             )
         else:
             filled_form_in = schemas.FilledFormCreate(
-                value=field["value"], form_element_id=form_element.id, account_id="1"
+                value=field["value"],
+                form_element_id=form_element.id,
+                account_id="1",
             )
             filled_form = crud.filled_form.create(
                 db, obj_in=filled_form_in

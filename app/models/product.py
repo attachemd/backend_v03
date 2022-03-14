@@ -16,3 +16,4 @@ class Product(Base):
     )
 
     plans = relationship("Plan", back_populates="product")
+    licenses = relationship("License", back_populates="product")

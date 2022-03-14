@@ -19,7 +19,7 @@ from app.models.user_role import UserRole
 router = APIRouter(prefix="/licenses", tags=["licenses"])
 
 
-@router.post("/")
+@router.post("")
 def create_license(
     *,
     db: Session = Depends(deps.get_db),
@@ -38,7 +38,7 @@ def create_license(
     return crud.license.create(db, obj_in=license_in)
 
 
-@router.get("/", response_model=List[schemas.License])
+@router.get("", response_model=List[schemas.License])
 async def get_licenses(
     db: Session = Depends(deps.get_db),
     current_user: models.User = Security(

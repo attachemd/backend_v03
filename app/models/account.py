@@ -29,3 +29,4 @@ class Account(Base):
 
     user = relationship("User", back_populates="accounts")
     plan = relationship("Plan", back_populates="accounts")
+    licenses = relationship("License", back_populates="account")

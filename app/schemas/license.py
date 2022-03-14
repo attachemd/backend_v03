@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from enum import Enum
 from typing import Optional, Literal
 from pydantic import BaseModel
@@ -16,7 +16,9 @@ class LicenseBase(BaseModel):
     # name: Optional[str]
     key: Optional[str]
     description: Optional[str]
-    type: LicenseType = None
+    type: LicenseType
+    # expiry: date
+    expiry: datetime
     # type: # Literal["SIMPLE1", "CUSTOM2"]
 
     # @pydantic.validator('type', pre=True)
@@ -38,7 +40,7 @@ class LicenseInDBBase(LicenseBase):
     id: str
     created_at: datetime
     updated_at: datetime
-    custom_license: CustomLicense
+    # custom_license: CustomLicense
 
     class Config:
         orm_mode = True
