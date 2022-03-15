@@ -1,0 +1,20 @@
+# Query: random
+# ContextLines: 1
+
+4 results - 1 file
+
+app\db\fake_data.py:
+    1  from datetime import datetime
+    2: import random
+    3  import uuid
+
+  310      def form_element_name(self):
+  311:         return self.random_element(FORM_ELEMENT_NAMES)
+  312  
+
+  385              description=fakegen.sentence(),
+  386:             type=random.choice(["SIMPLE", "CUSTOM"]),
+  387              # expiry=datetime.strptime('1990-09-06', '%Y-%m-%d')
+  388              # expiry=datetime.strptime("12/11/2018 09:15:32", "%d/%m/%Y %H:%M:%S")
+  389:             status=random.choice([True, False]),
+  390              expiry=datetime.strptime(

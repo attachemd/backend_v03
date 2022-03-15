@@ -1,16 +1,21 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 # Shared properties
 class AccountBase(BaseModel):
-    name: Optional[str]
+    first_name: str
+    last_name: str
+    email: Optional[EmailStr] = None
+    phone_number: Optional[str] = None
     description: Optional[str]
+    country: Optional[str]
+    city: Optional[str]
     # current_subscription_ends: Optional[datetime]
     # plan_id: Optional[str]
-    user_id: Optional[str]
+    user_id: str
     is_active: Optional[bool] = True
 
 

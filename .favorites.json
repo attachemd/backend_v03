@@ -986,5 +986,14 @@
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "t0OwonUg2iFNSYlC"
+    },
+    {
+        "type": "File",
+        "name": "c:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\search_editor.code-search",
+        "parent_id": "zNTI3xM8EhZlAP7R",
+        "fsPath": "c:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\search_editor.code-search",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "zRg15sGdjMtvqiwX"
     }
 ]

@@ -23,7 +23,7 @@ class License(Base):
     expiry = Column(DateTime, index=True)
     # expiry = Column(Date, index=True)
     # expiry = Column(String(255))
-    status = Column(Boolean(), default=False)
+    status = Column(Boolean(), default=False, nullable=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     updated_at = Column(
         DateTime,

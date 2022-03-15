@@ -15,6 +15,14 @@ class CRUDAccount(CRUDBase[Account, AccountCreate, AccountUpdate]):
     #     return (
     #         db.query(self.model).filter(Account.name == name).first()
     #     )
+    def get_by_email(
+        self, db: Session, *, email: str
+    ) -> Optional[Account]:
+        return (
+            db.query(Account)
+            .filter(Account.email == email)
+            .first()
+        )
 
 
 account = CRUDAccount(Account)

@@ -13,8 +13,17 @@ class Account(Base):
     # TODO remove __tablename__
     __tablename__ = "accounts"
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), index=True, nullable=False)
-    description = Column(String(255))
+    first_name = Column(String(255), index=True, nullable=False)
+    last_name = Column(String(255), index=True, nullable=False)
+    email = Column(
+        String(100), unique=True, index=True, nullable=False
+    )
+    phone_number = Column(
+        String(13), unique=True, index=True, nullable=True
+    )
+    description = Column(String(255), nullable=True)
+    country = Column(String(30), nullable=True)
+    city = Column(String(30), nullable=True)
     is_active = Column(Boolean(), default=True)
 
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
@@ -24,7 +33,7 @@ class Account(Base):
         onupdate=datetime.datetime.utcnow,
     )
     user_id = Column(
-        Integer, ForeignKey("users.id"), nullable=True
+        Integer, ForeignKey("users.id"), nullable=False
     )
 
     user = relationship("User", back_populates="accounts")

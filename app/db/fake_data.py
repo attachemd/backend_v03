@@ -353,6 +353,30 @@ def fake_data(db: Session) -> None:
                     user_id=user.id, role_id=role.id
                 )
                 crud.user_role.create(db, obj_in=user_role_in)
+                
+    # Create Accounts
+    for _ in range(20):
+        name = fakegen.name()
+        first_name = name.split(" ")[0]
+        last_name = " ".join(name.split(" ")[-1:])
+        username = first_name[
+            0
+        ].lower() + last_name.lower().replace(" ", "")
+        email = username + "@" + last_name.lower() + ".com"
+        phone_number = fake_phone_number(fakegen)
+        account = crud.account.get_by_email(
+            db, email=email
+        )
+        if not account:
+            account_in = schemas.AccountCreate(
+                # name=settings.FIRST_SUPER_ADMIN_ACCOUNT_NAME,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                phone_number=phone_number,
+                user_id="1",
+            )
+            crud.account.create(db, obj_in=account_in)
 
     # Create licenses
     for _ in range(10):
@@ -362,12 +386,15 @@ def fake_data(db: Session) -> None:
             type=random.choice(["SIMPLE", "CUSTOM"]),
             # expiry=datetime.strptime('1990-09-06', '%Y-%m-%d')
             # expiry=datetime.strptime("12/11/2018 09:15:32", "%d/%m/%Y %H:%M:%S")
+            status=random.choice([True, False]),
             expiry=datetime.strptime(
                 fakegen.date_time_between(
                     start_date="+1y", end_date="+6y"
                 ).strftime("%d-%m-%Y %H:%M:%S"),
                 "%d-%m-%Y %H:%M:%S",
-            )
+            ),
+            product_id=random.randint(1, 10),
+            account_id=random.randint(1, 20),
             # expiry=fakegen.date_time().strftime("%d-%m-%Y %H:%M:%S")
             # expiry='test'
         )

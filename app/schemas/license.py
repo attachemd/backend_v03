@@ -3,6 +3,10 @@ from enum import Enum
 from typing import Optional, Literal
 from pydantic import BaseModel
 
+from .account import Account
+
+from .product import Product
+
 from .custom_license import CustomLicense
 
 
@@ -18,14 +22,28 @@ class LicenseBase(BaseModel):
     description: Optional[str]
     type: LicenseType
     # expiry: date
+    status: bool = False
     expiry: datetime
+    # product_id: str
+    # account_id: str
+    product: Product
+    account: Account
     # type: # Literal["SIMPLE1", "CUSTOM2"]
 
     # @pydantic.validator('type', pre=True)
     # def validate_enum_field(cls, type: str):
     #     return LicenseType(type)
 
-
+# https://stackoverflow.com/q/66570894       
+class FlatLicenseDict(BaseModel):
+    account: str
+    def __init__(self, **kwargs):
+        kwargs["account"] = kwargs["account"]["first_name"] + " " + kwargs["account"]["last_name"]
+        super().__init__(**kwargs)
+        
+class FlatLicense(BaseModel):
+    account: str
+    
 # Properties to receive via API on creation
 class LicenseCreate(LicenseBase):
     pass
