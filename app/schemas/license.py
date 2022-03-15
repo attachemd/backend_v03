@@ -24,10 +24,9 @@ class LicenseBase(BaseModel):
     # expiry: date
     status: bool = False
     expiry: datetime
-    # product_id: str
-    # account_id: str
-    product: Product
-    account: Account
+    product_id: str
+    account_id: str
+
     # type: # Literal["SIMPLE1", "CUSTOM2"]
 
     # @pydantic.validator('type', pre=True)
@@ -67,7 +66,8 @@ class LicenseInDBBase(LicenseBase):
 
 # Additional properties to return via API
 class License(LicenseInDBBase):
-    pass
+    product: Product
+    account: Account
 
 
 class LicenseInDB(LicenseInDBBase):

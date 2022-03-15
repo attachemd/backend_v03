@@ -379,7 +379,7 @@ def fake_data(db: Session) -> None:
             crud.account.create(db, obj_in=account_in)
 
     # Create licenses
-    for _ in range(10):
+    for _ in range(40):
         license_in = schemas.LicenseCreate(
             key=uuid.uuid4().hex,
             description=fakegen.sentence(),
