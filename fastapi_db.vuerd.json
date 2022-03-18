@@ -43,7 +43,7 @@
   "table": {
     "tables": [
       {
-        "name": "accounts",
+        "name": "clients",
         "comment": "",
         "columns": [
           {

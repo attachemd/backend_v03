@@ -14,8 +14,8 @@ class FilledForm(Base):
     form_element_id = Column(
         Integer, ForeignKey("form_elements.id"), nullable=False
     )
-    account_id = Column(
-        Integer, ForeignKey("accounts.id"), nullable=False
+    client_id = Column(
+        Integer, ForeignKey("clients.id"), nullable=False
     )
     value = Column(
         String, index=True, nullable=True

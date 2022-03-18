@@ -33,8 +33,8 @@ class License(Base):
     product_id = Column(
         Integer, ForeignKey("products.id"), nullable=True
     )
-    account_id = Column(
-        Integer, ForeignKey("accounts.id"), nullable=True
+    client_id = Column(
+        Integer, ForeignKey("clients.id"), nullable=True
     )
     simple_license = relationship(
         "SimpleLicense", back_populates="license", uselist=False
@@ -44,4 +44,4 @@ class License(Base):
     )
 
     product = relationship("Product", back_populates="licenses")
-    account = relationship("Account", back_populates="licenses")
+    client = relationship("Client", back_populates="licenses")

@@ -15,7 +15,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             hashed_password=get_password_hash(obj_in.password),
             full_name=obj_in.full_name,
             phone_number=obj_in.phone_number,
-            # account_id=obj_in.account_id,
+            # client_id=obj_in.client_id,
         )
         db.add(db_obj)
         db.commit()
@@ -48,15 +48,15 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             return None
         return user
 
-    def get_by_account_id(
+    def get_by_client_id(
         self,
         db: Session,
         *,
-        account_id: str
+        client_id: str
     ) -> List[User]:
         return (
             db.query(self.model)
-            .filter(User.account_id == account_id)
+            .filter(User.client_id == client_id)
             .all()
         )
 

@@ -16,7 +16,7 @@ class CRUDLicense(CRUDBase[License, LicenseCreate, LicenseUpdate]):
             expiry=obj_in.expiry,
             status=obj_in.status,
             product_id=obj_in.product_id,
-            account_id=obj_in.account_id,
+            client_id=obj_in.client_id,
         )
         db.add(db_obj)
         db.commit()

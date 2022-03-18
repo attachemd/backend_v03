@@ -11,7 +11,7 @@ from app import schemas, crud, exceptions, models
 from app.api import deps
 from app.constants.role import Role
 from app.core.config import settings
-from app.models.account import Account
+from app.models.client import Client
 
 
 router = APIRouter(prefix="/users", tags=["users"])
@@ -180,15 +180,15 @@ def right(
     # if current_user is None:
     #     raise exceptions.get_user_exception()
     return db.query(
-         Account, models.User, UserRole,
+         Client, models.User, UserRole,
     ).filter(
-         Account.id == models.User.account_id,
+         Client.id == models.User.client_id,
     ).filter(
          models.User.id == UserRole.user_id,
     ).all()
 
     # return db.query(
-    #     Account
+    #     Client
     # ).join(
     #     models.User
     # ).join(

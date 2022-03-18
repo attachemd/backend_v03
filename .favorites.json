@@ -1,7 +1,7 @@
 [
     {
         "type": "Group",
-        "name": "Account",
+        "name": "Client",
         "parent_id": null,
         "workspaceRoot": null,
         "workspacePath": null,
@@ -9,38 +9,38 @@
     },
     {
         "type": "File",
-        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\schemas\\account.py",
+        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\schemas\\client.py",
         "parent_id": "mlE98XRzgJZWHS0f",
-        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\schemas\\account.py",
+        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\schemas\\client.py",
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "acMF2wr6NWyolvP8",
-        "label": "schemas: account"
+        "label": "schemas: client"
     },
     {
         "type": "File",
-        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\models\\account.py",
+        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\models\\client.py",
         "parent_id": "mlE98XRzgJZWHS0f",
-        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\models\\account.py",
+        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\models\\client.py",
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "6oWtS4Ksz0VqElFx",
-        "label": "model: account"
+        "label": "model: client"
     },
     {
         "type": "File",
-        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\crud\\crud_account.py",
+        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\crud\\crud_client.py",
         "parent_id": "mlE98XRzgJZWHS0f",
-        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\crud\\crud_account.py",
+        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\crud\\crud_client.py",
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "8YEJep3nXFP4hmNv"
     },
     {
         "type": "File",
-        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\api\\api_v1\\routers\\accounts.py",
+        "name": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\api\\api_v1\\routers\\clients.py",
         "parent_id": "mlE98XRzgJZWHS0f",
-        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\api\\api_v1\\routers\\accounts.py",
+        "fsPath": "C:\\Users\\user\\Documents\\Projects\\fullstack\\backend_v03\\app\\api\\api_v1\\routers\\clients.py",
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "12CnLDtoPKHpiuIN"

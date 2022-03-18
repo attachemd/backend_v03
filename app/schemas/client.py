@@ -5,7 +5,7 @@ from pydantic import BaseModel, EmailStr
 
 
 # Shared properties
-class AccountBase(BaseModel):
+class ClientBase(BaseModel):
     first_name: str
     last_name: str
     email: Optional[EmailStr] = None
@@ -20,16 +20,16 @@ class AccountBase(BaseModel):
 
 
 # Properties to receive via API on creation
-class AccountCreate(AccountBase):
+class ClientCreate(ClientBase):
     pass
 
 
 # Properties to receive via API on update
-class AccountUpdate(AccountBase):
+class ClientUpdate(ClientBase):
     pass
 
 
-class AccountInDBBase(AccountBase):
+class ClientInDBBase(ClientBase):
     id: str
     created_at: datetime
     updated_at: datetime
@@ -39,9 +39,9 @@ class AccountInDBBase(AccountBase):
 
 
 # Additional properties to return via API
-class Account(AccountInDBBase):
+class Client(ClientInDBBase):
     pass
 
 
-class AccountInDB(AccountInDBBase):
+class ClientInDB(ClientInDBBase):
     pass

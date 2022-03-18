@@ -5,16 +5,16 @@ class Role:
 
     GUEST = {
         "name": "GUEST",
-        "description": "A Guest Account",
+        "description": "A Guest Client",
     }
-    ACCOUNT_ADMIN = {
-        "name": "ACCOUNT_ADMIN",
-        "description": "Primary Administrator/Superuser For an Account",
+    CLIENT_ADMIN = {
+        "name": "CLIENT_ADMIN",
+        "description": "Primary Administrator/Superuser For an Client",
     }
 
-    ACCOUNT_MANAGER = {
-        "name": "ACCOUNT_MANAGER",
-        "description": "Day to Day Administrator of Events For an Account",
+    CLIENT_MANAGER = {
+        "name": "CLIENT_MANAGER",
+        "description": "Day to Day Administrator of Events For an Client",
     }
     ADMIN = {
         "name": "ADMIN",

@@ -89,7 +89,7 @@ async def login_for_access_token(
 #     user_claims = {
 #         "id": str(user.id),
 #         "role": role,
-#         "account_id": str(user.account_id),
+#         "client_id": str(user.client_id),
 #     }
 #     access_token = Authorize.create_access_token(
 #         subject=str(user.id),

@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 # Shared properties
 class ProductBase(BaseModel):
+    id: str
     name: str
 
 

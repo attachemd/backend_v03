@@ -26,10 +26,10 @@ oauth2_bearer = OAuth2PasswordBearer(
     tokenUrl="api/auth/access_token2",
     scopes={
         Role.GUEST["name"]: Role.GUEST["description"],
-        Role.ACCOUNT_ADMIN["name"]: Role.ACCOUNT_ADMIN[
+        Role.CLIENT_ADMIN["name"]: Role.CLIENT_ADMIN[
             "description"
         ],
-        Role.ACCOUNT_MANAGER["name"]: Role.ACCOUNT_MANAGER[
+        Role.CLIENT_MANAGER["name"]: Role.CLIENT_MANAGER[
             "description"
         ],
         Role.ADMIN["name"]: Role.ADMIN["description"],

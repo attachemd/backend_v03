@@ -36,4 +36,4 @@ class User(Base):
     user_roles = relationship(
         "UserRole", back_populates="user"
     )
-    accounts = relationship("Account", back_populates="user")
+    clients = relationship("Client", back_populates="user")

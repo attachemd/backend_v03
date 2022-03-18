@@ -75,7 +75,7 @@ def update_user_role(
         scopes=[
             Role.ADMIN["name"],
             Role.SUPER_ADMIN["name"],
-            Role.ACCOUNT_ADMIN["name"],
+            Role.CLIENT_ADMIN["name"],
         ],
     ),
 ) -> Any:

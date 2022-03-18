@@ -354,7 +354,7 @@ def fake_data(db: Session) -> None:
                 )
                 crud.user_role.create(db, obj_in=user_role_in)
                 
-    # Create Accounts
+    # Create Clients
     for _ in range(20):
         name = fakegen.name()
         first_name = name.split(" ")[0]
@@ -364,19 +364,19 @@ def fake_data(db: Session) -> None:
         ].lower() + last_name.lower().replace(" ", "")
         email = username + "@" + last_name.lower() + ".com"
         phone_number = fake_phone_number(fakegen)
-        account = crud.account.get_by_email(
+        client = crud.client.get_by_email(
             db, email=email
         )
-        if not account:
-            account_in = schemas.AccountCreate(
-                # name=settings.FIRST_SUPER_ADMIN_ACCOUNT_NAME,
+        if not client:
+            client_in = schemas.ClientCreate(
+                # name=settings.FIRST_SUPER_ADMIN_CLIENT_NAME,
                 first_name=first_name,
                 last_name=last_name,
                 email=email,
                 phone_number=phone_number,
                 user_id="1",
             )
-            crud.account.create(db, obj_in=account_in)
+            crud.client.create(db, obj_in=client_in)
 
     # Create licenses
     for _ in range(40):
@@ -394,7 +394,7 @@ def fake_data(db: Session) -> None:
                 "%d-%m-%Y %H:%M:%S",
             ),
             product_id=random.randint(1, 10),
-            account_id=random.randint(1, 20),
+            client_id=random.randint(1, 20),
             # expiry=fakegen.date_time().strftime("%d-%m-%Y %H:%M:%S")
             # expiry='test'
         )
@@ -514,7 +514,7 @@ def fake_data(db: Session) -> None:
             filled_form_in = schemas.FilledFormCreate(
                 value=None,
                 form_element_id=form_element.id,
-                account_id="1",
+                client_id="1",
             )
             filled_form = crud.filled_form.create(
                 db, obj_in=filled_form_in
@@ -536,7 +536,7 @@ def fake_data(db: Session) -> None:
             filled_form_in = schemas.FilledFormCreate(
                 value=field["value"],
                 form_element_id=form_element.id,
-                account_id="1",
+                client_id="1",
             )
             filled_form = crud.filled_form.create(
                 db, obj_in=filled_form_in

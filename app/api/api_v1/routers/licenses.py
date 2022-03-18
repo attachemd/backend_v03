@@ -11,7 +11,7 @@ from app import schemas, crud, exceptions, models
 from app.api import deps
 from app.constants.role import Role
 from app.core.config import settings
-from app.models.account import Account
+from app.models.client import Client
 
 # from app.models.license import License
 from app.models.user_role import UserRole
@@ -52,3 +52,20 @@ async def get_licenses(
     if current_user is None:
         raise exceptions.get_user_exception()
     return crud.license.get_multi(db)
+
+
+@router.get("/{license_id}", response_model=schemas.License)
+async def get_license_by_id(
+    license_id: str,
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Security(
+        deps.get_current_active_user,
+        scopes=[Role.ADMIN["name"], Role.SUPER_ADMIN["name"]],
+    ),
+) -> Any:
+    """
+    Get License by id.
+    """
+    if current_user is None:
+        raise exceptions.get_user_exception()
+    return crud.license.get(db, obj_id=license_id)

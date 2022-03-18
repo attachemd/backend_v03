@@ -41,11 +41,11 @@ from .filled_form import (
     FilledFormCreate,
     FilledFormUpdate,
 )
-from .account import (
-    Account,
-    AccountCreate,
-    AccountUpdate,
-    AccountInDB,
+from .client import (
+    Client,
+    ClientCreate,
+    ClientUpdate,
+    ClientInDB,
 )
 from .product import Product, ProductCreate, ProductUpdate
 from .plan import Plan, PlanCreate, PlanUpdate

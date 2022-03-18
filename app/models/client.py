@@ -6,12 +6,12 @@ from sqlalchemy.orm import relationship
 from app.db.base_class import Base
 
 
-class Account(Base):
+class Client(Base):
     """
-    Database model for an account
+    Database model for an client
     """
     # TODO remove __tablename__
-    __tablename__ = "accounts"
+    __tablename__ = "clients"
     id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String(255), index=True, nullable=False)
     last_name = Column(String(255), index=True, nullable=False)
@@ -36,6 +36,6 @@ class Account(Base):
         Integer, ForeignKey("users.id"), nullable=False
     )
 
-    user = relationship("User", back_populates="accounts")
-    plan = relationship("Plan", back_populates="accounts")
-    licenses = relationship("License", back_populates="account")
+    user = relationship("User", back_populates="clients")
+    plan = relationship("Plan", back_populates="clients")
+    licenses = relationship("License", back_populates="client")

@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Optional, Literal
 from pydantic import BaseModel
 
-from .account import Account
+from .client import Client
 
 from .product import Product
 
@@ -25,7 +25,7 @@ class LicenseBase(BaseModel):
     status: bool = False
     expiry: datetime
     product_id: str
-    account_id: str
+    client_id: str
 
     # type: # Literal["SIMPLE1", "CUSTOM2"]
 
@@ -35,13 +35,13 @@ class LicenseBase(BaseModel):
 
 # https://stackoverflow.com/q/66570894       
 class FlatLicenseDict(BaseModel):
-    account: str
+    client: str
     def __init__(self, **kwargs):
-        kwargs["account"] = kwargs["account"]["first_name"] + " " + kwargs["account"]["last_name"]
+        kwargs["client"] = kwargs["client"]["first_name"] + " " + kwargs["client"]["last_name"]
         super().__init__(**kwargs)
         
 class FlatLicense(BaseModel):
-    account: str
+    client: str
     
 # Properties to receive via API on creation
 class LicenseCreate(LicenseBase):
@@ -67,7 +67,7 @@ class LicenseInDBBase(LicenseBase):
 # Additional properties to return via API
 class License(LicenseInDBBase):
     product: Product
-    account: Account
+    client: Client
 
 
 class LicenseInDB(LicenseInDBBase):
