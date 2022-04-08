@@ -406,6 +406,7 @@ def fake_data(db: Session) -> None:
     for _ in range(10):
         product_in = schemas.ProductCreate(
             name=fakegen.company(),
+            description=fakegen.sentence(),
         )
         crud.product.create(db, obj_in=product_in)
 

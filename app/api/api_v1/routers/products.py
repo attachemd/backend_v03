@@ -11,6 +11,24 @@ router = APIRouter(prefix="/products", tags=["products"])
 
 # Create a product 
 
+# Get product by id
+
+@router.get("/{product_id}", response_model=schemas.Product)
+async def get_product_by_id(
+    product_id: str,
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Security(
+        deps.get_current_active_user,
+        scopes=[Role.ADMIN["name"], Role.SUPER_ADMIN["name"]],
+    ),
+) -> Any:
+    """
+    Get product by id.
+    """
+    if current_user is None:
+        raise exceptions.get_user_exception()
+    return crud.product.get(db, obj_id=product_id)
+
 # Get all products
 
 @router.get("", response_model=List[schemas.Product])

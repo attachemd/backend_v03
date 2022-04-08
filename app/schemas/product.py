@@ -3,8 +3,8 @@ from pydantic import BaseModel
 
 # Shared properties
 class ProductBase(BaseModel):
-    id: str
     name: str
+    description: str
 
 
 # Properties to receive via API on creation
@@ -18,7 +18,7 @@ class ProductUpdate(BaseModel):
 
 
 class ProductInDBBase(ProductBase):
-
+    id: str
     class Config:
         orm_mode = True
 
