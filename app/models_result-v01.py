@@ -23,7 +23,9 @@ form_element_template = {
                 "form_element_type_id": "19",
                 "form_element_type": {
                     "id": "19",
-                    "name": "checkbox",
+                    "type": "checkbox",
+                    "name": "Single Selection",
+                    "form_element_input_type": {},
                 },
                 "form_element_list_values": [
                     {
@@ -31,12 +33,45 @@ form_element_template = {
                         "form_element_id": "7",
                         "filled_form_id": "null",
                         "value": "male",
+                        "validations": [
+                            {
+                                "validator": {
+                                    "name": "required",
+                                },
+                                "validator_id": "564",
+                                "form_element_list_value_id": "2546",
+                                "message": "Text Required",
+                                "pattern": "",
+                            },
+                        ],
                     },
                     {
                         "id": "13",
                         "form_element_id": "7",
                         "filled_form_id": "null",
                         "value": "female",
+                        "validations": [
+                            {
+                                "validator": {
+                                    "name": "required",
+                                    "validation_id": "564",
+                                },
+                                "form_element_list_value_id": "2546",
+                                "message": "Text Required",
+                                "pattern": "",
+                            },
+                        ],
+                    },
+                ],
+                "validations": [
+                    {
+                        "validator": {
+                            "name": "required",
+                            "validation_id": "564",
+                        },
+                        "form_element_list_value_id": "2546",
+                        "message": "Text Required",
+                        "pattern": "",
                     },
                 ],
             },

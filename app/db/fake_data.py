@@ -276,7 +276,7 @@ COUNTRIES_TEMP = [
     {"name": "Zambia", "code": "ZM"},
     {"name": "Zimbabwe", "code": "ZW"},
 ]
-FORM_ELEMENT_TYPES = {
+x_FORM_ELEMENT_TYPES_x = {
     "button": "button",
     "checkbox": "checkbox",
     "date": "date",
@@ -288,6 +288,96 @@ FORM_ELEMENT_TYPES = {
     "text_area": "text_area",
     "url": "url",
 }
+
+ESSENTIAL_FORM_ELEMENTS = [
+  {
+    "type": 'input',
+    "label": 'Text',
+    "inputType": 'text',
+    "name": 'text',
+    "value": 'text',
+    "description": 'Single line of text',
+    "validations": [
+      {
+        "validator": {"name": 'required'},
+        "message": 'Text Required',
+      },
+    ],
+  },
+  {
+    "type": 'input',
+    "label": 'Email Address',
+    "inputType": 'email',
+    "name": 'email',
+    "value": '',
+    "description": 'Email validation input',
+    "validations": [
+      {
+        "validator": {"name": 'required'},
+        "message": 'Email Required',
+      },
+      {
+        "validator": {"name": 'pattern'},
+        "pattern": '^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$',
+        "message": 'Invalid email',
+      },
+    ],
+  },
+  {
+    "type": 'input',
+    "label": 'Password',
+    "inputType": 'password',
+    "name": 'password',
+    "value": '',
+    "description": 'Masked characters input',
+    "validations": [
+      {
+        "validator": {"name": 'required'},
+        "message": 'Password Required',
+      },
+    ],
+  },
+  {
+    "type": 'radiobutton',
+    "label": 'Single Selection',
+    "name": 'single_selection',
+    "options": [],
+    "value": '',
+    "description": 'Select only one item with a radio button',
+    "validations": [],
+  },
+  {
+    "type": 'checkbox',
+    "label": 'Multiple Selection',
+    "name": 'multiple_selection',
+    "value": [],
+    "options": [],
+    "description": 'Select one or many options using a checkbox',
+    "validations": [],
+  },
+  {
+    "type": 'select',
+    "label": 'Select from List',
+    "name": 'select_from_list',
+    "value": '',
+    "options": [],
+    "description": 'Select option from list',
+    "validations": [],
+  },
+  {
+    "type": 'date',
+    "label": 'Date',
+    "name": 'date',
+    "value": '',
+    "description": 'Select a date from a datepicker',
+    "validations": [
+      {
+        "validator": {"name": 'required'},
+        "message": 'Date is Required',
+      },
+    ],
+  },
+];
 
 FORM_ELEMENT_NAMES = [
     {"name": "Full name", "type": "text"},
@@ -438,6 +528,25 @@ def fake_data(db: Session) -> None:
     for _ in range(10):
         form_in = schemas.FormCreate(name=fakegen.word())
         crud.form.create(db, obj_in=form_in)
+        
+    for essential_form_element in ESSENTIAL_FORM_ELEMENTS:
+        # Create form element input types
+        if(essential_form_element.inputType):
+            form_element_input_type_in = schemas.FormElementInputTypeCreate(
+                name=essential_form_element.inputType,
+                description=essential_form_element.description
+            )
+            form_element_input_type = crud.form_element_input_type.create(
+                db, obj_in=form_element_input_type_in
+            )
+        # Create form element types
+        form_element_type_in = schemas.FormElementTypeCreate(
+            name=essential_form_element.type
+        )
+        form_element_type = crud.form_element_type.create(
+            db, obj_in=form_element_type_in
+        )
+        # Create form elements with type
 
     # Create form element types
     for name in FORM_ELEMENT_TYPES:

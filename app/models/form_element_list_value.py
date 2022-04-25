@@ -15,9 +15,18 @@ class FormElementListValue(Base):
     form_element_id = Column(
         Integer, ForeignKey("form_elements.id"), nullable=False
     ) 
+    validation_id = Column(
+        Integer,
+        ForeignKey("validations.id"),
+        unique=True,
+        nullable=False,
+    )
     # TODO relationship
     form_element = relationship(
         "FormElement",
         back_populates="form_element_list_values",
+    ) 
+    validations = relationship(
+        "Validation",
     ) 
     

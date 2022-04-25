@@ -14,7 +14,10 @@ from app.api.api_v1.routers import (
     forms,
     form_elements,
     form_element_types,
+    form_element_input_types,
     form_element_list_values,
+    validations,
+    validators,
     selected_list_values,
     filled_forms,
 )
@@ -29,7 +32,10 @@ api_router.include_router(forms.router)
 api_router.include_router(form_element_templates.router)
 api_router.include_router(form_elements.router)
 api_router.include_router(form_element_types.router)
+api_router.include_router(form_element_input_types.router)
 api_router.include_router(form_element_list_values.router)
+api_router.include_router(validations.router)
+api_router.include_router(validators.router)
 api_router.include_router(selected_list_values.router)
 api_router.include_router(filled_forms.router)
 api_router.include_router(clients.router)
