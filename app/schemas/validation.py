@@ -5,8 +5,10 @@ from pydantic import BaseModel
 
 # Shared properties
 class ValidationBase(BaseModel):
-    name: Optional[str]
-    description: Optional[str]
+    message: str
+    validator_id: str
+    form_element_template_id: str
+    pattern: Optional[str]
 
 
 # Properties to receive via API on creation

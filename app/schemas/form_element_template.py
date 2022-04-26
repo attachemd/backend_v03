@@ -1,18 +1,25 @@
-from typing import Optional
+from typing import List, Optional
 from pydantic import BaseModel
 
-from .form_element import FormElement
+from .form_element_list_value import FormElementListValue, FormElementListValueCreateForRoute
+
+from .form_element_type import FormElementType
 
 
 # Shared properties
 class FormElementTemplateBase(BaseModel):
-    form_element_id: Optional[str]
-    form_id: Optional[str]
+    name: str
+    description: str
+    form_element_type_id: str
 
 
 # Properties to receive via API on creation
 class FormElementTemplateCreate(FormElementTemplateBase):
     pass
+
+class FormElementTemplateCreateForRoute(BaseModel):
+    id: str
+    form_element_list_values: List[FormElementListValueCreateForRoute]
 
 
 # Properties to receive via API on update
@@ -21,7 +28,8 @@ class FormElementTemplateUpdate(BaseModel):
 
 
 class FormElementTemplateInDBBase(FormElementTemplateBase):
-    form_element: FormElement
+    form_element_type: FormElementType
+    form_element_list_values: List[FormElementListValue]
     class Config:
         orm_mode = True
 

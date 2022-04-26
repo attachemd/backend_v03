@@ -1,5 +1,5 @@
 from app.crud.crud_base import CRUDBase
-from app.models.form import Validation
+from app.models.validation import Validation
 from app.schemas import ValidationCreate, ValidationUpdate
 
 

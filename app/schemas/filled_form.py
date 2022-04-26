@@ -2,14 +2,14 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
-from .form_element import FormElement
+from .form_element_template import FormElementTemplate
 
 from .selected_list_value import SelectedListValue
 
 
 # Shared properties
 class FilledFormBase(BaseModel):
-    form_element_id: str
+    form_element_template_id: str
     client_id: str
     value: Optional[str]
 
@@ -26,7 +26,7 @@ class FilledFormUpdate(BaseModel):
 
 class FilledFormInDBBase(FilledFormBase):
     selected_list_values: List[SelectedListValue]
-    form_element: FormElement
+    form_element_template: FormElementTemplate
     class Config:
         orm_mode = True
 

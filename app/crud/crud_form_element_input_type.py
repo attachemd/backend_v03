@@ -1,5 +1,5 @@
 from app.crud.crud_base import CRUDBase
-from app.models.form import FormElementInputType
+from app.models.form_element_input_type import FormElementInputType
 from app.schemas import FormElementInputTypeCreate, FormElementInputTypeUpdate
 
 

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.api_v1.routers import (
-    form_element_templates,
+    form_element_fields,
     products,
     users,
     auth,
@@ -12,7 +12,7 @@ from app.api.api_v1.routers import (
     custom_licenses,
     simple_licenses,
     forms,
-    form_elements,
+    form_element_templates,
     form_element_types,
     form_element_input_types,
     form_element_list_values,
@@ -29,8 +29,8 @@ api_router.include_router(licenses.router)
 api_router.include_router(custom_licenses.router)
 api_router.include_router(simple_licenses.router)
 api_router.include_router(forms.router)
+api_router.include_router(form_element_fields.router)
 api_router.include_router(form_element_templates.router)
-api_router.include_router(form_elements.router)
 api_router.include_router(form_element_types.router)
 api_router.include_router(form_element_input_types.router)
 api_router.include_router(form_element_list_values.router)

@@ -11,8 +11,8 @@ from app.db.base_class import Base
 class FilledForm(Base):
     __tablename__ = "filled_forms"
     id = Column(Integer, primary_key=True, index=True)
-    form_element_id = Column(
-        Integer, ForeignKey("form_elements.id"), nullable=False
+    form_element_template_id = Column(
+        Integer, ForeignKey("form_element_templates.id"), nullable=False
     )
     client_id = Column(
         Integer, ForeignKey("clients.id"), nullable=False
@@ -21,8 +21,8 @@ class FilledForm(Base):
         String, index=True, nullable=True
     )
     # TODO relationship
-    form_element = relationship(
-        "FormElement"
+    form_element_template = relationship(
+        "FormElementTemplate"
     )   
     selected_list_values = relationship(
         "SelectedListValue"

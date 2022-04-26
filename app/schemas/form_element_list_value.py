@@ -5,12 +5,15 @@ from pydantic import BaseModel
 # Shared properties
 class FormElementListValueBase(BaseModel):
     value: str
-    form_element_id: str
+    form_element_template_id: str
 
 
 # Properties to receive via API on creation
 class FormElementListValueCreate(FormElementListValueBase):
     pass
+
+class FormElementListValueCreateForRoute(BaseModel):
+    value: str
 
 
 # Properties to receive via API on update

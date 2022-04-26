@@ -15,12 +15,18 @@ class Validation(Base):
         String, unique=True, index=True, nullable=False
     )
     pattern = Column(
-        String, unique=True, index=True, nullable=True
+        String, unique=False, index=True, nullable=True
     )
     validator_id = Column(
         Integer,
         ForeignKey("validators.id"),
-        unique=True,
+        unique=False,
+        nullable=False,
+    )
+    form_element_template_id = Column(
+        Integer,
+        ForeignKey("form_element_templates.id"),
+        unique=False,
         nullable=False,
     )
     validator = relationship(

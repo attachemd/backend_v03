@@ -9,16 +9,18 @@ from .simple_license import (
     SimpleLicenseCreate,
     SimpleLicenseUpdate,
 )
-from .form import Form, FormCreate, FormUpdate
+from .form import Form, FormCreate, FormCreateForRoute, FormUpdate
+from .form_element_field import (
+    FormElementField,
+    FormElementFieldCreate,
+    FormElementFieldCreateForRoute,
+    FormElementFieldUpdate,
+)
 from .form_element_template import (
     FormElementTemplate,
     FormElementTemplateCreate,
+    FormElementTemplateCreateForRoute,
     FormElementTemplateUpdate,
-)
-from .form_element import (
-    FormElement,
-    FormElementCreate,
-    FormElementUpdate,
 )
 from .form_element_type import (
     FormElementType,
@@ -33,6 +35,7 @@ from .form_element_input_type import (
 from .form_element_list_value import (
     FormElementListValue,
     FormElementListValueCreate,
+    FormElementListValueCreateForRoute,
     FormElementListValueUpdate,
 )
 from .validation import (

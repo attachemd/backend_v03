@@ -1,7 +1,7 @@
 from typing import List
 from pydantic import BaseModel
 
-from .form_element_template import FormElementTemplate
+from .form_element_field import FormElementField, FormElementFieldCreateForRoute
 
 
 # Shared properties
@@ -13,6 +13,10 @@ class FormBase(BaseModel):
 class FormCreate(FormBase):
     pass
 
+class FormCreateForRoute(FormBase):
+    form_element_fields: List[FormElementFieldCreateForRoute]
+    pass
+
 
 # Properties to receive via API on update
 class FormUpdate(BaseModel):
@@ -20,7 +24,7 @@ class FormUpdate(BaseModel):
 
 
 class FormInDBBase(FormBase):
-    form_element_templates: List[FormElementTemplate]
+    form_element_fields: List[FormElementField]
     class Config:
         orm_mode = True
 

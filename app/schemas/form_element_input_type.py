@@ -5,8 +5,8 @@ from pydantic import BaseModel
 
 # Shared properties
 class FormElementInputTypeBase(BaseModel):
-    name: str
-    description: Optional[str]
+    input_type: str
+    form_element_type_id: str
 
 
 # Properties to receive via API on creation

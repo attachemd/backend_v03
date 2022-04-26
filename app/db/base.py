@@ -11,8 +11,8 @@ from app.models.license import License # noqa
 from app.models.custom_license import CustomLicense # noqa
 from app.models.simple_license import SimpleLicense # noqa
 from app.models.form import Form # noqa
+from app.models.form_element_field import FormElementField # noqa
 from app.models.form_element_template import FormElementTemplate # noqa
-from app.models.form_element import FormElement # noqa
 from app.models.form_element_list_value import FormElementListValue # noqa
 from app.models.selected_list_value import SelectedListValue # noqa
 from app.models.filled_form import FilledForm # noqa

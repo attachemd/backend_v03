@@ -1,11 +1,13 @@
+from typing import List, Optional
 from pydantic import BaseModel
+
+from .form_element_input_type import FormElementInputType
 
 
 # Shared properties
 class FormElementTypeBase(BaseModel):
-    type: str
     name: str
-    form_element_input_type_id: str
+    # form_element_input_type_id: str
 
 
 # Properties to receive via API on creation
@@ -19,7 +21,8 @@ class FormElementTypeUpdate(BaseModel):
 
 
 class FormElementTypeInDBBase(FormElementTypeBase):
-
+    # form_element_input_type: List[FormElementInputType]
+    # form_element_input_type: FormElementInputType
     class Config:
         orm_mode = True
 

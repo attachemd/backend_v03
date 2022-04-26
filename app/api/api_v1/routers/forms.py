@@ -8,13 +8,21 @@ from app.constants.role import Role
 
 router = APIRouter(prefix="/forms", tags=["forms"])
 
+
+class Option(BaseModel):
+    url: str
+    name: str
+
+
 # Create a form ANCHOR
 
+
 @router.post("", response_model=schemas.Form)
+# @router.post("")
 def create_form(
     *,
     db: Session = Depends(deps.get_db),
-    form_in: schemas.FormCreate,
+    form_in: schemas.FormCreateForRoute,
     current_user: models.User = Security(
         deps.get_current_active_user,
         scopes=[Role.ADMIN["name"], Role.SUPER_ADMIN["name"]],
@@ -27,11 +35,52 @@ def create_form(
     if current_user is None:
         raise exceptions.get_user_exception("user not found")
 
-    return crud.form.create(
-        db, obj_in=form_in
-    )
-    
+    # Create a form
+    new_form_in = schemas.FormCreate(name=form_in.name)
+    form = crud.form.create(db, obj_in=new_form_in)
+    # Create form element fields
+    # print('form_in.form_element_fields')
+    # print(form_in.form_element_fields)
+    for form_element_field in form_in.form_element_fields:
+        field_template = form_element_field.form_element_template
+        form_element_field_in = schemas.FormElementFieldCreate(
+            label=form_element_field.label,
+            form_element_template_id=field_template.id,
+            form_id=form.id,
+        )
+        crud.form_element_field.create(
+            db, obj_in=form_element_field_in
+        )
+        # Delete
+        objxyz = crud.form_element_list_value.delete_by_form_element_template_id(
+            db,
+            form_element_template_id=field_template.id,
+        )
+        print("objxyz")
+        print(objxyz)
+        # Create form element list value for the form element template
+        for (
+            form_element_list_value
+        ) in field_template.form_element_list_values:
+            form_element_list_value_in = (
+                schemas.FormElementListValueCreate(
+                    value=form_element_list_value.value,
+                    form_element_template_id=field_template.id,
+                )
+            )
+            crud.form_element_list_value.create(
+                db, obj_in=form_element_list_value_in
+            )
+    return form
+    # return crud.form.create(
+    #     db, obj_in=form_in
+    # )
+    # results = {"form_in": form_in}
+    # return results
+
+
 # Get all forms ANCHOR[id=my-anchor]
+
 
 @router.get("", response_model=List[schemas.Form])
 def get_all_forms(
@@ -48,9 +97,11 @@ def get_all_forms(
         raise exceptions.get_user_exception()
     return crud.form.get_multi(db)
 
+
 # Update the form
 
 # Delete the form if nothing assigned to it
+
 
 class Image(BaseModel):
     url: str

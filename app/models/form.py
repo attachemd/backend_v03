@@ -15,6 +15,6 @@ class Form(Base):
         String, index=True, nullable=False
     )
     # TODO relationship
-    form_element_templates = relationship(
-        "FormElementTemplate"
+    form_element_fields = relationship(
+        "FormElementField"
     )

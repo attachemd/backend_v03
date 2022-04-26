@@ -289,95 +289,122 @@ x_FORM_ELEMENT_TYPES_x = {
     "url": "url",
 }
 
+
+FORM_ELEMENT_TYPES = [
+    {"type": "input"},
+    {"type": "radiobutton"},
+    {"type": "checkbox"},
+    {"type": "select"},
+    {"type": "date"},
+]
+
+FORM_ELEMENT_INPUT_TYPES = [
+    {"input_type": "text"},
+    {"input_type": "email"},
+    {"input_type": "password"},
+]
+
+VALIDATORS = [
+    {"name": "required"},
+    {"name": "pattern"},
+]
+
 ESSENTIAL_FORM_ELEMENTS = [
-  {
-    "type": 'input',
-    "label": 'Text',
-    "inputType": 'text',
-    "name": 'text',
-    "value": 'text',
-    "description": 'Single line of text',
-    "validations": [
-      {
-        "validator": {"name": 'required'},
-        "message": 'Text Required',
-      },
-    ],
-  },
-  {
-    "type": 'input',
-    "label": 'Email Address',
-    "inputType": 'email',
-    "name": 'email',
-    "value": '',
-    "description": 'Email validation input',
-    "validations": [
-      {
-        "validator": {"name": 'required'},
-        "message": 'Email Required',
-      },
-      {
-        "validator": {"name": 'pattern'},
-        "pattern": '^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$',
-        "message": 'Invalid email',
-      },
-    ],
-  },
-  {
-    "type": 'input',
-    "label": 'Password',
-    "inputType": 'password',
-    "name": 'password',
-    "value": '',
-    "description": 'Masked characters input',
-    "validations": [
-      {
-        "validator": {"name": 'required'},
-        "message": 'Password Required',
-      },
-    ],
-  },
-  {
-    "type": 'radiobutton',
-    "label": 'Single Selection',
-    "name": 'single_selection',
-    "options": [],
-    "value": '',
-    "description": 'Select only one item with a radio button',
-    "validations": [],
-  },
-  {
-    "type": 'checkbox',
-    "label": 'Multiple Selection',
-    "name": 'multiple_selection',
-    "value": [],
-    "options": [],
-    "description": 'Select one or many options using a checkbox',
-    "validations": [],
-  },
-  {
-    "type": 'select',
-    "label": 'Select from List',
-    "name": 'select_from_list',
-    "value": '',
-    "options": [],
-    "description": 'Select option from list',
-    "validations": [],
-  },
-  {
-    "type": 'date',
-    "label": 'Date',
-    "name": 'date',
-    "value": '',
-    "description": 'Select a date from a datepicker',
-    "validations": [
-      {
-        "validator": {"name": 'required'},
-        "message": 'Date is Required',
-      },
-    ],
-  },
-];
+    {
+        "type": "input",
+        "label": "Text",
+        "inputType": "text",
+        "name": "text",
+        "value": "text",
+        "description": "Single line of text",
+        "validations": [
+            {
+                "validator": {"name": "required"},
+                "message": "Text Required",
+            },
+        ],
+    },
+    {
+        "type": "input",
+        "label": "Email Address",
+        "inputType": "email",
+        "name": "email",
+        "value": "",
+        "description": "Email validation input",
+        "validations": [
+            {
+                "validator": {"name": "required"},
+                "message": "Email Required",
+            },
+            {
+                "validator": {"name": "pattern"},
+                "pattern": "^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$",
+                "message": "Invalid email",
+            },
+        ],
+    },
+    {
+        "type": "input",
+        "label": "Password",
+        "inputType": "password",
+        "name": "password",
+        "value": "",
+        "description": "Masked characters input",
+        "validations": [
+            {
+                "validator": {"name": "required"},
+                "message": "Password Required",
+            },
+        ],
+    },
+    {
+        "type": "radiobutton",
+        "label": "Single Selection",
+        "name": "single_selection",
+        "options": [
+            {
+                "value": "male",
+            },
+            {
+                "value": "female",
+            },
+        ],
+        "value": "",
+        "description": "Select only one item with a radio button",
+        "validations": [],
+    },
+    {
+        "type": "checkbox",
+        "label": "Multiple Selection",
+        "name": "multiple_selection",
+        "value": [],
+        "options": [],
+        "description": "Select one or many options using a checkbox",
+        "validations": [],
+    },
+    {
+        "type": "select",
+        "label": "Select from List",
+        "name": "select_from_list",
+        "value": "",
+        "options": [],
+        "description": "Select option from list",
+        "validations": [],
+    },
+    {
+        "type": "date",
+        "label": "Date",
+        "name": "date",
+        "value": "",
+        "description": "Select a date from a datepicker",
+        "validations": [
+            {
+                "validator": {"name": "required"},
+                "message": "Date is Required",
+            },
+        ],
+    },
+]
 
 FORM_ELEMENT_NAMES = [
     {"name": "Full name", "type": "text"},
@@ -404,6 +431,17 @@ class Provider(faker.providers.BaseProvider):
 fakegen.add_provider(Provider)
 
 
+def is_pattern(validation):
+    return (
+        validation["pattern"]
+        if (
+            ("validator" in validation)
+            and (validation["validator"]["name"] == "pattern")
+        )
+        else None
+    )
+
+
 def fake_data(db: Session) -> None:
     # Create user for each role except super admin
     members = [
@@ -416,12 +454,14 @@ def fake_data(db: Session) -> None:
         if role_name != Role.SUPER_ADMIN["name"]:
             # Create user
             name = fakegen.name()
+            word = fakegen.word()
             first_name = name.split(" ")[0]
             last_name = " ".join(name.split(" ")[-1:])
+            domain = "gmail"
             username = first_name[
                 0
             ].lower() + last_name.lower().replace(" ", "")
-            email = username + "@" + last_name.lower() + ".com"
+            email = word + "@" + domain + ".com"
             phone_number = fake_phone_number(fakegen)
             password = "1234"
             user_in = schemas.UserCreate(
@@ -443,20 +483,22 @@ def fake_data(db: Session) -> None:
                     user_id=user.id, role_id=role.id
                 )
                 crud.user_role.create(db, obj_in=user_role_in)
-                
+
     # Create Clients
     for _ in range(20):
         name = fakegen.name()
+        word = fakegen.word()
         first_name = name.split(" ")[0]
         last_name = " ".join(name.split(" ")[-1:])
-        username = first_name[
-            0
-        ].lower() + last_name.lower().replace(" ", "")
-        email = username + "@" + last_name.lower() + ".com"
-        phone_number = fake_phone_number(fakegen)
-        client = crud.client.get_by_email(
-            db, email=email
+        domain = "gmail"
+        username = first_name[0].lower() + last_name.lower().replace(
+            " ", ""
         )
+        email = word + "@" + domain + ".com"
+        print("email")
+        print(email)
+        phone_number = fake_phone_number(fakegen)
+        client = crud.client.get_by_email(db, email=email)
         if not client:
             client_in = schemas.ClientCreate(
                 # name=settings.FIRST_SUPER_ADMIN_CLIENT_NAME,
@@ -528,126 +570,218 @@ def fake_data(db: Session) -> None:
     for _ in range(10):
         form_in = schemas.FormCreate(name=fakegen.word())
         crud.form.create(db, obj_in=form_in)
-        
-    for essential_form_element in ESSENTIAL_FORM_ELEMENTS:
-        # Create form element input types
-        if(essential_form_element.inputType):
-            form_element_input_type_in = schemas.FormElementInputTypeCreate(
-                name=essential_form_element.inputType,
-                description=essential_form_element.description
-            )
-            form_element_input_type = crud.form_element_input_type.create(
-                db, obj_in=form_element_input_type_in
-            )
-        # Create form element types
-        form_element_type_in = schemas.FormElementTypeCreate(
-            name=essential_form_element.type
-        )
-        form_element_type = crud.form_element_type.create(
-            db, obj_in=form_element_type_in
-        )
-        # Create form elements with type
-
     # Create form element types
-    for name in FORM_ELEMENT_TYPES:
+    for form_element_type_item in FORM_ELEMENT_TYPES:
         form_element_type_in = schemas.FormElementTypeCreate(
-            name=name
+            name=form_element_type_item["type"],
         )
         crud.form_element_type.create(
             db, obj_in=form_element_type_in
         )
-    # Create form elements with type
-    for field in FORM_ELEMENT_NAMES:
-        form_element_type = crud.form_element_type.get_by_name(
-            db, name=field["type"]
+    # Create form element input types
+    # form_element_type_model = crud.form_element_type.get_by_name(
+    #     db, name="input"
+    # )
+    # for form_element_input_type in FORM_ELEMENT_INPUT_TYPES:
+    #     form_element_input_type_in = (
+    #         schemas.FormElementInputTypeCreate(
+    #             input_type=form_element_input_type["input_type"],
+    #             form_element_type_id=form_element_type_model.id,
+    #         )
+    #     )
+    #     crud.form_element_input_type.create(
+    #         db, obj_in=form_element_input_type_in
+    #     )
+    # Create validators
+    for validator in VALIDATORS:
+        validator_in = schemas.ValidatorCreate(
+            name=validator["name"],
         )
-        form_element_in = schemas.FormElementCreate(
-            name=field["name"],
+        crud.validator.create(db, obj_in=validator_in)
+    # # Create validations
+    for essential_form_element in ESSENTIAL_FORM_ELEMENTS:
+        #     # Create form element input types
+        #     form_element_input_type
+        #     if essential_form_element.inputType:
+        #         form_element_input_type_in = (
+        #             schemas.FormElementInputTypeCreate(
+        #                 name=essential_form_element.inputType,
+        #                 description=essential_form_element.description,
+        #             )
+        #         )
+        #         form_element_input_type = (
+        #             crud.form_element_input_type.create(
+        #                 db, obj_in=form_element_input_type_in
+        #             )
+        #         )
+        #     # Create form element types
+        #     if form_element_input_type:
+        #         form_element_type_in = schemas.FormElementTypeCreate(
+        #             type=essential_form_element.type,
+        #             name=essential_form_element.name,
+        #             form_element_input_type_id=form_element_input_type.id,
+        #         )
+        #         form_element_type = crud.form_element_type.create(
+        #             db, obj_in=form_element_type_in
+        #         )
+        #     else:
+        #         form_element_type_in = schemas.FormElementTypeCreate(
+        #             type=essential_form_element.type,
+        #             name=essential_form_element.name,
+        #         )
+        #         form_element_type = crud.form_element_type.create(
+        #             db, obj_in=form_element_type_in
+        #         )
+        # Create form element templates
+        form_element_type = crud.form_element_type.get_by_name(
+            db, name=essential_form_element["type"]
+        )
+        form_element_template_in = schemas.FormElementTemplateCreate(
+            name=essential_form_element["name"],
+            description=essential_form_element["description"],
             form_element_type_id=form_element_type.id,
         )
-        crud.form_element.create(db, obj_in=form_element_in)
-
-    # Create form element list values
-    form_element = crud.form_element.get_by_name(db, name="Country")
-    for field in COUNTRIES:
-        form_element_list_value_in = (
-            schemas.FormElementListValueCreate(
-                value=field["name"], form_element_id=form_element.id
-            )
-        )
-        crud.form_element_list_value.create(
-            db, obj_in=form_element_list_value_in
-        )
-
-    form_element = crud.form_element.get_by_name(db, name="Gender")
-    for field in GENDERS:
-        form_element_list_value_in = (
-            schemas.FormElementListValueCreate(
-                value=field, form_element_id=form_element.id
-            )
-        )
-        crud.form_element_list_value.create(
-            db, obj_in=form_element_list_value_in
-        )
-    # Create filled form
-    FAKE_FORM_ELEMENT = [
-        {"name": "Full name", "value": "john doe"},
-        {"name": "Gender", "value": "male"},
-        {"name": "Country", "value": "morocco"},
-    ]
-    for field in FAKE_FORM_ELEMENT:
-        form_element = crud.form_element.get_by_name(
-            db, name=field["name"]
-        )
-        # Assign a form to form element
-        form_element_template_in = schemas.FormElementTemplateCreate(
-            form_element_id=form_element.id,
-            form_id=1,
-        )
-        crud.form_element_template.create(
+        form_element_template = crud.form_element_template.create(
             db, obj_in=form_element_template_in
         )
+        # Create form element fields
+        form_element_field_in = schemas.FormElementFieldCreate(
+            label=essential_form_element["label"],
+            form_element_template_id=form_element_template.id,
+            form_id=1,
+        )
+        crud.form_element_field.create(
+            db, obj_in=form_element_field_in
+        )
+        # Create Validations for the form element
+        for validation in essential_form_element["validations"]:
+            if len(validation) > 0:
+                validator = crud.validator.get_by_name(
+                    db, name=validation["validator"]["name"]
+                )
+                validation_in = schemas.ValidationCreate(
+                    message=validation["message"],
+                    validator_id=validator.id,
+                    form_element_template_id=form_element_template.id,
+                    # pattern=validation["pattern"],
+                    pattern=is_pattern(validation),
+                )
+                crud.validation.create(db, obj_in=validation_in)
+        # Create form element list value for the form element template
+        if "options" in essential_form_element:
+            for form_element_list_value in essential_form_element[
+                "options"
+            ]:
+                if len(form_element_list_value) > 0:
+                    form_element_list_value_in = schemas.FormElementListValueCreate(
+                        value=form_element_list_value["value"],
+                        form_element_template_id=form_element_template.id,
+                    )
+                    crud.form_element_list_value.create(
+                        db, obj_in=form_element_list_value_in
+                    )
 
-        # Assign a form to a custom license
-        custom_license_in = schemas.CustomLicenseCreate(
-            license_id=3, form_id=1
-        )
-        custom_license = crud.custom_license.get(db, obj_id=3)
-        crud.custom_license.update(
-            db, db_obj=custom_license, obj_in=custom_license_in
-        )
+    # # Create form element types
+    # for name in FORM_ELEMENT_TYPES:
+    #     form_element_type_in = schemas.FormElementTypeCreate(
+    #         name=name
+    #     )
+    #     crud.form_element_type.create(
+    #         db, obj_in=form_element_type_in
+    #     )
+    # # Create form elements with type
+    # for field in FORM_ELEMENT_NAMES:
+    #     form_element_type = crud.form_element_type.get_by_name(
+    #         db, name=field["type"]
+    #     )
+    #     form_element_in = schemas.FormElementCreate(
+    #         name=field["name"],
+    #         form_element_type_id=form_element_type.id,
+    #     )
+    #     crud.form_element_template.create(db, obj_in=form_element_in)
 
-        form_element_type = crud.form_element_type.get(
-            db, obj_id=form_element.form_element_type_id
-        )
-        if form_element_type.name in ["radio", "checkbox", "select"]:
-            filled_form_in = schemas.FilledFormCreate(
-                value=None,
-                form_element_id=form_element.id,
-                client_id="1",
-            )
-            filled_form = crud.filled_form.create(
-                db, obj_in=filled_form_in
-            )
-            # Assign filled form to form element list value
-            form_element_list_value = crud.form_element_list_value.get_by_name_and_form_element_id(
-                db,
-                form_element_id=form_element.id,
-                value=field["value"],
-            )
-            selected_list_value_in = schemas.SelectedListValueCreate(
-                filled_form_id=filled_form.id,
-                form_element_list_value_id=form_element_list_value.id,
-            )
-            crud.selected_list_value.create(
-                db, obj_in=selected_list_value_in
-            )
-        else:
-            filled_form_in = schemas.FilledFormCreate(
-                value=field["value"],
-                form_element_id=form_element.id,
-                client_id="1",
-            )
-            filled_form = crud.filled_form.create(
-                db, obj_in=filled_form_in
-            )
+    # # Create form element list values
+    # form_element_template = crud.form_element_template.get_by_name(db, name="Country")
+    # for field in COUNTRIES:
+    #     form_element_list_value_in = (
+    #         schemas.FormElementListValueCreate(
+    #             value=field["name"], form_element_template_id=form_element_template.id
+    #         )
+    #     )
+    #     crud.form_element_list_value.create(
+    #         db, obj_in=form_element_list_value_in
+    #     )
+
+    # form_element_template = crud.form_element_template.get_by_name(db, name="Gender")
+    # for field in GENDERS:
+    #     form_element_list_value_in = (
+    #         schemas.FormElementListValueCreate(
+    #             value=field, form_element_template_id=form_element_template.id
+    #         )
+    #     )
+    #     crud.form_element_list_value.create(
+    #         db, obj_in=form_element_list_value_in
+    #     )
+
+    # Create filled form
+    # FAKE_FORM_ELEMENT = [
+    #     {"name": "Full name", "value": "john doe"},
+    #     {"name": "Gender", "value": "male"},
+    #     {"name": "Country", "value": "morocco"},
+    # ]
+    # for field in FAKE_FORM_ELEMENT:
+    #     form_element_template = crud.form_element_template.get_by_name(
+    #         db, name=field["name"]
+    #     )
+    #     # Assign a form to form element
+    #     form_element_field_in = schemas.FormElementFieldCreate(
+    #         form_element_template_id=form_element_template.id,
+    #         form_id=1,
+    #     )
+    #     crud.form_element_field.create(
+    #         db, obj_in=form_element_field_in
+    #     )
+
+    #     # Assign a form to a custom license
+    #     custom_license_in = schemas.CustomLicenseCreate(
+    #         license_id=3, form_id=1
+    #     )
+    #     custom_license = crud.custom_license.get(db, obj_id=3)
+    #     crud.custom_license.update(
+    #         db, db_obj=custom_license, obj_in=custom_license_in
+    #     )
+
+    #     form_element_type = crud.form_element_type.get(
+    #         db, obj_id=form_element_template.form_element_type_id
+    #     )
+    #     if form_element_type.name in ["radio", "checkbox", "select"]:
+    #         filled_form_in = schemas.FilledFormCreate(
+    #             value=None,
+    #             form_element_template_id=form_element_template.id,
+    #             client_id="1",
+    #         )
+    #         filled_form = crud.filled_form.create(
+    #             db, obj_in=filled_form_in
+    #         )
+    #         # Assign filled form to form element list value
+    #         form_element_list_value = crud.form_element_list_value.get_by_name_and_form_element_id(
+    #             db,
+    #             form_element_template_id=form_element_template.id,
+    #             value=field["value"],
+    #         )
+    #         selected_list_value_in = schemas.SelectedListValueCreate(
+    #             filled_form_id=filled_form.id,
+    #             form_element_list_value_id=form_element_list_value.id,
+    #         )
+    #         crud.selected_list_value.create(
+    #             db, obj_in=selected_list_value_in
+    #         )
+    #     else:
+    #         filled_form_in = schemas.FilledFormCreate(
+    #             value=field["value"],
+    #             form_element_template_id=form_element_template.id,
+    #             client_id="1",
+    #         )
+    #         filled_form = crud.filled_form.create(
+    #             db, obj_in=filled_form_in
+    #         )

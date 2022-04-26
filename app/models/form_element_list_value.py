@@ -11,22 +11,13 @@ from app.db.base_class import Base
 class FormElementListValue(Base):
     __tablename__ = "form_element_list_values"
     id = Column(Integer, primary_key=True, index=True)
-    value = Column(String, unique=True, index=True, nullable=False)
-    form_element_id = Column(
-        Integer, ForeignKey("form_elements.id"), nullable=False
+    value = Column(String, unique=False, index=False, nullable=False)
+    form_element_template_id = Column(
+        Integer, ForeignKey("form_element_templates.id"), nullable=False
     ) 
-    validation_id = Column(
-        Integer,
-        ForeignKey("validations.id"),
-        unique=True,
-        nullable=False,
-    )
     # TODO relationship
-    form_element = relationship(
-        "FormElement",
+    form_element_template = relationship(
+        "FormElementTemplate",
         back_populates="form_element_list_values",
-    ) 
-    validations = relationship(
-        "Validation",
     ) 
     
