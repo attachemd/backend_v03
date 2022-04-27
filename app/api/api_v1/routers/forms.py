@@ -51,13 +51,11 @@ def create_form(
         crud.form_element_field.create(
             db, obj_in=form_element_field_in
         )
-        # Delete
-        objxyz = crud.form_element_list_value.delete_by_form_element_template_id(
+        # Delete form element list values by form element template
+        crud.form_element_list_value.delete_by_form_element_template_id(
             db,
             form_element_template_id=field_template.id,
         )
-        print("objxyz")
-        print(objxyz)
         # Create form element list value for the form element template
         for (
             form_element_list_value

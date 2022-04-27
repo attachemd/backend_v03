@@ -1,6 +1,8 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
+from .validation import Validation
+
 from .form_element_list_value import FormElementListValue, FormElementListValueCreateForRoute
 
 from .form_element_type import FormElementType
@@ -30,6 +32,7 @@ class FormElementTemplateUpdate(BaseModel):
 class FormElementTemplateInDBBase(FormElementTemplateBase):
     form_element_type: FormElementType
     form_element_list_values: List[FormElementListValue]
+    validations: List[Validation]
     class Config:
         orm_mode = True
 
