@@ -12,8 +12,8 @@ class FormElementListValue(Base):
     __tablename__ = "form_element_list_values"
     id = Column(Integer, primary_key=True, index=True)
     value = Column(String, unique=False, index=False, nullable=False)
-    form_element_template_id = Column(
-        Integer, ForeignKey("form_element_templates.id"), nullable=False
+    form_element_field_id = Column(
+        Integer, ForeignKey("form_element_fields.id"), nullable=False
     ) 
     # TODO relationship
     form_element_template = relationship(

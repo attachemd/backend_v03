@@ -1,5 +1,7 @@
-from typing import Optional
+from typing import List, Optional
 from pydantic import BaseModel
+
+from .form_element_list_value import FormElementListValue
 
 from .form_element_template import FormElementTemplate, FormElementTemplateCreateForRoute
 
@@ -27,6 +29,7 @@ class FormElementFieldUpdate(BaseModel):
 
 class FormElementFieldInDBBase(FormElementFieldBase):
     form_element_template: FormElementTemplate
+    form_element_list_values: List[FormElementListValue]
     class Config:
         orm_mode = True
 

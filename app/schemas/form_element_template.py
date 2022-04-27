@@ -31,7 +31,7 @@ class FormElementTemplateUpdate(BaseModel):
 
 class FormElementTemplateInDBBase(FormElementTemplateBase):
     form_element_type: FormElementType
-    form_element_list_values: List[FormElementListValue]
+    # form_element_list_values: List[FormElementListValue]
     validations: List[Validation]
     class Config:
         orm_mode = True

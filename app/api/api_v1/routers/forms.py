@@ -1,5 +1,5 @@
 from typing import Any, List, Optional, Set
-from fastapi import APIRouter, Depends, Security
+from fastapi import APIRouter, Depends, HTTPException, Security
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from app import crud, exceptions, models, schemas
@@ -34,7 +34,13 @@ def create_form(
     # TODO redundant check
     if current_user is None:
         raise exceptions.get_user_exception("user not found")
-
+    # Check if form name already exists
+    form_with_name = crud.form.get_by_name(db, name=form_in.name)
+    if form_with_name:
+        raise HTTPException(
+            status_code=409,
+            detail="A form with this name already exists",
+        )
     # Create a form
     new_form_in = schemas.FormCreate(name=form_in.name)
     form = crud.form.create(db, obj_in=new_form_in)
@@ -78,8 +84,6 @@ def create_form(
 
 
 # Get all forms ANCHOR[id=my-anchor]
-
-
 @router.get("", response_model=List[schemas.Form])
 def get_all_forms(
     current_user: models.User = Security(
@@ -95,6 +99,44 @@ def get_all_forms(
         raise exceptions.get_user_exception()
     return crud.form.get_multi(db)
 
+
+# Get form by id
+@router.get("/by_id/{form_id}", response_model=schemas.Form)
+def get_form_by_id(
+    form_id=str,
+    current_user: models.User = Security(
+        deps.get_current_active_user,
+        scopes=[Role.ADMIN["name"], Role.SUPER_ADMIN["name"]],
+    ),
+    db: Session = Depends(deps.get_db),
+) -> Any:
+    """
+    # Get form by id.
+    """
+    print('Get form by id')
+    if current_user is None:
+        raise exceptions.get_user_exception()
+    return crud.form.get(db, obj_id=form_id)
+
+# Get form by name
+@router.get("/by_name/{form_name}", response_model=schemas.Form)
+def get_form_by_name(
+    form_name=str,
+    current_user: models.User = Security(
+        deps.get_current_active_user,
+        scopes=[Role.ADMIN["name"], Role.SUPER_ADMIN["name"]],
+    ),
+    db: Session = Depends(deps.get_db),
+) -> Any:
+    """
+    # Get form by name.
+    """
+    if current_user is None:
+        raise exceptions.get_user_exception()
+    form = crud.form.get_by_name(db, name=form_name)
+    print('form')
+    print(form)
+    return form
 
 # Update the form
 

@@ -60,11 +60,12 @@ def create_client(
     # TODO redundant check
     if current_user is None:
         raise exceptions.get_user_exception("user not found")
+    # Check if client name already exists
     client = crud.client.get_by_name(db, name=client_in.name)
     if client:
         raise HTTPException(
             status_code=409,
-            detail="An client with this name already exists",
+            detail="A client with this name already exists",
         )
     return crud.client.create(db, obj_in=client_in)
 

@@ -13,3 +13,7 @@ class FormElementField(Base):
     )
 
     form_element_template = relationship("FormElementTemplate")
+    
+    form_element_list_values = relationship(
+        "FormElementListValue"
+    )

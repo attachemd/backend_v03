@@ -5,7 +5,7 @@ from pydantic import BaseModel
 # Shared properties
 class FormElementListValueBase(BaseModel):
     value: str
-    form_element_template_id: str
+    form_element_field_id: str
 
 
 # Properties to receive via API on creation

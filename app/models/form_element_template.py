@@ -29,9 +29,9 @@ class FormElementTemplate(Base):
     validations = relationship(
         "Validation",
     ) 
-    form_element_list_values = relationship(
-        "FormElementListValue", back_populates="form_element_template"
-    )
+    # form_element_list_values = relationship(
+    #     "FormElementListValue", back_populates="form_element_template"
+    # )
     form_element_type = relationship("FormElementType")
     # filled_forms = relationship(
     #     "FilledForm", back_populates="form_element_template"

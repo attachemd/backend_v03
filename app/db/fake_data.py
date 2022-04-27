@@ -567,9 +567,10 @@ def fake_data(db: Session) -> None:
             )
             crud.custom_license.create(db, obj_in=custom_license_in)
     # Create forms
-    for _ in range(10):
-        form_in = schemas.FormCreate(name=fakegen.word())
-        crud.form.create(db, obj_in=form_in)
+    # for _ in range(10):
+    # form_in = schemas.FormCreate(name=fakegen.word())
+    form_in = schemas.FormCreate(name="essential fields")
+    crud.form.create(db, obj_in=form_in)
     # Create form element types
     for form_element_type_item in FORM_ELEMENT_TYPES:
         form_element_type_in = schemas.FormElementTypeCreate(
