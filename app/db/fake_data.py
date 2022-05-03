@@ -1,5 +1,6 @@
 from datetime import datetime
 import random
+import time
 import uuid
 import faker.providers
 from faker import Faker
@@ -9,6 +10,15 @@ from app import crud, schemas
 
 from app.constants.role import Role
 
+from inspect import currentframe, getframeinfo
+
+frameinfo = getframeinfo(currentframe())
+cf = currentframe()
+filename = getframeinfo(cf).filename
+def get_linenumber():
+    cf = currentframe()
+    return cf.f_back.f_lineno
+
 
 fakegen = Faker()
 
@@ -17,14 +27,14 @@ def fake_phone_number(fake: Faker) -> str:
     return f"+212 {fake.msisdn()[4:]}"
 
 
-COUNTRIES = [
+COUNTRIES_TEMP = [
     {"name": "Afghanistan", "code": "AF"},
     {"name": "land Islands", "code": "AX"},
     {"name": "Albania", "code": "AL"},
     {"name": "Algeria", "code": "DZ"},
 ]
 
-COUNTRIES_TEMP = [
+COUNTRIES = [
     {"name": "Afghanistan", "code": "AF"},
     {"name": "land Islands", "code": "AX"},
     {"name": "Albania", "code": "AL"},
@@ -276,6 +286,7 @@ COUNTRIES_TEMP = [
     {"name": "Zambia", "code": "ZM"},
     {"name": "Zimbabwe", "code": "ZW"},
 ]
+
 x_FORM_ELEMENT_TYPES_x = {
     "button": "button",
     "checkbox": "checkbox",
@@ -312,7 +323,7 @@ VALIDATORS = [
 ESSENTIAL_FORM_ELEMENTS = [
     {
         "type": "input",
-        "label": "Text",
+        "label": "Text2",
         "inputType": "text",
         "name": "text",
         "value": "text",
@@ -443,6 +454,7 @@ def is_pattern(validation):
 
 
 def fake_data(db: Session) -> None:
+    start_time = time.time()
     # Create user for each role except super admin
     members = [
         attr
@@ -485,6 +497,7 @@ def fake_data(db: Session) -> None:
                 crud.user_role.create(db, obj_in=user_role_in)
 
     # Create Clients
+    clients_in = list()
     for _ in range(20):
         name = fakegen.name()
         word = fakegen.word()
@@ -494,9 +507,8 @@ def fake_data(db: Session) -> None:
         username = first_name[0].lower() + last_name.lower().replace(
             " ", ""
         )
-        email = word + "@" + domain + ".com"
-        print("email")
-        print(email)
+        number = random.randint(1111,9999)
+        email = word + str(number) + "@" + domain + ".com"
         phone_number = fake_phone_number(fakegen)
         client = crud.client.get_by_email(db, email=email)
         if not client:
@@ -508,9 +520,13 @@ def fake_data(db: Session) -> None:
                 phone_number=phone_number,
                 user_id="1",
             )
-            crud.client.create(db, obj_in=client_in)
-
+            clients_in.append(client_in)
+            # crud.client.create(db, obj_in=client_in)
+    crud.client.bulk_create(db, objs_in=clients_in)
+            
+    # crud.validator.coco(db)
     # Create licenses
+    licenses_in = list()
     for _ in range(40):
         license_in = schemas.LicenseCreate(
             key=uuid.uuid4().hex,
@@ -525,60 +541,80 @@ def fake_data(db: Session) -> None:
                 ).strftime("%d-%m-%Y %H:%M:%S"),
                 "%d-%m-%Y %H:%M:%S",
             ),
+            # expiry=datetime.date("2000-10-14"),
+            # expiry=datetime.utcnow,
+            # expiry=datetime(2012, 3, 3, 10, 10, 10),
             product_id=random.randint(1, 10),
             client_id=random.randint(1, 20),
             # expiry=fakegen.date_time().strftime("%d-%m-%Y %H:%M:%S")
             # expiry='test'
         )
+        licenses_in.append(license_in)
         # print("datetime.strptime('1990-09-06', '%Y-%m-%d')");
         # print(datetime.strptime('1990-09-06', '%Y-%m-%d'))
-        crud.license.create(db, obj_in=license_in)
-
+        # crud.license.create(db, obj_in=license_in)
+    crud.license.bulk_create(db, objs_in=licenses_in)
+    
     # Create products
+    products_in = list()
     for _ in range(10):
         product_in = schemas.ProductCreate(
             name=fakegen.company(),
             description=fakegen.sentence(),
         )
-        crud.product.create(db, obj_in=product_in)
-
-    # Assign license to product
+        products_in.append(product_in)
+        # crud.product.create(db, obj_in=product_in)
+    crud.product.bulk_create(db, objs_in=products_in)
+    # Assign license to plan
+    user_roles_in = list()
     for _ in range(10):
         i = _ + 1
         user_role_in = schemas.PlanCreate(
             license_id=str(i), product_id=str(i)
         )
-        crud.plan.create(db, obj_in=user_role_in)
-
-    # Create simple licenses
+        user_roles_in.append(user_role_in)
+        # crud.plan.create(db, obj_in=user_role_in)
+    crud.plan.bulk_create(db, objs_in=user_roles_in)
+    
+    # Create simple licenses & custom licenses
     all_license = crud.license.get_multi(db)
+    simple_licenses_in = list()
+    custom_licenses_in = list()
     for field in all_license:
         if field.type == "SIMPLE":
             simple_license_in = schemas.SimpleLicenseCreate(
                 device_name=fakegen.first_name() + "-PC",
                 license_id=field.id,
             )
-            crud.simple_license.create(db, obj_in=simple_license_in)
-    # Create custom licenses
-    for field in all_license:
+            simple_licenses_in.append(simple_license_in)
+            # crud.simple_license.create(db, obj_in=simple_license_in)
         if field.type == "CUSTOM":
             custom_license_in = schemas.CustomLicenseCreate(
                 license_id=field.id
             )
-            crud.custom_license.create(db, obj_in=custom_license_in)
+            custom_licenses_in.append(custom_license_in)
+            # crud.custom_license.create(db, obj_in=custom_license_in)
+    crud.simple_license.bulk_create(db, objs_in=simple_licenses_in)
+    crud.custom_license.bulk_create(db, objs_in=custom_licenses_in)
+    
     # Create forms
     # for _ in range(10):
     # form_in = schemas.FormCreate(name=fakegen.word())
     form_in = schemas.FormCreate(name="essential fields")
     crud.form.create(db, obj_in=form_in)
     # Create form element types
+    form_element_types_in = list()
     for form_element_type_item in FORM_ELEMENT_TYPES:
         form_element_type_in = schemas.FormElementTypeCreate(
             name=form_element_type_item["type"],
         )
-        crud.form_element_type.create(
-            db, obj_in=form_element_type_in
-        )
+        form_element_types_in.append(form_element_type_in)
+        # crud.form_element_type.create(
+        #     db, obj_in=form_element_type_in
+        # )
+    crud.form_element_type.bulk_create(
+        db, objs_in=form_element_types_in
+    )
     # Create form element input types
     # form_element_type_model = crud.form_element_type.get_by_name(
     #     db, name="input"
@@ -594,12 +630,16 @@ def fake_data(db: Session) -> None:
     #         db, obj_in=form_element_input_type_in
     #     )
     # Create validators
+    validators_in = list()
     for validator in VALIDATORS:
         validator_in = schemas.ValidatorCreate(
             name=validator["name"],
         )
-        crud.validator.create(db, obj_in=validator_in)
-    # # Create validations
+        validators_in.append(validator_in)
+        # crud.validator.create(db, obj_in=validator_in)
+    crud.validator.bulk_create(db, objs_in=validators_in)
+    
+    # Create validations
     for essential_form_element in ESSENTIAL_FORM_ELEMENTS:
         #     # Create form element input types
         #     form_element_input_type
@@ -647,7 +687,7 @@ def fake_data(db: Session) -> None:
         )
         # Create form element fields
         form_element_field_in = schemas.FormElementFieldCreate(
-            label=essential_form_element["label"],
+            name=essential_form_element["label"],
             form_element_template_id=form_element_template.id,
             form_id=1,
         )
@@ -669,18 +709,18 @@ def fake_data(db: Session) -> None:
                 )
                 crud.validation.create(db, obj_in=validation_in)
         # Create form element list value for the form element template
-        if "options" in essential_form_element:
-            for form_element_list_value in essential_form_element[
-                "options"
-            ]:
-                if len(form_element_list_value) > 0:
-                    form_element_list_value_in = schemas.FormElementListValueCreate(
-                        value=form_element_list_value["value"],
-                        form_element_template_id=form_element_template.id,
-                    )
-                    crud.form_element_list_value.create(
-                        db, obj_in=form_element_list_value_in
-                    )
+        # if "options" in essential_form_element:
+        #     for form_element_list_value in essential_form_element[
+        #         "options"
+        #     ]:
+        #         if len(form_element_list_value) > 0:
+        #             form_element_list_value_in = schemas.FormElementListValueCreate(
+        #                 value=form_element_list_value["value"],
+        #                 form_element_template_id=form_element_template.id,
+        #             )
+        #             crud.form_element_list_value.create(
+        #                 db, obj_in=form_element_list_value_in
+        #             )
 
     # # Create form element types
     # for name in FORM_ELEMENT_TYPES:
@@ -701,17 +741,65 @@ def fake_data(db: Session) -> None:
     #     )
     #     crud.form_element_template.create(db, obj_in=form_element_in)
 
-    # # Create form element list values
-    # form_element_template = crud.form_element_template.get_by_name(db, name="Country")
-    # for field in COUNTRIES:
-    #     form_element_list_value_in = (
-    #         schemas.FormElementListValueCreate(
-    #             value=field["name"], form_element_template_id=form_element_template.id
-    #         )
-    #     )
-    #     crud.form_element_list_value.create(
-    #         db, obj_in=form_element_list_value_in
-    #     )
+    # Create form element list values
+    # Single Selection
+    OPTIONS = [
+        {
+            "name": "male",
+        },
+        {
+            "name": "female",
+        },
+    ]
+    form_element_field = crud.form_element_field.get_by_name(
+        db, name="Single Selection"
+    )
+
+    # start_time = time.time()
+    form_element_list_values_in = list()
+    for field in OPTIONS:
+        form_element_list_value_in = (
+            schemas.FormElementListValueCreate(
+                name=field["name"],
+                form_element_field_id=form_element_field.id,
+            )
+        )
+
+        form_element_list_values_in.append(
+            form_element_list_value_in
+        )
+        # crud.form_element_list_value.create(
+        #     db, obj_in=form_element_list_value_in
+        # )
+    crud.form_element_list_value.bulk_create(
+        db, objs_in=form_element_list_values_in
+    )
+    
+    # Multiple Selection
+    form_element_field = crud.form_element_field.get_by_name(
+        db, name="Multiple Selection"
+    )
+
+    form_element_list_values_in = list()
+    for field in COUNTRIES:
+        form_element_list_value_in = (
+            schemas.FormElementListValueCreate(
+                name=field["name"],
+                form_element_field_id=form_element_field.id,
+            )
+        )
+
+        form_element_list_values_in.append(
+            form_element_list_value_in
+        )
+        # crud.form_element_list_value.create(
+        #     db, obj_in=form_element_list_value_in
+        # )
+    crud.form_element_list_value.bulk_create(
+        db, objs_in=form_element_list_values_in
+    )
+    print("the next line from:   ", filename, get_linenumber()+1)
+    print("--- populate db in %s seconds ---" % (time.time() - start_time))
 
     # form_element_template = crud.form_element_template.get_by_name(db, name="Gender")
     # for field in GENDERS:

@@ -18,6 +18,23 @@ class CRUDFormElementListValue(
         FormElementListValueUpdate,
     ]
 ):
+    # def bulk_create(
+    #     self,
+    #     db: Session,
+    #     *,
+    #     objs_in: List[FormElementListValueCreate]
+    # ) -> FormElementListValue:
+    #     db_objs = list()
+    #     for obj_in in objs_in:
+    #         db_obj = FormElementListValue(
+    #             value=obj_in.value,
+    #             form_element_field_id=obj_in.form_element_field_id,
+    #         )
+    #         db_objs.append(db_obj)
+    #     db.bulk_save_objects(db_objs)
+    #     db.commit()
+    #     return "Ok"
+
     def get_by_name_and_form_element_id(
         self,
         db: Session,
@@ -35,8 +52,8 @@ class CRUDFormElementListValue(
             .first()
         )
 
-    def delete_by_form_element_template_id(
-        self, db: Session, *, form_element_template_id: str
+    def delete_by_form_element_field_id(
+        self, db: Session, *, form_element_field_id: str
     ):
         # rows = db.query(self.model).filter(
         #     self.model.form_element_template_id
@@ -57,8 +74,7 @@ class CRUDFormElementListValue(
         # db.session.commit()
 
         statement = delete(self.model).where(
-            self.model.form_element_template_id
-            == form_element_template_id
+            self.model.form_element_field_id == form_element_field_id
         )
         # session.exec(statement)
         session.engine.execute(statement)

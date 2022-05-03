@@ -13,6 +13,7 @@ from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from app.db import session
 
 from app.db.base import Base
 
@@ -58,12 +59,55 @@ class CRUDBase(
     ) -> ModelType:
         # TODO jsonable_encoder
         obj_in_data = jsonable_encoder(obj_in)
+        # print('obj_in_data')
+        # print(obj_in_data)
         db_obj = self.model(**obj_in_data)
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
         return db_obj
-
+    
+    def bulk_create(
+        self,
+        db: Session,
+        *,
+        objs_in: List[CreateSchemaType]
+    ) -> ModelType:
+        db_objs = list()
+        for obj_in in objs_in:
+            # db_obj = FormElementListValue(
+            #     value=obj_in.value,
+            #     form_element_field_id=obj_in.form_element_field_id,
+            # )
+            obj_in_data = jsonable_encoder(obj_in)
+            # print('obj_in_data')
+            # print(obj_in_data)
+            # db_obj = self.model(**obj_in_data)
+            # db_objs.append(db_obj)
+            db_objs.append(obj_in_data)
+            
+        # db.bulk_save_objects(db_objs)
+        
+        # db.add_all(db_objs)
+        
+        # db.commit()
+        
+        session.engine.execute(
+            self.model.__table__.insert(),
+            db_objs,
+        )
+        
+        # db.bulk_insert_mappings(self.model, db_objs)
+        
+        # try:
+        #     db.bulk_save_objects(db_objs)
+        # except Exception as e:
+        #     print(e)
+        #     raise HTTPException(status_code=404, detail="Row not found")
+        # finally:
+        #     db.commit()
+        return "Ok"
+    
     def update(
         self,
         db: Session,

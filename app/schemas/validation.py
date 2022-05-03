@@ -7,7 +7,8 @@ from pydantic import BaseModel
 class ValidationBase(BaseModel):
     message: str
     validator_id: str
-    form_element_template_id: str
+    form_element_template_id: Optional[str]
+    form_element_field_id: Optional[str]
     pattern: Optional[str]
 
 

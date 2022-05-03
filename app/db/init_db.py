@@ -2,7 +2,14 @@ from sqlalchemy.orm import Session
 from app import crud, schemas
 from app.constants.role import Role
 from app.core.config import settings
+from inspect import currentframe, getframeinfo
 
+frameinfo = getframeinfo(currentframe())
+cf = currentframe()
+filename = getframeinfo(cf).filename
+def get_linenumber():
+    cf = currentframe()
+    return cf.f_back.f_lineno
 
 def init_db(db: Session) -> None:
     # # Create Super Admin Client
@@ -41,7 +48,7 @@ def init_db(db: Session) -> None:
         and not attr.startswith("__")
     ]
     for role_name in members:
-        print(role_name)
+        # print(role_name, ":   ", filename, get_linenumber())
         role = crud.role.get_by_name(
             db, name=getattr(Role, role_name)["name"]
         )

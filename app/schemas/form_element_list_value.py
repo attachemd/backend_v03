@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 # Shared properties
 class FormElementListValueBase(BaseModel):
-    value: str
+    name: str
     form_element_field_id: str
 
 
@@ -13,7 +13,7 @@ class FormElementListValueCreate(FormElementListValueBase):
     pass
 
 class FormElementListValueCreateForRoute(BaseModel):
-    value: str
+    name: str
 
 
 # Properties to receive via API on update

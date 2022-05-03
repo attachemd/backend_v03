@@ -50,7 +50,7 @@ def create_form(
     for form_element_field in form_in.form_element_fields:
         field_template = form_element_field.form_element_template
         form_element_field_in = schemas.FormElementFieldCreate(
-            label=form_element_field.label,
+            name=form_element_field.label,
             form_element_template_id=field_template.id,
             form_id=form.id,
         )
@@ -58,18 +58,18 @@ def create_form(
             db, obj_in=form_element_field_in
         )
         # Delete form element list values by form element template
-        crud.form_element_list_value.delete_by_form_element_template_id(
+        crud.form_element_list_value.delete_by_form_element_field_id(
             db,
-            form_element_template_id=field_template.id,
+            form_element_field_id=form_element_field.id,
         )
-        # Create form element list value for the form element template
+        # Create form element list value for the form element field
         for (
             form_element_list_value
-        ) in field_template.form_element_list_values:
+        ) in form_element_field.form_element_list_values:
             form_element_list_value_in = (
                 schemas.FormElementListValueCreate(
-                    value=form_element_list_value.value,
-                    form_element_template_id=field_template.id,
+                    name=form_element_list_value.name,
+                    form_element_field_id=form_element_field.id,
                 )
             )
             crud.form_element_list_value.create(

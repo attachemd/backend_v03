@@ -27,7 +27,13 @@ class Validation(Base):
         Integer,
         ForeignKey("form_element_templates.id"),
         unique=False,
-        nullable=False,
+        nullable=True,
+    )
+    form_element_field_id = Column(
+        Integer,
+        ForeignKey("form_element_fields.id"),
+        unique=False,
+        nullable=True,
     )
     validator = relationship(
         "Validator"

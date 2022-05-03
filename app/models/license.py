@@ -3,6 +3,7 @@ import enum
 
 from sqlalchemy import Boolean, Column, Date, ForeignKey, Integer, String, Text, DateTime, Enum
 from sqlalchemy.orm import relationship
+import sqlalchemy.types as types
 
 from app.db.base_class import Base
 
@@ -10,6 +11,27 @@ from app.db.base_class import Base
 # class LicenseType(enum.Enum):
 #     SIMPLE = "SIMPLE"
 #     CUSTOM = "CUSTOM"
+
+class MyType(types.UserDefinedType):
+    cache_ok = True
+
+    def __init__(self, precision = 8):
+        self.precision = precision
+
+    def get_col_spec(self, **kw):
+        return "MYTYPE(%s)" % self.precision
+
+    def bind_processor(self, dialect):
+        def process(value):
+            return value
+        return process
+
+    def result_processor(self, dialect, coltype):
+        def process(value):
+            if type(value) is str:
+                return datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S")
+            return value
+        return process
 
 
 class License(Base):
@@ -20,7 +42,8 @@ class License(Base):
     # type = Column(Enum(LicenseType))
     type = Column(String(255))
     description = Column(Text)
-    expiry = Column(DateTime, index=True)
+    # expiry = Column(DateTime, index=True)
+    expiry = Column(MyType)
     # expiry = Column(Date, index=True)
     # expiry = Column(String(255))
     status = Column(Boolean(), default=False, nullable=False)

@@ -21,7 +21,7 @@ class FormElementTemplateCreate(FormElementTemplateBase):
 
 class FormElementTemplateCreateForRoute(BaseModel):
     id: str
-    form_element_list_values: List[FormElementListValueCreateForRoute]
+    # form_element_list_values: List[FormElementListValueCreateForRoute]
 
 
 # Properties to receive via API on update
@@ -30,6 +30,7 @@ class FormElementTemplateUpdate(BaseModel):
 
 
 class FormElementTemplateInDBBase(FormElementTemplateBase):
+    id: str
     form_element_type: FormElementType
     # form_element_list_values: List[FormElementListValue]
     validations: List[Validation]
