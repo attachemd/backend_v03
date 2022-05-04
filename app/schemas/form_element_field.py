@@ -20,7 +20,7 @@ class FormElementFieldCreate(FormElementFieldBase):
     pass
 
 class FormElementFieldCreateForRoute(BaseModel):
-    id: str
+    # id: str
     name: str
     form_element_template: FormElementTemplateCreateForRoute
     form_element_list_values: List[FormElementListValueCreateForRoute]

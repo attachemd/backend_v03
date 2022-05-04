@@ -6,7 +6,8 @@ from .form_element_field import FormElementField, FormElementFieldCreateForRoute
 
 # Shared properties
 class FormBase(BaseModel):
-    name: str
+    # name: str
+    pass
 
 
 # Properties to receive via API on creation

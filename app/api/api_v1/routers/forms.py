@@ -35,33 +35,34 @@ def create_form(
     if current_user is None:
         raise exceptions.get_user_exception("user not found")
     # Check if form name already exists
-    form_with_name = crud.form.get_by_name(db, name=form_in.name)
-    if form_with_name:
-        raise HTTPException(
-            status_code=409,
-            detail="A form with this name already exists",
-        )
+    # form_with_name = crud.form.get_by_name(db, name=form_in.name)
+    # if form_with_name:
+    #     raise HTTPException(
+    #         status_code=409,
+    #         detail="A form with this name already exists",
+    #     )
     # Create a form
-    new_form_in = schemas.FormCreate(name=form_in.name)
+    # new_form_in = schemas.FormCreate(name=form_in.name)
+    new_form_in = schemas.FormCreate()
     form = crud.form.create(db, obj_in=new_form_in)
+
     # Create form element fields
-    # print('form_in.form_element_fields')
-    # print(form_in.form_element_fields)
     for form_element_field in form_in.form_element_fields:
         field_template = form_element_field.form_element_template
         form_element_field_in = schemas.FormElementFieldCreate(
-            name=form_element_field.label,
+            name=form_element_field.name,
             form_element_template_id=field_template.id,
             form_id=form.id,
         )
-        crud.form_element_field.create(
+        form_element_field_model = crud.form_element_field.create(
             db, obj_in=form_element_field_in
         )
+
         # Delete form element list values by form element template
-        crud.form_element_list_value.delete_by_form_element_field_id(
-            db,
-            form_element_field_id=form_element_field.id,
-        )
+        # crud.form_element_list_value.delete_by_form_element_field_id(
+        #     db,
+        #     form_element_field_id=form_element_field.id,
+        # )
         # Create form element list value for the form element field
         for (
             form_element_list_value
@@ -69,7 +70,8 @@ def create_form(
             form_element_list_value_in = (
                 schemas.FormElementListValueCreate(
                     name=form_element_list_value.name,
-                    form_element_field_id=form_element_field.id,
+                    form_element_field_id=form_element_field_model.id,
+                    # form_element_field_id="20",
                 )
             )
             crud.form_element_list_value.create(
@@ -113,7 +115,6 @@ def get_form_by_id(
     """
     # Get form by id.
     """
-    print('Get form by id')
     if current_user is None:
         raise exceptions.get_user_exception()
     return crud.form.get(db, obj_id=form_id)

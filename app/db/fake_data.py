@@ -600,7 +600,9 @@ def fake_data(db: Session) -> None:
     # Create forms
     # for _ in range(10):
     # form_in = schemas.FormCreate(name=fakegen.word())
-    form_in = schemas.FormCreate(name="essential fields")
+    # form_in = schemas.FormCreate(name="essential fields")
+    # create essential fields form
+    form_in = schemas.FormCreate()
     crud.form.create(db, obj_in=form_in)
     # Create form element types
     form_element_types_in = list()
@@ -743,37 +745,37 @@ def fake_data(db: Session) -> None:
 
     # Create form element list values
     # Single Selection
-    OPTIONS = [
-        {
-            "name": "male",
-        },
-        {
-            "name": "female",
-        },
-    ]
-    form_element_field = crud.form_element_field.get_by_name(
-        db, name="Single Selection"
-    )
+    # OPTIONS = [
+    #     {
+    #         "name": "male",
+    #     },
+    #     {
+    #         "name": "female",
+    #     },
+    # ]
+    # form_element_field = crud.form_element_field.get_by_name(
+    #     db, name="Single Selection"
+    # )
 
-    # start_time = time.time()
-    form_element_list_values_in = list()
-    for field in OPTIONS:
-        form_element_list_value_in = (
-            schemas.FormElementListValueCreate(
-                name=field["name"],
-                form_element_field_id=form_element_field.id,
-            )
-        )
+    # # start_time = time.time()
+    # form_element_list_values_in = list()
+    # for field in OPTIONS:
+    #     form_element_list_value_in = (
+    #         schemas.FormElementListValueCreate(
+    #             name=field["name"],
+    #             form_element_field_id=form_element_field.id,
+    #         )
+    #     )
 
-        form_element_list_values_in.append(
-            form_element_list_value_in
-        )
-        # crud.form_element_list_value.create(
-        #     db, obj_in=form_element_list_value_in
-        # )
-    crud.form_element_list_value.bulk_create(
-        db, objs_in=form_element_list_values_in
-    )
+    #     form_element_list_values_in.append(
+    #         form_element_list_value_in
+    #     )
+    #     # crud.form_element_list_value.create(
+    #     #     db, obj_in=form_element_list_value_in
+    #     # )
+    # crud.form_element_list_value.bulk_create(
+    #     db, objs_in=form_element_list_values_in
+    # )
     
     # Multiple Selection
     form_element_field = crud.form_element_field.get_by_name(
