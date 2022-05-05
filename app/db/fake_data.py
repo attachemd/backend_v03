@@ -323,7 +323,7 @@ VALIDATORS = [
 ESSENTIAL_FORM_ELEMENTS = [
     {
         "type": "input",
-        "label": "Text2",
+        "label": "Text",
         "inputType": "text",
         "name": "text",
         "value": "text",
