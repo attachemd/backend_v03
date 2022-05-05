@@ -23,7 +23,7 @@ class FormElementFieldCreateForRoute(BaseModel):
     # id: str
     name: str
     form_element_template: FormElementTemplateCreateForRoute
-    form_element_list_values: List[FormElementListValueCreateForRoute]
+    form_element_list_values: Optional[List[FormElementListValueCreateForRoute]]
 
 
 # Properties to receive via API on update
