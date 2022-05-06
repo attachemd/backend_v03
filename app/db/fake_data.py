@@ -778,28 +778,28 @@ def fake_data(db: Session) -> None:
     # )
     
     # Multiple Selection
-    form_element_field = crud.form_element_field.get_by_name(
-        db, name="Multiple Selection"
-    )
+    # form_element_field = crud.form_element_field.get_by_name(
+    #     db, name="Multiple Selection"
+    # )
 
-    form_element_list_values_in = list()
-    for field in COUNTRIES:
-        form_element_list_value_in = (
-            schemas.FormElementListValueCreate(
-                name=field["name"],
-                form_element_field_id=form_element_field.id,
-            )
-        )
+    # form_element_list_values_in = list()
+    # for field in COUNTRIES:
+    #     form_element_list_value_in = (
+    #         schemas.FormElementListValueCreate(
+    #             name=field["name"],
+    #             form_element_field_id=form_element_field.id,
+    #         )
+    #     )
 
-        form_element_list_values_in.append(
-            form_element_list_value_in
-        )
-        # crud.form_element_list_value.create(
-        #     db, obj_in=form_element_list_value_in
-        # )
-    crud.form_element_list_value.bulk_create(
-        db, objs_in=form_element_list_values_in
-    )
+    #     form_element_list_values_in.append(
+    #         form_element_list_value_in
+    #     )
+    #     # crud.form_element_list_value.create(
+    #     #     db, obj_in=form_element_list_value_in
+    #     # )
+    # crud.form_element_list_value.bulk_create(
+    #     db, objs_in=form_element_list_values_in
+    # )
     print("the next line from:   ", filename, get_linenumber()+1)
     print("--- populate db in %s seconds ---" % (time.time() - start_time))
 
