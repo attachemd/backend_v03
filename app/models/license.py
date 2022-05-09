@@ -59,12 +59,12 @@ class License(Base):
     client_id = Column(
         Integer, ForeignKey("clients.id"), nullable=True
     )
-    simple_license = relationship(
-        "SimpleLicense", back_populates="license", uselist=False
-    )
-    custom_license = relationship(
-        "CustomLicense", back_populates="license", uselist=False
-    )
+    # simple_license = relationship(
+    #     "SimpleLicense", back_populates="license", uselist=False
+    # )
+    # custom_license = relationship(
+    #     "CustomLicense", back_populates="license", uselist=False
+    # )
 
     product = relationship("Product", back_populates="licenses")
     client = relationship("Client", back_populates="licenses")

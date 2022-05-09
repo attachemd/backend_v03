@@ -18,6 +18,13 @@ class Product(Base):
     description = Column(
         Text, index=True, nullable=True
     )
+    form_id = Column(
+        Integer, ForeignKey("forms.id"), nullable=True
+    )
 
-    plans = relationship("Plan", back_populates="product")
+    # plans = relationship("Plan", back_populates="product")
     licenses = relationship("License", back_populates="product")
+    form = relationship("Form", back_populates="products")
+    # custom_license = relationship(
+    #     "CustomLicense", back_populates="product", uselist=False
+    # )

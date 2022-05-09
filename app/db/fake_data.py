@@ -566,27 +566,27 @@ def fake_data(db: Session) -> None:
         # crud.product.create(db, obj_in=product_in)
     crud.product.bulk_create(db, objs_in=products_in)
     # Assign license to plan
-    user_roles_in = list()
-    for _ in range(10):
-        i = _ + 1
-        user_role_in = schemas.PlanCreate(
-            license_id=str(i), product_id=str(i)
-        )
-        user_roles_in.append(user_role_in)
-        # crud.plan.create(db, obj_in=user_role_in)
-    crud.plan.bulk_create(db, objs_in=user_roles_in)
+    # user_roles_in = list()
+    # for _ in range(10):
+    #     i = _ + 1
+    #     user_role_in = schemas.PlanCreate(
+    #         license_id=str(i), product_id=str(i)
+    #     )
+    #     user_roles_in.append(user_role_in)
+    #     # crud.plan.create(db, obj_in=user_role_in)
+    # crud.plan.bulk_create(db, objs_in=user_roles_in)
     
     # Create simple licenses & custom licenses
     all_license = crud.license.get_multi(db)
-    simple_licenses_in = list()
+    # simple_licenses_in = list()
     custom_licenses_in = list()
     for field in all_license:
-        if field.type == "SIMPLE":
-            simple_license_in = schemas.SimpleLicenseCreate(
-                device_name=fakegen.first_name() + "-PC",
-                license_id=field.id,
-            )
-            simple_licenses_in.append(simple_license_in)
+        # if field.type == "SIMPLE":
+        #     simple_license_in = schemas.SimpleLicenseCreate(
+        #         device_name=fakegen.first_name() + "-PC",
+        #         license_id=field.id,
+        #     )
+        #     simple_licenses_in.append(simple_license_in)
             # crud.simple_license.create(db, obj_in=simple_license_in)
         if field.type == "CUSTOM":
             custom_license_in = schemas.CustomLicenseCreate(
@@ -594,7 +594,7 @@ def fake_data(db: Session) -> None:
             )
             custom_licenses_in.append(custom_license_in)
             # crud.custom_license.create(db, obj_in=custom_license_in)
-    crud.simple_license.bulk_create(db, objs_in=simple_licenses_in)
+    # crud.simple_license.bulk_create(db, objs_in=simple_licenses_in)
     crud.custom_license.bulk_create(db, objs_in=custom_licenses_in)
     
     # Create forms

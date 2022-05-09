@@ -15,3 +15,4 @@ class Form(Base):
     # name = Column(String, unique=False, index=True, nullable=False)
     # TODO relationship
     form_element_fields = relationship("FormElementField")
+    products = relationship("Product", back_populates="form")

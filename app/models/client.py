@@ -37,5 +37,5 @@ class Client(Base):
     )
 
     user = relationship("User", back_populates="clients")
-    plan = relationship("Plan", back_populates="clients")
+    # plan = relationship("Plan", back_populates="clients")
     licenses = relationship("License", back_populates="client")
