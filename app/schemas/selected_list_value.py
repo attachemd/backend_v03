@@ -6,8 +6,9 @@ from .form_element_option import FormElementOption
 
 # Shared properties
 class SelectedListValueBase(BaseModel):
-    selected_value_id: str
+    # selected_value_id: str
     form_element_option_id: str
+    form_element_field_id: str
 
 
 # Properties to receive via API on creation

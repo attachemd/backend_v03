@@ -1,6 +1,10 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
+from .selected_list_value import SelectedListValueCreate
+
+from .selected_value import SelectedValueCreate
+
 from .validation import Validation
 
 from .form_element_option import FormElementOption, FormElementOptionCreateForRoute
@@ -24,6 +28,8 @@ class FormElementFieldCreateForRoute(BaseModel):
     name: str
     form_element_template: FormElementTemplateCreateForRoute
     form_element_options: Optional[List[FormElementOptionCreateForRoute]]
+    selected_value: Optional[SelectedValueCreate]
+    selected_list_values: Optional[SelectedListValueCreate]
 
 
 # Properties to receive via API on update
@@ -36,6 +42,8 @@ class FormElementFieldInDBBase(FormElementFieldBase):
     form_element_template: FormElementTemplate
     form_element_options: List[FormElementOption]
     field_validations_overriding: List[Validation]
+    selected_value: Optional[SelectedValueCreate]
+    # selected_list_values: Optional[SelectedListValueCreate]
     class Config:
         orm_mode = True
 

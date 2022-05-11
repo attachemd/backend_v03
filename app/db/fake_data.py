@@ -561,6 +561,7 @@ def fake_data(db: Session) -> None:
         product_in = schemas.ProductCreate(
             name=fakegen.company(),
             description=fakegen.sentence(),
+            form_id=2
         )
         products_in.append(product_in)
         # crud.product.create(db, obj_in=product_in)
@@ -815,6 +816,69 @@ def fake_data(db: Session) -> None:
     #     )
 
     # Create selected value
+    # FAKE_FORM_ELEMENT = [
+    #     {"name": "Full name", "value": "john doe"},
+    #     {"name": "Gender", "value": "male"},
+    #     {"name": "Country", "value": "morocco"},
+    # ]
+    # for field in FAKE_FORM_ELEMENT:
+    #     form_element_template = crud.form_element_template.get_by_name(
+    #         db, name=field["name"]
+    #     )
+    #     # Assign a form to form element
+    #     form_element_field_in = schemas.FormElementFieldCreate(
+    #         form_element_template_id=form_element_template.id,
+    #         form_id=1,
+    #     )
+    #     crud.form_element_field.create(
+    #         db, obj_in=form_element_field_in
+    #     )
+
+    #     # Assign a form to a custom license
+    #     custom_license_in = schemas.CustomLicenseCreate(
+    #         license_id=3, form_id=1
+    #     )
+    #     custom_license = crud.custom_license.get(db, obj_id=3)
+    #     crud.custom_license.update(
+    #         db, db_obj=custom_license, obj_in=custom_license_in
+    #     )
+
+    #     form_element_type = crud.form_element_type.get(
+    #         db, obj_id=form_element_template.form_element_type_id
+    #     )
+    #     if form_element_type.name in ["radio", "checkbox", "select"]:
+    #         selected_value_in = schemas.SelectedValueCreate(
+    #             value=None,
+    #             form_element_template_id=form_element_template.id,
+    #             client_id="1",
+    #         )
+    #         selected_value = crud.selected_value.create(
+    #             db, obj_in=selected_value_in
+    #         )
+    #         # Assign selected value to form element option
+    #         form_element_option = crud.form_element_option.get_by_name_and_form_element_id(
+    #             db,
+    #             form_element_template_id=form_element_template.id,
+    #             value=field["value"],
+    #         )
+    #         selected_list_value_in = schemas.SelectedListValueCreate(
+    #             selected_value_id=selected_value.id,
+    #             form_element_option_id=form_element_option.id,
+    #         )
+    #         crud.selected_list_value.create(
+    #             db, obj_in=selected_list_value_in
+    #         )
+    #     else:
+    #         selected_value_in = schemas.SelectedValueCreate(
+    #             value=field["value"],
+    #             form_element_template_id=form_element_template.id,
+    #             client_id="1",
+    #         )
+    #         selected_value = crud.selected_value.create(
+    #             db, obj_in=selected_value_in
+    #         )
+    
+    # # Create selected value
     # FAKE_FORM_ELEMENT = [
     #     {"name": "Full name", "value": "john doe"},
     #     {"name": "Gender", "value": "male"},

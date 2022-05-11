@@ -9,7 +9,7 @@ from .selected_list_value import SelectedListValue
 
 # Shared properties
 class SelectedValueBase(BaseModel):
-    form_element_template_id: str
+    form_element_field_id: str
     client_id: str
     value: Optional[str]
 

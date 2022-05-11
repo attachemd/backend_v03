@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 
 
@@ -5,6 +6,7 @@ from pydantic import BaseModel
 class ProductBase(BaseModel):
     name: str
     description: str
+    form_id: Optional[str]
 
 
 # Properties to receive via API on creation
