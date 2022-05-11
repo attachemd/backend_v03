@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 from .validation import Validation
 
-from .form_element_list_value import FormElementListValue, FormElementListValueCreateForRoute
+from .form_element_option import FormElementOption, FormElementOptionCreateForRoute
 
 from .form_element_template import FormElementTemplate, FormElementTemplateCreateForRoute
 
@@ -23,7 +23,7 @@ class FormElementFieldCreateForRoute(BaseModel):
     # id: str
     name: str
     form_element_template: FormElementTemplateCreateForRoute
-    form_element_list_values: Optional[List[FormElementListValueCreateForRoute]]
+    form_element_options: Optional[List[FormElementOptionCreateForRoute]]
 
 
 # Properties to receive via API on update
@@ -34,7 +34,7 @@ class FormElementFieldUpdate(BaseModel):
 class FormElementFieldInDBBase(FormElementFieldBase):
     id: str
     form_element_template: FormElementTemplate
-    form_element_list_values: List[FormElementListValue]
+    form_element_options: List[FormElementOption]
     field_validations_overriding: List[Validation]
     class Config:
         orm_mode = True

@@ -8,23 +8,23 @@ from .selected_list_value import SelectedListValue
 
 
 # Shared properties
-class FilledFormBase(BaseModel):
+class SelectedValueBase(BaseModel):
     form_element_template_id: str
     client_id: str
     value: Optional[str]
 
 
 # Properties to receive via API on creation
-class FilledFormCreate(FilledFormBase):
+class SelectedValueCreate(SelectedValueBase):
     pass
 
 
 # Properties to receive via API on update
-class FilledFormUpdate(BaseModel):
+class SelectedValueUpdate(BaseModel):
     pass
 
 
-class FilledFormInDBBase(FilledFormBase):
+class SelectedValueInDBBase(SelectedValueBase):
     selected_list_values: List[SelectedListValue]
     form_element_template: FormElementTemplate
     class Config:
@@ -32,5 +32,5 @@ class FilledFormInDBBase(FilledFormBase):
 
 
 # Additional properties to return via API
-class FilledForm(FilledFormInDBBase):
+class SelectedValue(SelectedValueInDBBase):
     pass

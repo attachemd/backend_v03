@@ -25,17 +25,17 @@ form_element_field = {
                     "id": "19",
                     "name": "checkbox",
                 },
-                "form_element_list_values": [
+                "form_element_options": [
                     {
                         "id": "12",
                         "form_element_template_id": "7",
-                        "filled_form_id": "null",
+                        "selected_value_id": "null",
                         "value": "male",
                     },
                     {
                         "id": "13",
                         "form_element_template_id": "7",
-                        "filled_form_id": "null",
+                        "selected_value_id": "null",
                         "value": "female",
                     },
                 ],
@@ -54,13 +54,13 @@ form_element_field = {
                     "name": "text",
                     "form_element_template_id": "8",
                 },
-                "form_element_list_values": [],
+                "form_element_options": [],
             },
         },
     ],
 }
 
-filled_form_for_update = [
+selected_value_for_update = [
     {
         "id": "87",
         "form_element_template_id": "7",
@@ -69,9 +69,9 @@ filled_form_for_update = [
         "selected_list_values": [
             {
                 "id": "300",
-                "form_element_list_values_id": "12",
-                "filled_form_id": "87",
-                "form_element_list_value": {
+                "form_element_options_id": "12",
+                "selected_value_id": "87",
+                "form_element_option": {
                     "id": "12",
                     "form_element_template_id": "7",
                     "value": "male",
@@ -86,17 +86,17 @@ filled_form_for_update = [
                 "id": "19",
                 "name": "checkbox",
             },
-            "form_element_list_values": [
+            "form_element_options": [
                 {
                     "id": "12",
                     "form_element_template_id": "7",
-                    "filled_form_id": "null",
+                    "selected_value_id": "null",
                     "value": "male",
                 },
                 {
                     "id": "13",
                     "form_element_template_id": "7",
-                    "filled_form_id": "null",
+                    "selected_value_id": "null",
                     "value": "female",
                 },
             ],
@@ -116,7 +116,7 @@ filled_form_for_update = [
                 "id": "20",
                 "name": "text",
             },
-            "form_element_list_values": [],
+            "form_element_options": [],
         },
     },
 ]

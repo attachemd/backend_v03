@@ -2,31 +2,31 @@ from typing import List
 
 from sqlalchemy import delete
 from app.crud.crud_base import CRUDBase
-from app.models.form_element_list_value import FormElementListValue
+from app.models.form_element_option import FormElementOption
 from app.schemas import (
-    FormElementListValueCreate,
-    FormElementListValueUpdate,
+    FormElementOptionCreate,
+    FormElementOptionUpdate,
 )
 from sqlalchemy.orm import Session
 from app.db import session
 
 
-class CRUDFormElementListValue(
+class CRUDFormElementOption(
     CRUDBase[
-        FormElementListValue,
-        FormElementListValueCreate,
-        FormElementListValueUpdate,
+        FormElementOption,
+        FormElementOptionCreate,
+        FormElementOptionUpdate,
     ]
 ):
     # def bulk_create(
     #     self,
     #     db: Session,
     #     *,
-    #     objs_in: List[FormElementListValueCreate]
-    # ) -> FormElementListValue:
+    #     objs_in: List[FormElementOptionCreate]
+    # ) -> FormElementOption:
     #     db_objs = list()
     #     for obj_in in objs_in:
-    #         db_obj = FormElementListValue(
+    #         db_obj = FormElementOption(
     #             value=obj_in.value,
     #             form_element_field_id=obj_in.form_element_field_id,
     #         )
@@ -41,13 +41,13 @@ class CRUDFormElementListValue(
         *,
         form_element_template_id: str,
         value: str
-    ) -> FormElementListValue:
+    ) -> FormElementOption:
         return (
             db.query(self.model)
             .filter(
-                FormElementListValue.form_element_template_id
+                FormElementOption.form_element_template_id
                 == form_element_template_id
-                and FormElementListValue.value == value.lower()
+                and FormElementOption.value == value.lower()
             )
             .first()
         )
@@ -90,6 +90,6 @@ class CRUDFormElementListValue(
         # return rows
 
 
-form_element_list_value = CRUDFormElementListValue(
-    FormElementListValue
+form_element_option = CRUDFormElementOption(
+    FormElementOption
 )

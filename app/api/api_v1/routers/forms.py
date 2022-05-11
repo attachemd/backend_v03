@@ -58,25 +58,25 @@ def create_form(
             db, obj_in=form_element_field_in
         )
 
-        # Delete form element list values by form element template
-        # crud.form_element_list_value.delete_by_form_element_field_id(
+        # Delete form element options by form element template
+        # crud.form_element_option.delete_by_form_element_field_id(
         #     db,
         #     form_element_field_id=form_element_field.id,
         # )
-        # Create form element list value for the form element field
-        if form_element_field.form_element_list_values is not None:
+        # Create form element option for the form element field
+        if form_element_field.form_element_options is not None:
             for (
-                form_element_list_value
-            ) in form_element_field.form_element_list_values:
-                form_element_list_value_in = (
-                    schemas.FormElementListValueCreate(
-                        name=form_element_list_value.name,
+                form_element_option
+            ) in form_element_field.form_element_options:
+                form_element_option_in = (
+                    schemas.FormElementOptionCreate(
+                        name=form_element_option.name,
                         form_element_field_id=form_element_field_model.id,
                         # form_element_field_id="20",
                     )
                 )
-                crud.form_element_list_value.create(
-                    db, obj_in=form_element_list_value_in
+                crud.form_element_option.create(
+                    db, obj_in=form_element_option_in
                 )
     return form
     # return crud.form.create(

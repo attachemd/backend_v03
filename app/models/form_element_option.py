@@ -7,9 +7,9 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 from app.db.base_class import Base
 
-# ANCHOR[id=FormElementListValue]
-class FormElementListValue(Base):
-    __tablename__ = "form_element_list_values"
+# ANCHOR[id=FormElementOption]
+class FormElementOption(Base):
+    __tablename__ = "form_element_options"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=False, index=False, nullable=False)
     form_element_field_id = Column(
@@ -18,6 +18,6 @@ class FormElementListValue(Base):
     # TODO relationship
     # form_element_template = relationship(
     #     "FormElementTemplate",
-    #     back_populates="form_element_list_values",
+    #     back_populates="form_element_options",
     # ) 
     

@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 from .validation import Validation
 
-from .form_element_list_value import FormElementListValue, FormElementListValueCreateForRoute
+from .form_element_option import FormElementOption, FormElementOptionCreateForRoute
 
 from .form_element_type import FormElementType
 
@@ -21,7 +21,7 @@ class FormElementTemplateCreate(FormElementTemplateBase):
 
 class FormElementTemplateCreateForRoute(BaseModel):
     id: str
-    # form_element_list_values: List[FormElementListValueCreateForRoute]
+    # form_element_options: List[FormElementOptionCreateForRoute]
 
 
 # Properties to receive via API on update
@@ -32,7 +32,7 @@ class FormElementTemplateUpdate(BaseModel):
 class FormElementTemplateInDBBase(FormElementTemplateBase):
     id: str
     form_element_type: FormElementType
-    # form_element_list_values: List[FormElementListValue]
+    # form_element_options: List[FormElementOption]
     validations: List[Validation]
     class Config:
         orm_mode = True

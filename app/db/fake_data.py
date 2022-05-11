@@ -710,18 +710,18 @@ def fake_data(db: Session) -> None:
                     pattern=is_pattern(validation),
                 )
                 crud.validation.create(db, obj_in=validation_in)
-        # Create form element list value for the form element template
+        # Create form element option for the form element template
         # if "options" in essential_form_element:
-        #     for form_element_list_value in essential_form_element[
+        #     for form_element_option in essential_form_element[
         #         "options"
         #     ]:
-        #         if len(form_element_list_value) > 0:
-        #             form_element_list_value_in = schemas.FormElementListValueCreate(
-        #                 value=form_element_list_value["value"],
+        #         if len(form_element_option) > 0:
+        #             form_element_option_in = schemas.FormElementOptionCreate(
+        #                 value=form_element_option["value"],
         #                 form_element_template_id=form_element_template.id,
         #             )
-        #             crud.form_element_list_value.create(
-        #                 db, obj_in=form_element_list_value_in
+        #             crud.form_element_option.create(
+        #                 db, obj_in=form_element_option_in
         #             )
 
     # # Create form element types
@@ -743,7 +743,7 @@ def fake_data(db: Session) -> None:
     #     )
     #     crud.form_element_template.create(db, obj_in=form_element_in)
 
-    # Create form element list values
+    # Create form element options
     # Single Selection
     # OPTIONS = [
     #     {
@@ -758,23 +758,23 @@ def fake_data(db: Session) -> None:
     # )
 
     # # start_time = time.time()
-    # form_element_list_values_in = list()
+    # form_element_options_in = list()
     # for field in OPTIONS:
-    #     form_element_list_value_in = (
-    #         schemas.FormElementListValueCreate(
+    #     form_element_option_in = (
+    #         schemas.FormElementOptionCreate(
     #             name=field["name"],
     #             form_element_field_id=form_element_field.id,
     #         )
     #     )
 
-    #     form_element_list_values_in.append(
-    #         form_element_list_value_in
+    #     form_element_options_in.append(
+    #         form_element_option_in
     #     )
-    #     # crud.form_element_list_value.create(
-    #     #     db, obj_in=form_element_list_value_in
+    #     # crud.form_element_option.create(
+    #     #     db, obj_in=form_element_option_in
     #     # )
-    # crud.form_element_list_value.bulk_create(
-    #     db, objs_in=form_element_list_values_in
+    # crud.form_element_option.bulk_create(
+    #     db, objs_in=form_element_options_in
     # )
     
     # Multiple Selection
@@ -782,39 +782,39 @@ def fake_data(db: Session) -> None:
     #     db, name="Multiple Selection"
     # )
 
-    # form_element_list_values_in = list()
+    # form_element_options_in = list()
     # for field in COUNTRIES:
-    #     form_element_list_value_in = (
-    #         schemas.FormElementListValueCreate(
+    #     form_element_option_in = (
+    #         schemas.FormElementOptionCreate(
     #             name=field["name"],
     #             form_element_field_id=form_element_field.id,
     #         )
     #     )
 
-    #     form_element_list_values_in.append(
-    #         form_element_list_value_in
+    #     form_element_options_in.append(
+    #         form_element_option_in
     #     )
-    #     # crud.form_element_list_value.create(
-    #     #     db, obj_in=form_element_list_value_in
+    #     # crud.form_element_option.create(
+    #     #     db, obj_in=form_element_option_in
     #     # )
-    # crud.form_element_list_value.bulk_create(
-    #     db, objs_in=form_element_list_values_in
+    # crud.form_element_option.bulk_create(
+    #     db, objs_in=form_element_options_in
     # )
     print("the next line from:   ", filename, get_linenumber()+1)
     print("--- populate db in %s seconds ---" % (time.time() - start_time))
 
     # form_element_template = crud.form_element_template.get_by_name(db, name="Gender")
     # for field in GENDERS:
-    #     form_element_list_value_in = (
-    #         schemas.FormElementListValueCreate(
+    #     form_element_option_in = (
+    #         schemas.FormElementOptionCreate(
     #             value=field, form_element_template_id=form_element_template.id
     #         )
     #     )
-    #     crud.form_element_list_value.create(
-    #         db, obj_in=form_element_list_value_in
+    #     crud.form_element_option.create(
+    #         db, obj_in=form_element_option_in
     #     )
 
-    # Create filled form
+    # Create selected value
     # FAKE_FORM_ELEMENT = [
     #     {"name": "Full name", "value": "john doe"},
     #     {"name": "Gender", "value": "male"},
@@ -846,33 +846,33 @@ def fake_data(db: Session) -> None:
     #         db, obj_id=form_element_template.form_element_type_id
     #     )
     #     if form_element_type.name in ["radio", "checkbox", "select"]:
-    #         filled_form_in = schemas.FilledFormCreate(
+    #         selected_value_in = schemas.SelectedValueCreate(
     #             value=None,
     #             form_element_template_id=form_element_template.id,
     #             client_id="1",
     #         )
-    #         filled_form = crud.filled_form.create(
-    #             db, obj_in=filled_form_in
+    #         selected_value = crud.selected_value.create(
+    #             db, obj_in=selected_value_in
     #         )
-    #         # Assign filled form to form element list value
-    #         form_element_list_value = crud.form_element_list_value.get_by_name_and_form_element_id(
+    #         # Assign selected value to form element option
+    #         form_element_option = crud.form_element_option.get_by_name_and_form_element_id(
     #             db,
     #             form_element_template_id=form_element_template.id,
     #             value=field["value"],
     #         )
     #         selected_list_value_in = schemas.SelectedListValueCreate(
-    #             filled_form_id=filled_form.id,
-    #             form_element_list_value_id=form_element_list_value.id,
+    #             selected_value_id=selected_value.id,
+    #             form_element_option_id=form_element_option.id,
     #         )
     #         crud.selected_list_value.create(
     #             db, obj_in=selected_list_value_in
     #         )
     #     else:
-    #         filled_form_in = schemas.FilledFormCreate(
+    #         selected_value_in = schemas.SelectedValueCreate(
     #             value=field["value"],
     #             form_element_template_id=form_element_template.id,
     #             client_id="1",
     #         )
-    #         filled_form = crud.filled_form.create(
-    #             db, obj_in=filled_form_in
+    #         selected_value = crud.selected_value.create(
+    #             db, obj_in=selected_value_in
     #         )

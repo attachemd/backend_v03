@@ -17,6 +17,13 @@ class FormElementField(Base):
         "Validation",
     ) 
     
-    form_element_list_values = relationship(
-        "FormElementListValue"
+    form_element_options = relationship(
+        "FormElementOption"
+    )
+    
+    selected_value = relationship(
+        "SelectedValue", uselist=False
+    )
+    selected_list_values = relationship(
+        "SelectedListValue"
     )

@@ -13,7 +13,7 @@ from app.models.simple_license import SimpleLicense # noqa
 from app.models.form import Form # noqa
 from app.models.form_element_field import FormElementField # noqa
 from app.models.form_element_template import FormElementTemplate # noqa
-from app.models.form_element_list_value import FormElementListValue # noqa
+from app.models.form_element_option import FormElementOption # noqa
 from app.models.selected_list_value import SelectedListValue # noqa
-from app.models.filled_form import FilledForm # noqa
+from app.models.selected_value import SelectedValue # noqa
 from app.models.form_element_type import FormElementType # noqa

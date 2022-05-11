@@ -3,31 +3,31 @@ from pydantic import BaseModel
 
 
 # Shared properties
-class FormElementListValueBase(BaseModel):
+class FormElementOptionBase(BaseModel):
     name: str
     form_element_field_id: str
 
 
 # Properties to receive via API on creation
-class FormElementListValueCreate(FormElementListValueBase):
+class FormElementOptionCreate(FormElementOptionBase):
     pass
 
-class FormElementListValueCreateForRoute(BaseModel):
+class FormElementOptionCreateForRoute(BaseModel):
     name: str
     # form_element_field_id: str
 
 
 # Properties to receive via API on update
-class FormElementListValueUpdate(BaseModel):
+class FormElementOptionUpdate(BaseModel):
     pass
 
 
-class FormElementListValueInDBBase(FormElementListValueBase):
+class FormElementOptionInDBBase(FormElementOptionBase):
 
     class Config:
         orm_mode = True
 
 
 # Additional properties to return via API
-class FormElementListValue(FormElementListValueInDBBase):
+class FormElementOption(FormElementOptionInDBBase):
     pass

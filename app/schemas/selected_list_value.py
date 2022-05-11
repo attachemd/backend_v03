@@ -1,13 +1,13 @@
 from typing import Optional
 from pydantic import BaseModel
 
-from .form_element_list_value import FormElementListValue
+from .form_element_option import FormElementOption
 
 
 # Shared properties
 class SelectedListValueBase(BaseModel):
-    filled_form_id: str
-    form_element_list_value_id: str
+    selected_value_id: str
+    form_element_option_id: str
 
 
 # Properties to receive via API on creation
@@ -21,7 +21,7 @@ class SelectedListValueUpdate(BaseModel):
 
 
 class SelectedListValueInDBBase(SelectedListValueBase):
-    form_element_list_value: FormElementListValue
+    form_element_option: FormElementOption
     class Config:
         orm_mode = True
 
