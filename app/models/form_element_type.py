@@ -1,3 +1,4 @@
+from pickle import FALSE
 from sqlalchemy import (
     Column,
     Integer,
@@ -12,7 +13,10 @@ class FormElementType(Base):
     __tablename__ = "form_element_types"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(
-        String, unique=True, index=True, nullable=False
+        String, unique=False, index=True, nullable=False
+    )
+    input_type = Column(
+        String, unique=False, index=True, nullable=True
     )
     
     # form_element_input_type_id = Column(
@@ -21,5 +25,5 @@ class FormElementType(Base):
 
     # TODO relationship
     
-    form_element_input_type = relationship("FormElementInputType")
+    # form_element_input_type = relationship("FormElementInputType")
     

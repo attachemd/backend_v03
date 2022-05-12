@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 from pydantic import BaseModel
 
 from .selected_list_value import SelectedListValueCreate
@@ -28,8 +28,10 @@ class FormElementFieldCreateForRoute(BaseModel):
     name: str
     form_element_template: FormElementTemplateCreateForRoute
     form_element_options: Optional[List[FormElementOptionCreateForRoute]]
-    selected_value: Optional[SelectedValueCreate]
-    selected_list_values: Optional[SelectedListValueCreate]
+    # selected_value: Optional[SelectedValueCreate]
+    # selected_list_values: Optional[List[SelectedListValueCreate]]
+    selected_value: str
+    selected_list_value: Dict[str, bool]
 
 
 # Properties to receive via API on update

@@ -15,6 +15,8 @@ from inspect import currentframe, getframeinfo
 frameinfo = getframeinfo(currentframe())
 cf = currentframe()
 filename = getframeinfo(cf).filename
+
+
 def get_linenumber():
     cf = currentframe()
     return cf.f_back.f_lineno
@@ -507,7 +509,7 @@ def fake_data(db: Session) -> None:
         username = first_name[0].lower() + last_name.lower().replace(
             " ", ""
         )
-        number = random.randint(1111,9999)
+        number = random.randint(1111, 9999)
         email = word + str(number) + "@" + domain + ".com"
         phone_number = fake_phone_number(fakegen)
         client = crud.client.get_by_email(db, email=email)
@@ -523,7 +525,7 @@ def fake_data(db: Session) -> None:
             clients_in.append(client_in)
             # crud.client.create(db, obj_in=client_in)
     crud.client.bulk_create(db, objs_in=clients_in)
-            
+
     # crud.validator.coco(db)
     # Create licenses
     licenses_in = list()
@@ -554,14 +556,14 @@ def fake_data(db: Session) -> None:
         # print(datetime.strptime('1990-09-06', '%Y-%m-%d'))
         # crud.license.create(db, obj_in=license_in)
     crud.license.bulk_create(db, objs_in=licenses_in)
-    
+
     # Create products
     products_in = list()
     for _ in range(10):
         product_in = schemas.ProductCreate(
             name=fakegen.company(),
             description=fakegen.sentence(),
-            form_id=2
+            form_id=2,
         )
         products_in.append(product_in)
         # crud.product.create(db, obj_in=product_in)
@@ -576,7 +578,7 @@ def fake_data(db: Session) -> None:
     #     user_roles_in.append(user_role_in)
     #     # crud.plan.create(db, obj_in=user_role_in)
     # crud.plan.bulk_create(db, objs_in=user_roles_in)
-    
+
     # Create simple licenses & custom licenses
     all_license = crud.license.get_multi(db)
     # simple_licenses_in = list()
@@ -588,7 +590,7 @@ def fake_data(db: Session) -> None:
         #         license_id=field.id,
         #     )
         #     simple_licenses_in.append(simple_license_in)
-            # crud.simple_license.create(db, obj_in=simple_license_in)
+        # crud.simple_license.create(db, obj_in=simple_license_in)
         if field.type == "CUSTOM":
             custom_license_in = schemas.CustomLicenseCreate(
                 license_id=field.id
@@ -597,7 +599,7 @@ def fake_data(db: Session) -> None:
             # crud.custom_license.create(db, obj_in=custom_license_in)
     # crud.simple_license.bulk_create(db, objs_in=simple_licenses_in)
     crud.custom_license.bulk_create(db, objs_in=custom_licenses_in)
-    
+
     # Create forms
     # for _ in range(10):
     # form_in = schemas.FormCreate(name=fakegen.word())
@@ -605,33 +607,37 @@ def fake_data(db: Session) -> None:
     # create essential fields form
     form_in = schemas.FormCreate()
     crud.form.create(db, obj_in=form_in)
-    # Create form element types
-    form_element_types_in = list()
-    for form_element_type_item in FORM_ELEMENT_TYPES:
-        form_element_type_in = schemas.FormElementTypeCreate(
-            name=form_element_type_item["type"],
-        )
-        form_element_types_in.append(form_element_type_in)
-        # crud.form_element_type.create(
-        #     db, obj_in=form_element_type_in
-        # )
-    crud.form_element_type.bulk_create(
-        db, objs_in=form_element_types_in
-    )
-    # Create form element input types
-    # form_element_type_model = crud.form_element_type.get_by_name(
-    #     db, name="input"
-    # )
+
+    # # Create form element input types
     # for form_element_input_type in FORM_ELEMENT_INPUT_TYPES:
     #     form_element_input_type_in = (
     #         schemas.FormElementInputTypeCreate(
-    #             input_type=form_element_input_type["input_type"],
-    #             form_element_type_id=form_element_type_model.id,
+    #             name=form_element_input_type["input_type"],
     #         )
     #     )
     #     crud.form_element_input_type.create(
     #         db, obj_in=form_element_input_type_in
     #     )
+
+    # # Create form element types
+    # form_element_types_in = list()
+    # for form_element_type_item in FORM_ELEMENT_TYPES:
+    #     form_element_input_type_model = crud.form_element_type_model.get_by_name(
+    #         db, name="input"
+    #     )
+    #     form_element_type_in = schemas.FormElementTypeCreate(
+    #         name=form_element_type_item["type"],
+    #         # form_element_input_type_id=form_element_input_type_model.id
+    #         input_type=
+    #     )
+    #     form_element_types_in.append(form_element_type_in)
+    #     # crud.form_element_type.create(
+    #     #     db, obj_in=form_element_type_in
+    #     # )
+    # crud.form_element_type.bulk_create(
+    #     db, objs_in=form_element_types_in
+    # )
+
     # Create validators
     validators_in = list()
     for validator in VALIDATORS:
@@ -641,7 +647,7 @@ def fake_data(db: Session) -> None:
         validators_in.append(validator_in)
         # crud.validator.create(db, obj_in=validator_in)
     crud.validator.bulk_create(db, objs_in=validators_in)
-    
+
     # Create validations
     for essential_form_element in ESSENTIAL_FORM_ELEMENTS:
         #     # Create form element input types
@@ -677,9 +683,33 @@ def fake_data(db: Session) -> None:
         #             db, obj_in=form_element_type_in
         #         )
         # Create form element templates
-        form_element_type = crud.form_element_type.get_by_name(
-            db, name=essential_form_element["type"]
+        # if(essential_form_element["inputType"]):
+
+        # try:
+        #     print('essential_form_element["inputType"]')
+        #     print(essential_form_element["inputType"])
+        # except NameError:
+        #     print("not defined")
+        if (
+            "inputType" in essential_form_element
+        ):  # not an easy way
+            form_element_type_in = schemas.FormElementTypeCreate(
+                name=essential_form_element["type"],
+                # form_element_input_type_id=form_element_input_type_model.id
+                input_type=essential_form_element["inputType"],
+            )
+        else:
+            form_element_type_in = schemas.FormElementTypeCreate(
+                name=essential_form_element["type"],
+            )
+            
+        # form_element_types_in.append(form_element_type_in)
+        form_element_type = crud.form_element_type.create(
+            db, obj_in=form_element_type_in
         )
+        # form_element_type = crud.form_element_type.get_by_name(
+        #     db, name=essential_form_element["type"]
+        # )
         form_element_template_in = schemas.FormElementTemplateCreate(
             name=essential_form_element["name"],
             description=essential_form_element["description"],
@@ -777,7 +807,7 @@ def fake_data(db: Session) -> None:
     # crud.form_element_option.bulk_create(
     #     db, objs_in=form_element_options_in
     # )
-    
+
     # Multiple Selection
     # form_element_field = crud.form_element_field.get_by_name(
     #     db, name="Multiple Selection"
@@ -801,8 +831,11 @@ def fake_data(db: Session) -> None:
     # crud.form_element_option.bulk_create(
     #     db, objs_in=form_element_options_in
     # )
-    print("the next line from:   ", filename, get_linenumber()+1)
-    print("--- populate db in %s seconds ---" % (time.time() - start_time))
+    print("the next line from:   ", filename, get_linenumber() + 1)
+    print(
+        "--- populate db in %s seconds ---"
+        % (time.time() - start_time)
+    )
 
     # form_element_template = crud.form_element_template.get_by_name(db, name="Gender")
     # for field in GENDERS:
@@ -877,7 +910,7 @@ def fake_data(db: Session) -> None:
     #         selected_value = crud.selected_value.create(
     #             db, obj_in=selected_value_in
     #         )
-    
+
     # # Create selected value
     # FAKE_FORM_ELEMENT = [
     #     {"name": "Full name", "value": "john doe"},
