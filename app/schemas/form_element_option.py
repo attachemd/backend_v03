@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 # Shared properties
 class FormElementOptionBase(BaseModel):
+    id: str
     name: str
     form_element_field_id: str
 
@@ -12,7 +13,9 @@ class FormElementOptionBase(BaseModel):
 class FormElementOptionCreate(FormElementOptionBase):
     pass
 
+
 class FormElementOptionCreateForRoute(BaseModel):
+    id: Optional[str]
     name: str
     # form_element_field_id: str
 
@@ -23,7 +26,6 @@ class FormElementOptionUpdate(BaseModel):
 
 
 class FormElementOptionInDBBase(FormElementOptionBase):
-
     class Config:
         orm_mode = True
 

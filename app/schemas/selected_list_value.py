@@ -9,6 +9,7 @@ class SelectedListValueBase(BaseModel):
     # selected_value_id: str
     form_element_option_id: str
     form_element_field_id: str
+    value: Optional[str]
 
 
 # Properties to receive via API on creation

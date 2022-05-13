@@ -24,14 +24,14 @@ class FormElementFieldCreate(FormElementFieldBase):
     pass
 
 class FormElementFieldCreateForRoute(BaseModel):
-    # id: str
+    id: str
     name: str
     form_element_template: FormElementTemplateCreateForRoute
     form_element_options: Optional[List[FormElementOptionCreateForRoute]]
     # selected_value: Optional[SelectedValueCreate]
     # selected_list_values: Optional[List[SelectedListValueCreate]]
-    selected_value: str
-    selected_list_value: Dict[str, bool]
+    selected_value: Optional[str]
+    selected_list_value: Optional[Dict[str, bool]]
 
 
 # Properties to receive via API on update

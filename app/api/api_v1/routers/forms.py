@@ -68,12 +68,10 @@ def create_form(
             for (
                 form_element_option
             ) in form_element_field.form_element_options:
-                form_element_option_in = (
-                    schemas.FormElementOptionCreate(
-                        name=form_element_option.name,
-                        form_element_field_id=form_element_field_model.id,
-                        # form_element_field_id="20",
-                    )
+                form_element_option_in = schemas.FormElementOptionCreate(
+                    name=form_element_option.name,
+                    form_element_field_id=form_element_field_model.id,
+                    # form_element_field_id="20",
                 )
                 crud.form_element_option.create(
                     db, obj_in=form_element_option_in
@@ -84,8 +82,10 @@ def create_form(
     # )
     # results = {"form_in": form_in}
     # return results
-    
-@router.post("", response_model=schemas.Form)
+
+
+# @router.post("/fill_form", response_model=schemas.Form)
+@router.post("/fill_form")
 # @router.post("")
 def fill_form(
     *,
@@ -99,61 +99,66 @@ def fill_form(
     """
     Fill the form.
     """
+
+    def get_option_id(options, name):
+        if options is not None:
+            # print("options")
+            # print(options)
+            for item in options:
+                if item.name == name:
+                    # return 
+                    # print("item.name")
+                    # print(item.name)
+                    # print("item.id")
+                    # print(item.id)
+                    return item.id
+
     # TODO redundant check
     if current_user is None:
         raise exceptions.get_user_exception("user not found")
-    # Check if form name already exists
-    # form_with_name = crud.form.get_by_name(db, name=form_in.name)
-    # if form_with_name:
-    #     raise HTTPException(
-    #         status_code=409,
-    #         detail="A form with this name already exists",
-    #     )
-    # Create a form
-    # new_form_in = schemas.FormCreate(name=form_in.name)
-    existing_form_in = schemas.FormCreate()
-    form = crud.form.create(db, obj_in=new_form_in) 
-    
+
     # Create selected value for the form
-
-    # Create form element fields
     for form_element_field in form_in.form_element_fields:
-        field_template = form_element_field.form_element_template
-        form_element_field_in = schemas.FormElementFieldCreate(
-            name=form_element_field.name,
-            form_element_template_id=field_template.id,
-            form_id=form.id,
-        )
-        form_element_field_model = crud.form_element_field.create(
-            db, obj_in=form_element_field_in
-        )
+        # if form_element_field.form_element_options is not None:
+        #     print("form_element_options")
+        #     print(form_element_field.form_element_options)
+        #     get_option_id(form_element_field.form_element_options)
+            # for item in form_element_field.form_element_options:
+            #     print("item.name")
+            #     print(item.name)
+        if form_element_field.selected_value is not None:
+            # print("selected_value")
+            # print(form_element_field.selected_value)
+            selected_value_in = (
+                schemas.SelectedValueCreate(
+                    form_element_field_id=form_element_field.id,
+                    value=form_element_field.selected_value,
+                )
+            )
+            crud.selected_value.create(
+                db, obj_in=selected_value_in
+            )
+        if form_element_field.selected_list_value is not None:
+            # print("selected_list_value")
+            # print(form_element_field.selected_list_value)
+            for key in form_element_field.selected_list_value:
+                # print(
+                #     key,
+                #     "->",
+                #     form_element_field.selected_list_value[key],
+                # )
+                option_id = get_option_id(form_element_field.form_element_options, key)
+                # print()
+                selected_list_value_in = schemas.SelectedListValueCreate(
+                    form_element_option_id=option_id,
+                    form_element_field_id=form_element_field.id,
+                    value=form_element_field.selected_list_value[key]
+                )
+                crud.selected_list_value.create(
+                    db, obj_in=selected_list_value_in
+                )
 
-        # Delete form element options by form element template
-        # crud.form_element_option.delete_by_form_element_field_id(
-        #     db,
-        #     form_element_field_id=form_element_field.id,
-        # )
-        # Create form element option for the form element field
-        if form_element_field.form_element_options is not None:
-            for (
-                form_element_option
-            ) in form_element_field.form_element_options:
-                form_element_option_in = (
-                    schemas.FormElementOptionCreate(
-                        name=form_element_option.name,
-                        form_element_field_id=form_element_field_model.id,
-                        # form_element_field_id="20",
-                    )
-                )
-                crud.form_element_option.create(
-                    db, obj_in=form_element_option_in
-                )
-    return form
-    # return crud.form.create(
-    #     db, obj_in=form_in
-    # )
-    # results = {"form_in": form_in}
-    # return results
+    return "ok"
 
 
 # Get all forms ANCHOR[id=my-anchor]
@@ -190,6 +195,7 @@ def get_form_by_id(
         raise exceptions.get_user_exception()
     return crud.form.get(db, obj_id=form_id)
 
+
 # Get form by name
 @router.get("/by_name/{form_name}", response_model=schemas.Form)
 def get_form_by_name(
@@ -206,9 +212,10 @@ def get_form_by_name(
     if current_user is None:
         raise exceptions.get_user_exception()
     form = crud.form.get_by_name(db, name=form_name)
-    print('form')
+    print("form")
     print(form)
     return form
+
 
 # Update the form
 
