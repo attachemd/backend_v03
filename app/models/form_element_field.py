@@ -7,6 +7,7 @@ class FormElementField(Base):
     __tablename__ = "form_element_fields"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=False, index=True, nullable=False)
+    sort_id = Column(String, unique=False, nullable=False)
     form_id = Column(Integer, ForeignKey("forms.id"), nullable=False)
     form_element_template_id = Column(
         Integer, ForeignKey("form_element_templates.id"), nullable=False

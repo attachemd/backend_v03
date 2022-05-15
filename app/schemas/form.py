@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel
 
 from .form_element_field import FormElementField, FormElementFieldCreateForRoute
@@ -6,6 +6,7 @@ from .form_element_field import FormElementField, FormElementFieldCreateForRoute
 
 # Shared properties
 class FormBase(BaseModel):
+    id: Optional[str]
     # name: str
     pass
 

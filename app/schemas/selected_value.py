@@ -25,8 +25,8 @@ class SelectedValueUpdate(BaseModel):
 
 
 class SelectedValueInDBBase(SelectedValueBase):
-    selected_list_values: List[SelectedListValue]
-    form_element_template: FormElementTemplate
+    # selected_list_values: List[SelectedListValue]
+    # form_element_template: FormElementTemplate
     class Config:
         orm_mode = True
 

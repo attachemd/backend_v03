@@ -1,10 +1,14 @@
 from typing import Optional
 from pydantic import BaseModel
 
+# from app.schemas.selected_list_value import SelectedListValue
+
+# from .selected_list_value import SelectedListValue
+
 
 # Shared properties
 class FormElementOptionBase(BaseModel):
-    id: str
+    id: Optional[str]
     name: str
     form_element_field_id: str
 
@@ -26,6 +30,7 @@ class FormElementOptionUpdate(BaseModel):
 
 
 class FormElementOptionInDBBase(FormElementOptionBase):
+    # selected_option_value: Optional[SelectedListValue]
     class Config:
         orm_mode = True
 

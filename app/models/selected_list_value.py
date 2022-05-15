@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, String
+from sqlalchemy import Boolean, Column, Integer, ForeignKey, String
 from sqlalchemy.orm import relationship
 from app.db.base_class import Base
 
@@ -6,9 +6,8 @@ from app.db.base_class import Base
 class SelectedListValue(Base):
     __tablename__ = "selected_list_values"
     id = Column(Integer, primary_key=True, index=True)
-    value = Column(
-        String, index=True, nullable=True
-    )
+    # FIXME value to boolean
+    value = Column(String, index=True, nullable=True)
     # selected_value_id = Column(
     #     Integer, ForeignKey("selected_values.id"), nullable=False
     # )
@@ -22,4 +21,9 @@ class SelectedListValue(Base):
         nullable=False,
     )
 
-    form_element_option = relationship("FormElementOption")
+    # form_element_option = relationship(
+    #     "FormElementOption", back_populates="selected_option_value"
+    # )
+    form_element_option = relationship(
+        "FormElementOption"
+    )

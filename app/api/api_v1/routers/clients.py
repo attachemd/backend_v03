@@ -86,10 +86,10 @@ def update_client(
     ),
 ) -> Any:
     """
-    Update an client.
+    Update a client.
     """
 
-    # If user is an client admin,
+    # If a user is client admin,
     # check ensure they update their own client.
     # TODO update_client
     if (

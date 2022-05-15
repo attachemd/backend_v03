@@ -53,6 +53,7 @@ def create_form(
             name=form_element_field.name,
             form_element_template_id=field_template.id,
             form_id=form.id,
+            sort_id=form_element_field.sort_id
         )
         form_element_field_model = crud.form_element_field.create(
             db, obj_in=form_element_field_in
@@ -63,6 +64,7 @@ def create_form(
         #     db,
         #     form_element_field_id=form_element_field.id,
         # )
+
         # Create form element option for the form element field
         if form_element_field.form_element_options is not None:
             for (
@@ -106,7 +108,7 @@ def fill_form(
             # print(options)
             for item in options:
                 if item.name == name:
-                    # return 
+                    # return
                     # print("item.name")
                     # print(item.name)
                     # print("item.id")
@@ -123,21 +125,17 @@ def fill_form(
         #     print("form_element_options")
         #     print(form_element_field.form_element_options)
         #     get_option_id(form_element_field.form_element_options)
-            # for item in form_element_field.form_element_options:
-            #     print("item.name")
-            #     print(item.name)
+        # for item in form_element_field.form_element_options:
+        #     print("item.name")
+        #     print(item.name)
         if form_element_field.selected_value is not None:
             # print("selected_value")
             # print(form_element_field.selected_value)
-            selected_value_in = (
-                schemas.SelectedValueCreate(
-                    form_element_field_id=form_element_field.id,
-                    value=form_element_field.selected_value,
-                )
+            selected_value_in = schemas.SelectedValueCreate(
+                form_element_field_id=form_element_field.id,
+                value=form_element_field.selected_value,
             )
-            crud.selected_value.create(
-                db, obj_in=selected_value_in
-            )
+            crud.selected_value.create(db, obj_in=selected_value_in)
         if form_element_field.selected_list_value is not None:
             # print("selected_list_value")
             # print(form_element_field.selected_list_value)
@@ -147,12 +145,18 @@ def fill_form(
                 #     "->",
                 #     form_element_field.selected_list_value[key],
                 # )
-                option_id = get_option_id(form_element_field.form_element_options, key)
+                option_id = get_option_id(
+                    form_element_field.form_element_options, key
+                )
                 # print()
-                selected_list_value_in = schemas.SelectedListValueCreate(
-                    form_element_option_id=option_id,
-                    form_element_field_id=form_element_field.id,
-                    value=form_element_field.selected_list_value[key]
+                selected_list_value_in = (
+                    schemas.SelectedListValueCreate(
+                        form_element_option_id=option_id,
+                        form_element_field_id=form_element_field.id,
+                        value=form_element_field.selected_list_value[
+                            key
+                        ],
+                    )
                 )
                 crud.selected_list_value.create(
                     db, obj_in=selected_list_value_in
@@ -179,7 +183,7 @@ def get_all_forms(
 
 
 # Get form by id
-@router.get("/by_id/{form_id}", response_model=schemas.Form)
+@router.get("/{form_id}", response_model=schemas.Form)
 def get_form_by_id(
     form_id=str,
     current_user: models.User = Security(
@@ -240,3 +244,70 @@ class Item(BaseModel):
 async def update_item(item_id: int, item: Item):
     results = {"item_id": item_id, "item": item}
     return results
+
+
+# @router.put("/{form_id}", response_model=schemas.Form)
+@router.put("/{form_id}")
+def update_form(
+    *,
+    db: Session = Depends(deps.get_db),
+    form_id: str,
+    form_in: schemas.FormCreateForRoute,
+    current_user: models.User = Security(
+        deps.get_current_active_user,
+        scopes=[
+            Role.ADMIN["name"],
+            Role.SUPER_ADMIN["name"],
+        ],
+    ),
+) -> Any:
+    """
+    Update a form.
+    """
+    # check if the form exist
+    form = crud.form.get(db, obj_id=form_id)
+    if not form:
+        raise HTTPException(
+            status_code=404,
+            detail="Form does not exist",
+        )
+
+    # return crud.form.update(db, db_obj=form, obj_in=form_in)
+
+    # create form element fields if not exist
+    for form_element_field in form_in.form_element_fields:
+        field_template = form_element_field.form_element_template
+        # form_element_field_exist_model = crud.form_element_field.get(
+        #     db, obj_id=form_element_field.id
+        # )
+        # return form_element_field_exist_model
+        if form_element_field.state == 'new':
+        # if not form_element_field_exist_model:
+            print('empty')
+            form_element_field_in = schemas.FormElementFieldCreate(
+                name=form_element_field.name,
+                form_element_template_id=field_template.id,
+                form_id=form.id,
+                sort_id=form_element_field.sort_id
+            )
+            form_element_field_model = (
+                crud.form_element_field.create(
+                    db, obj_in=form_element_field_in
+                )
+            )
+            if form_element_field.form_element_options is not None:
+                for (
+                    form_element_option
+                ) in form_element_field.form_element_options:
+                    form_element_option_in = schemas.FormElementOptionCreate(
+                        name=form_element_option.name,
+                        form_element_field_id=form_element_field_model.id,
+                        # form_element_field_id="20",
+                    )
+                    crud.form_element_option.create(
+                        db, obj_in=form_element_option_in
+                    )
+        else:
+            print('not empty')
+            # print(form_element_field_exist_model.name)
+    return form

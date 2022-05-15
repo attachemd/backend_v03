@@ -325,6 +325,7 @@ VALIDATORS = [
 ESSENTIAL_FORM_ELEMENTS = [
     {
         "type": "input",
+        "sort_id": 0,
         "label": "Text",
         "inputType": "text",
         "name": "text",
@@ -339,6 +340,7 @@ ESSENTIAL_FORM_ELEMENTS = [
     },
     {
         "type": "input",
+        "sort_id": 1,
         "label": "Email Address",
         "inputType": "email",
         "name": "email",
@@ -358,6 +360,7 @@ ESSENTIAL_FORM_ELEMENTS = [
     },
     {
         "type": "input",
+        "sort_id": 2,
         "label": "Password",
         "inputType": "password",
         "name": "password",
@@ -372,6 +375,7 @@ ESSENTIAL_FORM_ELEMENTS = [
     },
     {
         "type": "radiobutton",
+        "sort_id": 3,
         "label": "Single Selection",
         "name": "single_selection",
         "options": [
@@ -388,6 +392,7 @@ ESSENTIAL_FORM_ELEMENTS = [
     },
     {
         "type": "checkbox",
+        "sort_id": 4,
         "label": "Multiple Selection",
         "name": "multiple_selection",
         "value": [],
@@ -397,6 +402,7 @@ ESSENTIAL_FORM_ELEMENTS = [
     },
     {
         "type": "select",
+        "sort_id": 5,
         "label": "Select from List",
         "name": "select_from_list",
         "value": "",
@@ -406,6 +412,7 @@ ESSENTIAL_FORM_ELEMENTS = [
     },
     {
         "type": "date",
+        "sort_id": 6,
         "label": "Date",
         "name": "date",
         "value": "",
@@ -723,6 +730,7 @@ def fake_data(db: Session) -> None:
             name=essential_form_element["label"],
             form_element_template_id=form_element_template.id,
             form_id=1,
+            sort_id=essential_form_element["sort_id"]
         )
         crud.form_element_field.create(
             db, obj_in=form_element_field_in
