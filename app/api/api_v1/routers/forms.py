@@ -60,7 +60,7 @@ def create_form(
             db, obj_in=form_element_field_in
         )
 
-        # Delete form element options by form element template
+        # Delete form element options by form element field
         # crud.form_element_option.delete_by_form_element_field_id(
         #     db,
         #     form_element_field_id=form_element_field.id,
@@ -308,7 +308,7 @@ def update_form(
                     crud.form_element_option.create(
                         db, obj_in=form_element_option_in
                     )
-        else:
+        elif form_element_field.state == 'old':
             # List of dictionary including primary key
             # form_element_field_mappings = [{
             #     'id': form_element_field.id, # This is pk?
@@ -319,8 +319,38 @@ def update_form(
                 'sort_id': form_element_field.sort_id,
                 'name': form_element_field.name,
             })
-            print('not empty')
+                    
+
+            # Create form element option for the form element field
+            if form_element_field.form_element_options is not None:
+                # Delete form element options by form element template
+                crud.form_element_option.delete_by_form_element_field_id(
+                    db,
+                    form_element_field_id=form_element_field.id,
+                )
+                for (
+                    form_element_option
+                ) in form_element_field.form_element_options:
+                    form_element_option_in = schemas.FormElementOptionCreate(
+                        name=form_element_option.name,
+                        form_element_field_id=form_element_field.id,
+                        # form_element_field_id="20",
+                    )
+                    crud.form_element_option.create(
+                        db, obj_in=form_element_option_in
+                    )
             # print(form_element_field_exist_model.name)
+        elif form_element_field.state == 'deleted':
+            # Create form element option for the form element field
+            if form_element_field.form_element_options is not None:
+                # Delete form element options by form element template
+                crud.form_element_option.delete_by_form_element_field_id(
+                    db,
+                    form_element_field_id=form_element_field.id,
+                )
+            crud.form_element_field.delete(
+                db, obj_id=form_element_field.id
+            )
     db.bulk_update_mappings(FormElementField, update_vals)
     db.commit()
     return form

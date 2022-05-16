@@ -35,18 +35,18 @@ class CRUDFormElementOption(
     #     db.commit()
     #     return "Ok"
 
-    def get_by_name_and_form_element_id(
+    def get_by_name_and_form_element_field_id(
         self,
         db: Session,
         *,
-        form_element_template_id: str,
+        form_element_field_id: str,
         value: str
     ) -> FormElementOption:
         return (
             db.query(self.model)
             .filter(
-                FormElementOption.form_element_template_id
-                == form_element_template_id
+                FormElementOption.form_element_field_id
+                == form_element_field_id
                 and FormElementOption.value == value.lower()
             )
             .first()
