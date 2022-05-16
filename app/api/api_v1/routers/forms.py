@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app import crud, exceptions, models, schemas
 from app.api import deps
 from app.constants.role import Role
+from app.models.form_element_field import FormElementField
 
 router = APIRouter(prefix="/forms", tags=["forms"])
 
@@ -273,7 +274,7 @@ def update_form(
         )
 
     # return crud.form.update(db, db_obj=form, obj_in=form_in)
-
+    update_vals = []
     # create form element fields if not exist
     for form_element_field in form_in.form_element_fields:
         field_template = form_element_field.form_element_template
@@ -308,6 +309,18 @@ def update_form(
                         db, obj_in=form_element_option_in
                     )
         else:
+            # List of dictionary including primary key
+            # form_element_field_mappings = [{
+            #     'id': form_element_field.id, # This is pk?
+            #     'sort_id': form_element_field.sort_id,
+            # }, ...]
+            update_vals.append({
+                'id': form_element_field.id, # This is pk?
+                'sort_id': form_element_field.sort_id,
+                'name': form_element_field.name,
+            })
             print('not empty')
             # print(form_element_field_exist_model.name)
+    db.bulk_update_mappings(FormElementField, update_vals)
+    db.commit()
     return form
