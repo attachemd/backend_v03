@@ -6,6 +6,7 @@ from app import crud, exceptions, models, schemas
 from app.api import deps
 from app.constants.role import Role
 from app.models.form_element_field import FormElementField
+from app.models.form_element_option import FormElementOption
 
 router = APIRouter(prefix="/forms", tags=["forms"])
 
@@ -265,6 +266,16 @@ def update_form(
     """
     Update a form.
     """
+    my_new_posts = {1: 'post1', 5: 'post5', 1000: 'post1000'} 
+    print('my_new_posts.keys()')
+    # print(form_in.deleted_option_ids.keys())
+    stmt = FormElementOption.__table__.delete().where(FormElementOption.id.in_(form_in.deleted_option_ids))
+    db.session.execute(stmt)
+    db.session.commit()
+    return
+    if current_user is None:
+        raise exceptions.get_user_exception()
+
     # check if the form exist
     form = crud.form.get(db, obj_id=form_id)
     if not form:
@@ -321,25 +332,24 @@ def update_form(
             })
                     
 
-            # Create form element option for the form element field
-            if form_element_field.form_element_options is not None:
-                # Delete form element options by form element template
-                crud.form_element_option.delete_by_form_element_field_id(
-                    db,
-                    form_element_field_id=form_element_field.id,
-                )
-                for (
-                    form_element_option
-                ) in form_element_field.form_element_options:
-                    form_element_option_in = schemas.FormElementOptionCreate(
-                        name=form_element_option.name,
-                        form_element_field_id=form_element_field.id,
-                        # form_element_field_id="20",
-                    )
-                    crud.form_element_option.create(
-                        db, obj_in=form_element_option_in
-                    )
-            # print(form_element_field_exist_model.name)
+            # # Create form element option for the form element field
+            # if form_element_field.form_element_options is not None:
+            #     # Delete form element options by form element field
+            #     crud.form_element_option.delete_by_form_element_field_id(
+            #         db,
+            #         form_element_field_id=form_element_field.id,
+            #     )
+            #     for (
+            #         form_element_option
+            #     ) in form_element_field.form_element_options:
+            #         form_element_option_in = schemas.FormElementOptionCreate(
+            #             name=form_element_option.name,
+            #             form_element_field_id=form_element_field.id,
+            #         )
+            #         crud.form_element_option.create(
+            #             db, obj_in=form_element_option_in
+            #         )
+                    
         elif form_element_field.state == 'deleted':
             # Create form element option for the form element field
             if form_element_field.form_element_options is not None:
@@ -353,4 +363,6 @@ def update_form(
             )
     db.bulk_update_mappings(FormElementField, update_vals)
     db.commit()
+    for deleted_option_id in form_in.deleted_option_ids:
+        pass
     return form
