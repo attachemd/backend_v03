@@ -55,7 +55,7 @@ def create_form(
             name=form_element_field.name,
             form_element_template_id=field_template.id,
             form_id=form.id,
-            sort_id=form_element_field.sort_id
+            sort_id=form_element_field.sort_id,
         )
         form_element_field_model = crud.form_element_field.create(
             db, obj_in=form_element_field_in
@@ -266,13 +266,19 @@ def update_form(
     """
     Update a form.
     """
-    my_new_posts = {1: 'post1', 5: 'post5', 1000: 'post1000'} 
-    print('my_new_posts.keys()')
-    # print(form_in.deleted_option_ids.keys())
-    stmt = FormElementOption.__table__.delete().where(FormElementOption.id.in_(form_in.deleted_option_ids))
-    db.session.execute(stmt)
-    db.session.commit()
-    return
+    # my_new_posts = {1: "post1", 5: "post5", 1000: "post1000"}
+    # print("my_new_posts.keys()")
+    # if isinstance(form_in.deleted_option_ids, list):
+    #     print("your object is a list !")
+    # else:
+    #     print("your object is not a list")
+    # # print(form_in.deleted_option_ids.keys())
+    # stmt = FormElementOption.__table__.delete().where(
+    #     FormElementOption.id.in_(form_in.deleted_option_ids)
+    # )
+    # db.execute(stmt)
+    # db.commit()
+    # return
     if current_user is None:
         raise exceptions.get_user_exception()
 
@@ -283,7 +289,15 @@ def update_form(
             status_code=404,
             detail="Form does not exist",
         )
-
+        
+    # Delete provided options by id
+    if form_in.deleted_option_ids is not None:
+        stmt = FormElementOption.__table__.delete().where(
+            FormElementOption.id.in_(form_in.deleted_option_ids)
+        )
+        db.execute(stmt)
+        db.commit()
+        
     # return crud.form.update(db, db_obj=form, obj_in=form_in)
     update_vals = []
     # create form element fields if not exist
@@ -293,14 +307,14 @@ def update_form(
         #     db, obj_id=form_element_field.id
         # )
         # return form_element_field_exist_model
-        if form_element_field.state == 'new':
-        # if not form_element_field_exist_model:
-            print('empty')
+        if form_element_field.state == "new":
+            # if not form_element_field_exist_model:
+            print("empty")
             form_element_field_in = schemas.FormElementFieldCreate(
                 name=form_element_field.name,
                 form_element_template_id=field_template.id,
                 form_id=form.id,
-                sort_id=form_element_field.sort_id
+                sort_id=form_element_field.sort_id,
             )
             form_element_field_model = (
                 crud.form_element_field.create(
@@ -319,19 +333,38 @@ def update_form(
                     crud.form_element_option.create(
                         db, obj_in=form_element_option_in
                     )
-        elif form_element_field.state == 'old':
+        elif form_element_field.state == "old":
             # List of dictionary including primary key
             # form_element_field_mappings = [{
             #     'id': form_element_field.id, # This is pk?
             #     'sort_id': form_element_field.sort_id,
             # }, ...]
-            update_vals.append({
-                'id': form_element_field.id, # This is pk?
-                'sort_id': form_element_field.sort_id,
-                'name': form_element_field.name,
-            })
-                    
-
+            update_vals.append(
+                {
+                    "id": form_element_field.id,  # This is pk?
+                    "sort_id": form_element_field.sort_id,
+                    "name": form_element_field.name,
+                }
+            )
+            
+            # Update options
+            if form_element_field.form_element_options is not None:
+                for (
+                    form_element_option
+                ) in form_element_field.form_element_options:
+                    if form_element_option.state == "edited":
+                        form_element_option_model = crud.form_element_option.get(db, obj_id=form_element_option.id)
+                        if form_element_option_model is not None:
+                            crud.form_element_option.update(db, db_obj=form_element_option_model, obj_in=form_element_option)
+                    if form_element_option.state == "added":
+                        form_element_option_in = schemas.FormElementOptionCreate(
+                            name=form_element_option.name,
+                            form_element_field_id=form_element_field.id,
+                            # form_element_field_id="20",
+                        )
+                        crud.form_element_option.create(
+                            db, obj_in=form_element_option_in
+                        )
             # # Create form element option for the form element field
             # if form_element_field.form_element_options is not None:
             #     # Delete form element options by form element field
@@ -349,8 +382,8 @@ def update_form(
             #         crud.form_element_option.create(
             #             db, obj_in=form_element_option_in
             #         )
-                    
-        elif form_element_field.state == 'deleted':
+
+        elif form_element_field.state == "deleted":
             # Create form element option for the form element field
             if form_element_field.form_element_options is not None:
                 # Delete form element options by form element template
@@ -363,6 +396,5 @@ def update_form(
             )
     db.bulk_update_mappings(FormElementField, update_vals)
     db.commit()
-    for deleted_option_id in form_in.deleted_option_ids:
-        pass
+    
     return form
