@@ -21,6 +21,7 @@ class FormElementOptionCreate(FormElementOptionBase):
 class FormElementOptionCreateForRoute(BaseModel):
     id: Optional[str]
     name: str
+    state: Optional[str]
     # form_element_field_id: str
 
 

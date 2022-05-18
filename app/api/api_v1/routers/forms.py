@@ -289,7 +289,7 @@ def update_form(
             status_code=404,
             detail="Form does not exist",
         )
-        
+
     # Delete provided options by id
     if form_in.deleted_option_ids is not None:
         stmt = FormElementOption.__table__.delete().where(
@@ -297,7 +297,7 @@ def update_form(
         )
         db.execute(stmt)
         db.commit()
-        
+
     # return crud.form.update(db, db_obj=form, obj_in=form_in)
     update_vals = []
     # create form element fields if not exist
@@ -346,17 +346,30 @@ def update_form(
                     "name": form_element_field.name,
                 }
             )
-            
+
             # Update options
             if form_element_field.form_element_options is not None:
                 for (
                     form_element_option
                 ) in form_element_field.form_element_options:
                     if form_element_option.state == "edited":
-                        form_element_option_model = crud.form_element_option.get(db, obj_id=form_element_option.id)
-                        if form_element_option_model is not None:
-                            crud.form_element_option.update(db, db_obj=form_element_option_model, obj_in=form_element_option)
-                    if form_element_option.state == "added":
+                        form_element_option_model = (
+                            crud.form_element_option.get(
+                                db, obj_id=form_element_option.id
+                            )
+                        )
+                        if (
+                            form_element_option_model
+                            is not None
+                            and form_element_option_model.name
+                            != form_element_option.name
+                        ):
+                            crud.form_element_option.update(
+                                db,
+                                db_obj=form_element_option_model,
+                                obj_in=form_element_option,
+                            )
+                    if form_element_option.state == "new":
                         form_element_option_in = schemas.FormElementOptionCreate(
                             name=form_element_option.name,
                             form_element_field_id=form_element_field.id,
@@ -396,5 +409,5 @@ def update_form(
             )
     db.bulk_update_mappings(FormElementField, update_vals)
     db.commit()
-    
+
     return form
