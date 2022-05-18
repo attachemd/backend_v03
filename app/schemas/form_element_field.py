@@ -34,7 +34,7 @@ class FormElementFieldCreateForRoute(BaseModel):
     selected_value: Optional[str]
     selected_list_value: Optional[Dict[str, bool]]
     state: Optional[str]
-    sort_id: str
+    sort_id: Optional[str]
 
 
 # Properties to receive via API on update
