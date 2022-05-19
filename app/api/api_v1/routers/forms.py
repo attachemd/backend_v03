@@ -297,7 +297,12 @@ def update_form(
         )
         db.execute(stmt)
         db.commit()
-
+    # Delete list value by option id
+    for deleted_option_id in form_in.deleted_option_ids:
+        crud.selected_list_value.delete_by_form_element_option_id(
+            db,
+            form_element_option_id=deleted_option_id,
+        )
     # return crud.form.update(db, db_obj=form, obj_in=form_in)
     update_vals = []
     # create form element fields if not exist
@@ -375,8 +380,14 @@ def update_form(
                             form_element_field_id=form_element_field.id,
                             # form_element_field_id="20",
                         )
-                        crud.form_element_option.create(
+                        form_element_option_model = crud.form_element_option.create(
                             db, obj_in=form_element_option_in
+                        )
+                        # Create default list value for new created option
+                        crud.selected_list_value.create(
+                            form_element_option_id=form_element_option_model.id,
+                            form_element_field_id=form_element_field.id,
+                            value="False",
                         )
             # # Create form element option for the form element field
             # if form_element_field.form_element_options is not None:
@@ -397,7 +408,6 @@ def update_form(
             #         )
 
         elif form_element_field.state == "deleted":
-            # Create form element option for the form element field
             if form_element_field.form_element_options is not None:
                 # Delete form element options by form element template
                 crud.form_element_option.delete_by_form_element_field_id(

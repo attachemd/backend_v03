@@ -31,7 +31,7 @@ class FormElementOptionUpdate(BaseModel):
 
 
 class FormElementOptionInDBBase(FormElementOptionBase):
-    # selected_option_value: Optional[SelectedListValue]
+    # selected_option_value: Optional[list[SelectedListValue]]
     class Config:
         orm_mode = True
 
