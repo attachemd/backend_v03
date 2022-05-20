@@ -33,6 +33,7 @@ class FormElementFieldCreateForRoute(BaseModel):
     # selected_list_values: Optional[List[SelectedListValueCreate]]
     selected_value: Optional[str]
     selected_list_value: Optional[Dict[str, bool]]
+    # selected_list_values: Optional[List[SelectedListValue]]
     state: Optional[str]
     sort_id: Optional[str]
 

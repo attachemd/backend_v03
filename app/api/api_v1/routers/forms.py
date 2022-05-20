@@ -1,3 +1,4 @@
+from re import L
 from typing import Any, List, Optional, Set
 from fastapi import APIRouter, Depends, HTTPException, Security
 from pydantic import BaseModel
@@ -7,6 +8,7 @@ from app.api import deps
 from app.constants.role import Role
 from app.models.form_element_field import FormElementField
 from app.models.form_element_option import FormElementOption
+from app.models.selected_list_value import SelectedListValue
 
 router = APIRouter(prefix="/forms", tags=["forms"])
 
@@ -133,15 +135,37 @@ def fill_form(
         if form_element_field.selected_value is not None:
             # print("selected_value")
             # print(form_element_field.selected_value)
-            selected_value_in = schemas.SelectedValueCreate(
-                form_element_field_id=form_element_field.id,
-                value=form_element_field.selected_value,
+
+            # Check if selected value by form_element_field_id exists
+            selected_value_model = (
+                crud.selected_value.get_by_form_element_field_id(
+                    db, form_element_field_id=form_element_field.id
+                )
             )
-            crud.selected_value.create(db, obj_in=selected_value_in)
+            if selected_value_model:
+                crud.selected_value.update(
+                    db,
+                    db_obj=selected_value_model,
+                    obj_in=form_element_field.selected_value,
+                )
+            else:
+                selected_value_in = schemas.SelectedValueCreate(
+                    form_element_field_id=form_element_field.id,
+                    value=form_element_field.selected_value,
+                )
+                crud.selected_value.create(db, obj_in=selected_value_in)
         if form_element_field.selected_list_value is not None:
             # print("selected_list_value")
             # print(form_element_field.selected_list_value)
+            selected_list_value_update_vals = list()
             for key in form_element_field.selected_list_value:
+                selected_list_value_update_vals.append(
+                    {
+                        "id": form_element_field.id,  # This is pk?
+                        "sort_id": form_element_field.sort_id,
+                        "name": form_element_field.name,
+                    }
+                )
                 # print(
                 #     key,
                 #     "->",
@@ -163,7 +187,8 @@ def fill_form(
                 crud.selected_list_value.create(
                     db, obj_in=selected_list_value_in
                 )
-
+            db.bulk_update_mappings(SelectedListValue, selected_list_value_update_vals)
+            db.commit()
     return "ok"
 
 
@@ -304,7 +329,7 @@ def update_form(
             form_element_option_id=deleted_option_id,
         )
     # return crud.form.update(db, db_obj=form, obj_in=form_in)
-    update_vals = []
+    form_element_field_update_vals = []
     # create form element fields if not exist
     for form_element_field in form_in.form_element_fields:
         field_template = form_element_field.form_element_template
@@ -344,7 +369,7 @@ def update_form(
             #     'id': form_element_field.id, # This is pk?
             #     'sort_id': form_element_field.sort_id,
             # }, ...]
-            update_vals.append(
+            form_element_field_update_vals.append(
                 {
                     "id": form_element_field.id,  # This is pk?
                     "sort_id": form_element_field.sort_id,
@@ -364,8 +389,7 @@ def update_form(
                             )
                         )
                         if (
-                            form_element_option_model
-                            is not None
+                            form_element_option_model is not None
                             and form_element_option_model.name
                             != form_element_option.name
                         ):
@@ -380,14 +404,19 @@ def update_form(
                             form_element_field_id=form_element_field.id,
                             # form_element_field_id="20",
                         )
-                        form_element_option_model = crud.form_element_option.create(
-                            db, obj_in=form_element_option_in
+                        form_element_option_model = (
+                            crud.form_element_option.create(
+                                db, obj_in=form_element_option_in
+                            )
                         )
                         # Create default list value for new created option
-                        crud.selected_list_value.create(
+                        selected_list_value_in = schemas.SelectedListValueCreate(
                             form_element_option_id=form_element_option_model.id,
                             form_element_field_id=form_element_field.id,
                             value="False",
+                        )
+                        crud.selected_list_value.create(
+                            db, obj_in=selected_list_value_in
                         )
             # # Create form element option for the form element field
             # if form_element_field.form_element_options is not None:
@@ -417,7 +446,7 @@ def update_form(
             crud.form_element_field.delete(
                 db, obj_id=form_element_field.id
             )
-    db.bulk_update_mappings(FormElementField, update_vals)
+    db.bulk_update_mappings(FormElementField, form_element_field_update_vals)
     db.commit()
 
     return form
