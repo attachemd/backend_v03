@@ -11,6 +11,10 @@ from .form_element_option import FormElementOption, FormElementOptionCreateForRo
 
 from .form_element_template import FormElementTemplate, FormElementTemplateCreateForRoute
 
+class SelectedListValueWithId(BaseModel):
+    id: str
+    name: str
+    value: str
 
 # Shared properties
 class FormElementFieldBase(BaseModel):
@@ -34,6 +38,7 @@ class FormElementFieldCreateForRoute(BaseModel):
     selected_value: Optional[str]
     selected_list_value: Optional[Dict[str, bool]]
     # selected_list_values: Optional[List[SelectedListValue]]
+    selected_list_value_with_id: Optional[List[SelectedListValueWithId]]
     state: Optional[str]
     sort_id: Optional[str]
 

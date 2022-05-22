@@ -49,7 +49,20 @@ def create_form(
     # new_form_in = schemas.FormCreate(name=form_in.name)
     new_form_in = schemas.FormCreate()
     form = crud.form.create(db, obj_in=new_form_in)
-
+    
+    # Assign new created form to the current product
+    # Get Product by id
+    if form_in.product_id: 
+        product_model = crud.product.get(db, obj_id=form_in.product_id);
+        product_in = schemas.ProductUpdate(
+                form_id=form.id
+        )
+        crud.product.update(db, db_obj=product_model, obj_in='')
+    else:
+        raise HTTPException(
+            status_code=404,
+            detail="No product is provided",
+        )
     # Create form element fields
     for form_element_field in form_in.form_element_fields:
         field_template = form_element_field.form_element_template
@@ -143,51 +156,63 @@ def fill_form(
                 )
             )
             if selected_value_model:
+                selected_value_in = schemas.SelectedValueUpdate(
+                    form_element_field_id=form_element_field.id,
+                    value=form_element_field.selected_value,
+                )
                 crud.selected_value.update(
                     db,
                     db_obj=selected_value_model,
-                    obj_in=form_element_field.selected_value,
+                    obj_in=selected_value_in,
                 )
             else:
                 selected_value_in = schemas.SelectedValueCreate(
                     form_element_field_id=form_element_field.id,
                     value=form_element_field.selected_value,
                 )
-                crud.selected_value.create(db, obj_in=selected_value_in)
-        if form_element_field.selected_list_value is not None:
+                crud.selected_value.create(
+                    db, obj_in=selected_value_in
+                )
+        if (
+            form_element_field.selected_list_value_with_id
+            is not None
+        ):
             # print("selected_list_value")
             # print(form_element_field.selected_list_value)
             selected_list_value_update_vals = list()
-            for key in form_element_field.selected_list_value:
+            for (
+                selected_list_value
+            ) in form_element_field.selected_list_value_with_id:
                 selected_list_value_update_vals.append(
                     {
-                        "id": form_element_field.id,  # This is pk?
-                        "sort_id": form_element_field.sort_id,
-                        "name": form_element_field.name,
+                        "id": selected_list_value.id,  # This is pk?
+                        "value": selected_list_value.value,
                     }
                 )
-                # print(
-                #     key,
-                #     "->",
-                #     form_element_field.selected_list_value[key],
+                # # print(
+                # #     key,
+                # #     "->",
+                # #     form_element_field.selected_list_value[key],
+                # # )
+                # option_id = get_option_id(
+                #     form_element_field.form_element_options, key
                 # )
-                option_id = get_option_id(
-                    form_element_field.form_element_options, key
-                )
-                # print()
-                selected_list_value_in = (
-                    schemas.SelectedListValueCreate(
-                        form_element_option_id=option_id,
-                        form_element_field_id=form_element_field.id,
-                        value=form_element_field.selected_list_value[
-                            key
-                        ],
-                    )
-                )
-                crud.selected_list_value.create(
-                    db, obj_in=selected_list_value_in
-                )
-            db.bulk_update_mappings(SelectedListValue, selected_list_value_update_vals)
+                # # print()
+                # selected_list_value_in = (
+                #     schemas.SelectedListValueCreate(
+                #         form_element_option_id=option_id,
+                #         form_element_field_id=form_element_field.id,
+                #         value=form_element_field.selected_list_value[
+                #             key
+                #         ],
+                #     )
+                # )
+                # crud.selected_list_value.create(
+                #     db, obj_in=selected_list_value_in
+                # )
+            db.bulk_update_mappings(
+                SelectedListValue, selected_list_value_update_vals
+            )
             db.commit()
     return "ok"
 
@@ -446,7 +471,9 @@ def update_form(
             crud.form_element_field.delete(
                 db, obj_id=form_element_field.id
             )
-    db.bulk_update_mappings(FormElementField, form_element_field_update_vals)
+    db.bulk_update_mappings(
+        FormElementField, form_element_field_update_vals
+    )
     db.commit()
 
     return form

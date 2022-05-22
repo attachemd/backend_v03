@@ -570,7 +570,7 @@ def fake_data(db: Session) -> None:
         product_in = schemas.ProductCreate(
             name=fakegen.company(),
             description=fakegen.sentence(),
-            form_id=2,
+            # form_id=2,
         )
         products_in.append(product_in)
         # crud.product.create(db, obj_in=product_in)
