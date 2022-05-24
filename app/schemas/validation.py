@@ -2,6 +2,8 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from .validator import Validator
+
 
 # Shared properties
 class ValidationBase(BaseModel):
@@ -24,7 +26,7 @@ class ValidationUpdate(ValidationBase):
 
 class ValidationInDBBase(ValidationBase):
     # id: UUID4
-
+    validator: Optional[Validator]
     class Config:
         orm_mode = True
 
