@@ -16,6 +16,7 @@ class ProductCreate(ProductBase):
 
 # Properties to receive via API on update
 class ProductUpdate(BaseModel):
+    form_id: Optional[str]
     pass
 
 

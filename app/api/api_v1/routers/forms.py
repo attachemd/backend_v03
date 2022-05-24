@@ -21,8 +21,8 @@ class Option(BaseModel):
 # Create a form ANCHOR
 
 
-@router.post("", response_model=schemas.Form)
-# @router.post("")
+# @router.post("", response_model=schemas.Form)
+@router.post("")
 def create_form(
     *,
     db: Session = Depends(deps.get_db),
@@ -49,15 +49,21 @@ def create_form(
     # new_form_in = schemas.FormCreate(name=form_in.name)
     new_form_in = schemas.FormCreate()
     form = crud.form.create(db, obj_in=new_form_in)
-    
+
     # Assign new created form to the current product
     # Get Product by id
-    if form_in.product_id: 
-        product_model = crud.product.get(db, obj_id=form_in.product_id);
-        product_in = schemas.ProductUpdate(
-                form_id=form.id
+    if form_in.product_id:
+        product_model = crud.product.get(
+            db, obj_id=form_in.product_id
         )
-        crud.product.update(db, db_obj=product_model, obj_in='')
+        product_in = schemas.ProductUpdate(form_id=form.id)
+        print("product_model")
+        print(product_model)
+        print("product_in")
+        print(product_in)
+        crud.product.update(
+            db, db_obj=product_model, obj_in=product_in
+        )
     else:
         raise HTTPException(
             status_code=404,
@@ -92,8 +98,17 @@ def create_form(
                     form_element_field_id=form_element_field_model.id,
                     # form_element_field_id="20",
                 )
-                crud.form_element_option.create(
+                form_element_option_model = crud.form_element_option.create(
                     db, obj_in=form_element_option_in
+                )
+                # Create default list value for new created option
+                selected_list_value_in = schemas.SelectedListValueCreate(
+                    form_element_option_id=form_element_option_model.id,
+                    form_element_field_id=form_element_field_model.id,
+                    value="False",
+                )
+                crud.selected_list_value.create(
+                    db, obj_in=selected_list_value_in
                 )
     return form
     # return crud.form.create(
@@ -155,6 +170,7 @@ def fill_form(
                     db, form_element_field_id=form_element_field.id
                 )
             )
+
             if selected_value_model:
                 selected_value_in = schemas.SelectedValueUpdate(
                     form_element_field_id=form_element_field.id,
@@ -173,6 +189,8 @@ def fill_form(
                 crud.selected_value.create(
                     db, obj_in=selected_value_in
                 )
+                
+        # FIXME get red of is not None
         if (
             form_element_field.selected_list_value_with_id
             is not None
@@ -355,13 +373,16 @@ def update_form(
         )
     # return crud.form.update(db, db_obj=form, obj_in=form_in)
     form_element_field_update_vals = []
-    # create form element fields if not exist
+    
+    # loop through form element fields
     for form_element_field in form_in.form_element_fields:
         field_template = form_element_field.form_element_template
         # form_element_field_exist_model = crud.form_element_field.get(
         #     db, obj_id=form_element_field.id
         # )
         # return form_element_field_exist_model
+        
+        # create form element fields if it has the state new
         if form_element_field.state == "new":
             # if not form_element_field_exist_model:
             print("empty")
@@ -376,6 +397,8 @@ def update_form(
                     db, obj_in=form_element_field_in
                 )
             )
+            
+            # create form element option if exist
             if form_element_field.form_element_options is not None:
                 for (
                     form_element_option
@@ -385,9 +408,20 @@ def update_form(
                         form_element_field_id=form_element_field_model.id,
                         # form_element_field_id="20",
                     )
-                    crud.form_element_option.create(
+                    form_element_option_model = crud.form_element_option.create(
                         db, obj_in=form_element_option_in
                     )
+                    # Create default list value for new created option
+                    selected_list_value_in = schemas.SelectedListValueCreate(
+                        form_element_option_id=form_element_option_model.id,
+                        form_element_field_id=form_element_field.id,
+                        value="False",
+                    )
+                    crud.selected_list_value.create(
+                        db, obj_in=selected_list_value_in
+                    )
+                    
+        # update form element fields if it has the state old
         elif form_element_field.state == "old":
             # List of dictionary including primary key
             # form_element_field_mappings = [{
@@ -407,6 +441,7 @@ def update_form(
                 for (
                     form_element_option
                 ) in form_element_field.form_element_options:
+                    # update form element option if it has the state edited
                     if form_element_option.state == "edited":
                         form_element_option_model = (
                             crud.form_element_option.get(
@@ -423,6 +458,7 @@ def update_form(
                                 db_obj=form_element_option_model,
                                 obj_in=form_element_option,
                             )
+                    # create form element option if it has the state new
                     if form_element_option.state == "new":
                         form_element_option_in = schemas.FormElementOptionCreate(
                             name=form_element_option.name,

@@ -21,7 +21,7 @@ class SelectedValueCreate(SelectedValueBase):
 
 # Properties to receive via API on update
 class SelectedValueUpdate(BaseModel):
-    pass
+    value: Optional[str]
 
 
 class SelectedValueInDBBase(SelectedValueBase):

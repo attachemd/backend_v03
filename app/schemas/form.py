@@ -18,6 +18,7 @@ class FormCreate(FormBase):
 class FormCreateForRoute(FormBase):
     form_element_fields: List[FormElementFieldCreateForRoute]
     deleted_option_ids: Optional[List[str]]
+    product_id: Optional[str]
     pass
 
 
